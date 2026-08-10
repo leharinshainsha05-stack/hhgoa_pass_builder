@@ -77,7 +77,7 @@ export default function HHGoaFormStep({
             </h1>
 
             {/* Subtitle */}
-            <p className="text-base sm:text-lg text-[#0b6839]/80 font-medium leading-relaxed max-w-xl">
+            <p className="text-base sm:text-lg text-black font-medium leading-relaxed max-w-xl">
               Tell us who you are, what you're building, and your hacker title to generate your official badge.
             </p>
           </div>
