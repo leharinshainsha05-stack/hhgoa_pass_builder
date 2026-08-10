@@ -974,16 +974,12 @@ export default function Step3UploadPreview({
     // ==========================================
     // LAYER 4: AUTHORITATIVE FOOTER (OVERLAY LAYER)
     // ==========================================
-    // Sharp event sub-text and giant #FrameInGoa hashtag watermark in bottom-right corner
+    // Giant #FrameInGoa hashtag watermark in bottom-right corner
     ctx.save();
-    ctx.fillStyle = "#fffbea";
-    ctx.font = "bold 18px monospace";
-    ctx.textAlign = "right";
-    ctx.fillText("HACKER HOUSE GOA 2026 • AUG 2026", canvas.width - 50, canvas.height - 65);
-
     ctx.fillStyle = "#f5dc18";
     ctx.font = "900 36px monospace";
-    ctx.fillText("#FrameInGoa", canvas.width - 50, canvas.height - 25);
+    ctx.textAlign = "right";
+    ctx.fillText("#FrameInGoa", canvas.width - 50, canvas.height - 35);
     ctx.textAlign = "left";
     ctx.restore();
   };
@@ -1274,12 +1270,9 @@ export default function Step3UploadPreview({
                 style={{ zIndex: 30, bottom: "80px", left: "14px" }}
               />
 
-              {/* Poster Bottom-Right Footer Details */}
+              {/* Poster Bottom-Right Footer */}
               <div className="absolute bottom-3 right-4 text-right z-10 pointer-events-none">
-                <p className="font-mono text-[9px] sm:text-[10px] font-bold text-emerald-300/80 uppercase tracking-widest">
-                  HACKER HOUSE GOA 2026 • AUG 2026
-                </p>
-                <p className="font-extrabold text-xs sm:text-sm text-yellow-400 tracking-wide mt-0.5">
+                <p className="font-extrabold text-sm sm:text-base text-yellow-400 tracking-wide drop-shadow">
                   #FrameInGoa
                 </p>
               </div>
