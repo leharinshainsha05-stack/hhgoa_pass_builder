@@ -1274,6 +1274,16 @@ export default function Step3UploadPreview({
                 style={{ zIndex: 30, bottom: "80px", left: "14px" }}
               />
 
+              {/* Poster Bottom-Right Footer Details */}
+              <div className="absolute bottom-3 right-4 text-right z-10 pointer-events-none">
+                <p className="font-mono text-[9px] sm:text-[10px] font-bold text-emerald-300/80 uppercase tracking-widest">
+                  HACKER HOUSE GOA 2026 • AUG 2026
+                </p>
+                <p className="font-extrabold text-xs sm:text-sm text-yellow-400 tracking-wide mt-0.5">
+                  #FrameInGoa
+                </p>
+              </div>
+
               {/* STATE 1: BEFORE PHOTO UPLOAD */}
               {!imageSrc && (
                 <div className="flex flex-col items-center justify-center text-center max-w-lg p-6">
