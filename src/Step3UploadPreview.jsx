@@ -1262,6 +1262,9 @@ export default function Step3UploadPreview({
                 src="/mascot-removebg-preview.png"
                 alt="Surfer Mascot Sticker"
                 className="absolute bottom-[-10px] left-[-20px] w-28 sm:w-32 h-auto object-contain z-[25] pointer-events-none drop-shadow-lg"
+                onError={(e) => {
+                  e.currentTarget.style.display = "none";
+                }}
                 style={{ zIndex: 25 }}
               />
 
