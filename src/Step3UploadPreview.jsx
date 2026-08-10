@@ -80,12 +80,13 @@ export default function Step3UploadPreview({
   const imageObjRef = useRef(null);
   const logoObjRef = useRef(null);
   const watermarkObjRef = useRef(null);
+  const mascotObjRef = useRef(null);
 
   // Dedicated refs for separate Camera and File Explorer inputs
   const fileInputRef = useRef(null);
   const cameraInputRef = useRef(null);
 
-  // Preload HH Goa Logo & Watermark Matrix Asset
+  // Preload HH Goa Logo, Watermark Matrix & Mascot Assets
   useEffect(() => {
     const logo = new Image();
     logo.src = "/hh-goa-logo.png";
@@ -100,6 +101,15 @@ export default function Step3UploadPreview({
     wm.src = "/image_48.png";
     wm.onload = () => {
       watermarkObjRef.current = wm;
+      if (imageSrc) {
+        drawGraphic();
+      }
+    };
+
+    const mascot = new Image();
+    mascot.src = "/mascot-removebg-preview.png";
+    mascot.onload = () => {
+      mascotObjRef.current = mascot;
       if (imageSrc) {
         drawGraphic();
       }
@@ -287,6 +297,19 @@ export default function Step3UploadPreview({
       ctx.stroke();
     }
     ctx.restore();
+
+    // Coconut Hacker Mascot Layer (Z-Index: 5 - Bottom-Left Card Body)
+    const mascotImg = mascotObjRef.current;
+    if (mascotImg && mascotImg.complete && mascotImg.naturalWidth > 0) {
+      ctx.save();
+      const mascotH = 340;
+      const mascotAspect = mascotImg.naturalWidth / mascotImg.naturalHeight;
+      const mascotW = mascotH * mascotAspect;
+      const mascotX = cardX + 35;
+      const mascotY = cardY + 740;
+      ctx.drawImage(mascotImg, mascotX, mascotY, mascotW, mascotH);
+      ctx.restore();
+    }
 
     // Header Bar (#ff0080)
     const headerH = 190;
@@ -654,6 +677,19 @@ export default function Step3UploadPreview({
       ctx.stroke();
     }
     ctx.restore();
+
+    // Coconut Hacker Mascot Layer (Z-Index: 5 - Bottom-Left Card Body)
+    const mascotImg = mascotObjRef.current;
+    if (mascotImg && mascotImg.complete && mascotImg.naturalWidth > 0) {
+      ctx.save();
+      const mascotH = 210;
+      const mascotAspect = mascotImg.naturalWidth / mascotImg.naturalHeight;
+      const mascotW = mascotH * mascotAspect;
+      const mascotX = cardX + 20;
+      const mascotY = cardY + 450;
+      ctx.drawImage(mascotImg, mascotX, mascotY, mascotW, mascotH);
+      ctx.restore();
+    }
 
     // Header Bar (#ff0080)
     const headerH = 135;
