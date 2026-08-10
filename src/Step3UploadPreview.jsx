@@ -298,19 +298,6 @@ export default function Step3UploadPreview({
     }
     ctx.restore();
 
-    // Coconut Hacker Mascot Layer (Z-Index: 5 - Bottom-Left Card Body)
-    const mascotImg = mascotObjRef.current;
-    if (mascotImg && mascotImg.complete && mascotImg.naturalWidth > 0) {
-      ctx.save();
-      const mascotH = 340;
-      const mascotAspect = mascotImg.naturalWidth / mascotImg.naturalHeight;
-      const mascotW = mascotH * mascotAspect;
-      const mascotX = cardX + 35;
-      const mascotY = cardY + 740;
-      ctx.drawImage(mascotImg, mascotX, mascotY, mascotW, mascotH);
-      ctx.restore();
-    }
-
     // Header Bar (#ff0080)
     const headerH = 190;
     ctx.fillStyle = "#ff0080";
@@ -571,6 +558,19 @@ export default function Step3UploadPreview({
       cardX + cardW / 2,
       footerY + 134
     );
+
+    // Coconut Surfer Mascot Layer (Z-Index: 25 - Bottom-Left Card Footer Overlap)
+    const mascotImg = mascotObjRef.current;
+    if (mascotImg && mascotImg.complete && mascotImg.naturalWidth > 0) {
+      ctx.save();
+      const mascotH = 340;
+      const mascotAspect = mascotImg.naturalWidth / mascotImg.naturalHeight;
+      const mascotW = mascotH * mascotAspect;
+      const mascotX = cardX - 25;
+      const mascotY = cardY + cardH - 330;
+      ctx.drawImage(mascotImg, mascotX, mascotY, mascotW, mascotH);
+      ctx.restore();
+    }
     ctx.restore();
 
     ctx.beginPath();
@@ -677,19 +677,6 @@ export default function Step3UploadPreview({
       ctx.stroke();
     }
     ctx.restore();
-
-    // Coconut Hacker Mascot Layer (Z-Index: 5 - Bottom-Left Card Body)
-    const mascotImg = mascotObjRef.current;
-    if (mascotImg && mascotImg.complete && mascotImg.naturalWidth > 0) {
-      ctx.save();
-      const mascotH = 210;
-      const mascotAspect = mascotImg.naturalWidth / mascotImg.naturalHeight;
-      const mascotW = mascotH * mascotAspect;
-      const mascotX = cardX + 20;
-      const mascotY = cardY + 450;
-      ctx.drawImage(mascotImg, mascotX, mascotY, mascotW, mascotH);
-      ctx.restore();
-    }
 
     // Header Bar (#ff0080)
     const headerH = 135;
@@ -951,6 +938,18 @@ export default function Step3UploadPreview({
       cardX + cardW / 2,
       footerY + 90
     );
+
+    // Coconut Surfer Mascot Layer (Z-Index: 25 - Bottom-Left Card Footer Overlap)
+    if (mascotImg && mascotImg.complete && mascotImg.naturalWidth > 0) {
+      ctx.save();
+      const mascotH = 220;
+      const mascotAspect = mascotImg.naturalWidth / mascotImg.naturalHeight;
+      const mascotW = mascotH * mascotAspect;
+      const mascotX = cardX - 25;
+      const mascotY = cardY + cardH - 195;
+      ctx.drawImage(mascotImg, mascotX, mascotY, mascotW, mascotH);
+      ctx.restore();
+    }
     ctx.restore();
 
     // Card Outer Border
@@ -1256,6 +1255,14 @@ export default function Step3UploadPreview({
                 alt="Verified Aug 2026 Stamp Sticker"
                 className="absolute w-16 sm:w-24 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
                 style={{ top: "16px", right: "40px", transform: "rotate(8deg)", zIndex: 20 }}
+              />
+
+              {/* Bottom-Left Surfer Mascot Sticker */}
+              <img
+                src="/mascot-removebg-preview.png"
+                alt="Surfer Mascot Sticker"
+                className="absolute bottom-[-10px] left-[-20px] w-28 sm:w-32 h-auto object-contain z-[25] pointer-events-none drop-shadow-lg"
+                style={{ zIndex: 25 }}
               />
 
               {/* STATE 1: BEFORE PHOTO UPLOAD */}
