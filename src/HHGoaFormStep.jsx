@@ -53,7 +53,7 @@ export default function HHGoaFormStep({
             onClick={onBack}
             className="min-h-[44px] inline-flex items-center gap-1.5 sm:gap-2 bg-[#0b6839] hover:bg-[#071c11] text-[#fffbea] hover:text-[#f5dc18] px-3.5 sm:px-4 py-2 rounded-full text-xs font-bold border border-[#f5dc18] transition cursor-pointer"
           >
-            <ArrowLeft className="w-4 h-4 text-[#f5dc18]" /> <span className="hidden sm:inline">Back to</span> Hero
+            <ArrowLeft className="w-4 h-4 text-[#f5dc18]" /> Back
           </button>
         )}
       </header>
@@ -77,7 +77,7 @@ export default function HHGoaFormStep({
             </h1>
 
             {/* Subtitle */}
-            <p className="text-xs sm:text-sm md:text-base text-[#333333] font-medium max-w-xl leading-relaxed">
+            <p className="text-base sm:text-lg text-[#0b6839]/80 font-medium leading-relaxed max-w-xl">
               Tell us who you are, what you're building, and your hacker title to generate your official badge.
             </p>
           </div>
