@@ -90,7 +90,7 @@ export default function Step3UploadPreview({
     };
 
     const wm = new Image();
-    wm.src = "/image_48.png";
+    wm.src = "/Gemini_Generated_Image_2kt6er2kt6er2kt6.png";
     wm.onload = () => {
       watermarkObjRef.current = wm;
       if (imageSrc) {
@@ -254,29 +254,13 @@ export default function Step3UploadPreview({
     ctx.fillStyle = "#fffbea";
     ctx.fillRect(cardX, cardY, cardW, cardH);
 
-    // HIGH-SECURITY CODE MATRIX WATERMARK OVERLAY (6% OPACITY)
+    // CLEAN OFF-WHITE SECURITY WATERMARK BACKGROUND IMAGE (Gemini_Generated_Image_2kt6er2kt6er2kt6.png) AT 100% OPACITY
     const wmImg = watermarkObjRef.current;
     if (wmImg) {
       ctx.save();
-      ctx.globalAlpha = 0.06;
+      ctx.globalAlpha = 1.0;
       ctx.drawImage(wmImg, cardX, cardY + 190, cardW, cardH - 190 - 175);
       ctx.restore();
-    }
-
-    // Card Body Watermark Grid
-    ctx.strokeStyle = "rgba(11, 104, 57, 0.05)";
-    ctx.lineWidth = 2;
-    for (let x = cardX; x < cardX + cardW; x += 55) {
-      ctx.beginPath();
-      ctx.moveTo(x, cardY);
-      ctx.lineTo(x, cardY + cardH);
-      ctx.stroke();
-    }
-    for (let y = cardY; y < cardY + cardH; y += 55) {
-      ctx.beginPath();
-      ctx.moveTo(cardX, y);
-      ctx.lineTo(cardX + cardW, y);
-      ctx.stroke();
     }
 
     // Header Bar (#ff0080)
@@ -617,31 +601,16 @@ export default function Step3UploadPreview({
     ctx.clip();
 
     // Off-White Card Body Background (#fffbea)
+    // Off-White Card Body Background (#fffbea)
     ctx.fillStyle = "#fffbea";
     ctx.fillRect(cardX, cardY, cardW, cardH);
 
-    // Code matrix watermark inside card (6% Opacity)
+    // CLEAN OFF-WHITE SECURITY WATERMARK BACKGROUND IMAGE (Gemini_Generated_Image_2kt6er2kt6er2kt6.png) AT 100% OPACITY
     if (wmImg) {
       ctx.save();
-      ctx.globalAlpha = 0.06;
+      ctx.globalAlpha = 1.0;
       ctx.drawImage(wmImg, cardX, cardY + 135, cardW, cardH - 135 - 115);
       ctx.restore();
-    }
-
-    // Card watermark grid line accents
-    ctx.strokeStyle = "rgba(11, 104, 57, 0.05)";
-    ctx.lineWidth = 2;
-    for (let x = cardX; x < cardX + cardW; x += 45) {
-      ctx.beginPath();
-      ctx.moveTo(x, cardY);
-      ctx.lineTo(x, cardY + cardH);
-      ctx.stroke();
-    }
-    for (let y = cardY; y < cardY + cardH; y += 45) {
-      ctx.beginPath();
-      ctx.moveTo(cardX, y);
-      ctx.lineTo(cardX + cardW, y);
-      ctx.stroke();
     }
 
     // Header Bar (#ff0080)
@@ -1104,21 +1073,9 @@ export default function Step3UploadPreview({
       {/* 2. Main Body Split-Screen Container (Equal 50/50 Split - Mobile Responsive Stack) */}
       <main className="grid grid-cols-1 lg:grid-cols-2 flex-1 min-h-[calc(100dvh-64px)] overflow-y-auto pb-36 lg:pb-0">
         
-        {/* Left Half: Summary Panel with Off-White Background (#fffbea) */}
-        <div className="w-full lg:col-span-1 bg-[#fffbea] text-[#000000] p-5 sm:p-8 lg:p-10 flex flex-col justify-between border-r border-[#0b6839]/10 text-left relative overflow-hidden z-0">
+        {/* Left Half: Summary Panel with Clean Solid Off-White Background (#fffbea) */}
+        <div className="w-full lg:col-span-1 bg-[#fffbea] text-[#000000] p-5 sm:p-8 lg:p-10 flex flex-col justify-between border-r border-[#0b6839]/10 text-left relative z-0">
           
-          {/* HIGH-SECURITY CODE MATRIX WATERMARK CONTAINER (STRICTLY 6% OPACITY) */}
-          <div
-            id="builder-id-pass-watermark"
-            className="absolute inset-0 z-0 pointer-events-none flex items-center justify-center opacity-[0.06] overflow-hidden"
-          >
-            <img
-              src="/image_48.png"
-              alt="Security Code Matrix Watermark"
-              className="w-full h-full object-cover"
-            />
-          </div>
-
           <div className="relative z-10">
             {/* Header */}
             <div className="text-xs md:text-sm font-bold tracking-[0.2em] text-[#ff0080] uppercase mb-1">
