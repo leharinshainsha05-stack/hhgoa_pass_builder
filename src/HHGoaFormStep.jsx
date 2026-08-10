@@ -31,17 +31,17 @@ export default function HHGoaFormStep({
   };
 
   return (
-    <div className="min-h-screen bg-[#0b6839] text-[#000000] font-sans flex flex-col items-center">
+    <div className="min-h-[100dvh] bg-[#0b6839] text-[#000000] font-sans flex flex-col items-center">
       {/* 1. Top Header Nav Bar (Electric Pink #ff0080 with 3px Solid Neon Yellow #f5dc18 Bottom Border) */}
-      <header className="w-full bg-[#ff0080] border-b-[3px] border-[#f5dc18] px-4 sm:px-8 py-4 flex items-center justify-between z-10 shadow-lg">
+      <header className="w-full bg-[#ff0080] border-b-[3px] border-[#f5dc18] px-4 sm:px-8 py-3.5 flex items-center justify-between z-10 shadow-lg shrink-0">
         {/* Left Side: HH Goa Logo + Serif Title "HACKER HOUSE GOA '26" in Off-White (#fffbea) */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 sm:gap-3">
           <img
             src="/hh-goa-logo.png"
             alt="HH Goa Logo"
-            className="w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-xl border border-[#f5dc18]"
+            className="w-9 h-9 sm:w-11 sm:h-11 object-cover rounded-xl border border-[#f5dc18]"
           />
-          <span className="font-cinzel text-lg sm:text-xl font-bold text-[#fffbea] tracking-wider">
+          <span className="font-cinzel text-base sm:text-lg md:text-xl font-bold text-[#fffbea] tracking-wider">
             HACKER HOUSE GOA '26
           </span>
         </div>
@@ -51,42 +51,42 @@ export default function HHGoaFormStep({
           <button
             type="button"
             onClick={onBack}
-            className="inline-flex items-center gap-2 bg-[#0b6839] hover:bg-[#071c11] text-[#fffbea] hover:text-[#f5dc18] px-4 py-2 rounded-full text-xs font-bold border border-[#f5dc18] transition cursor-pointer"
+            className="min-h-[44px] inline-flex items-center gap-1.5 sm:gap-2 bg-[#0b6839] hover:bg-[#071c11] text-[#fffbea] hover:text-[#f5dc18] px-3.5 sm:px-4 py-2 rounded-full text-xs font-bold border border-[#f5dc18] transition cursor-pointer"
           >
-            <ArrowLeft className="w-4 h-4 text-[#f5dc18]" /> Back to Hero
+            <ArrowLeft className="w-4 h-4 text-[#f5dc18]" /> <span className="hidden sm:inline">Back to</span> Hero
           </button>
         )}
       </header>
 
       {/* Main Page Content Container */}
-      <main className="w-full flex-1 flex items-center justify-center p-4 sm:p-6 md:p-10">
+      <main className="w-full flex-1 flex items-center justify-center p-3.5 sm:p-6 md:p-10">
         
         {/* Centered Form Card (Clean light-themed Off-White container #fffbea) */}
-        <div className="w-full max-w-2xl bg-[#fffbea] rounded-2xl shadow-2xl p-6 sm:p-8 md:p-10 border border-[#0b6839]/20 text-left">
+        <div className="w-full max-w-2xl bg-[#fffbea] rounded-2xl shadow-2xl p-5 sm:p-8 md:p-10 border border-[#0b6839]/20 text-left">
           
           {/* Header Typography */}
-          <div className="mb-8 text-left">
+          <div className="mb-6 sm:mb-8 text-left">
             {/* Category Tag */}
             <div className="inline-flex items-center gap-2 text-xs font-black text-[#ff0080] uppercase tracking-widest mb-2">
               <Zap className="w-3.5 h-3.5 text-[#ff0080]" /> HACKER HOUSE GOA 2026
             </div>
 
             {/* Main Heading */}
-            <h1 className="text-3xl sm:text-4xl font-black font-cinzel text-[#0b6839] tracking-tight mb-2">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-black font-cinzel text-[#0b6839] tracking-tight mb-2">
               Obtain Your Builder Pass
             </h1>
 
             {/* Subtitle */}
-            <p className="text-sm sm:text-base text-[#333333] font-medium max-w-xl leading-relaxed">
+            <p className="text-xs sm:text-sm md:text-base text-[#333333] font-medium max-w-xl leading-relaxed">
               Tell us who you are, what you're building, and your hacker title to generate your official badge.
             </p>
           </div>
 
           {/* Form Fields */}
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
             
-            {/* Field Grid 1: First Name & Last Name (Side-by-side on desktop) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {/* Field Grid 1: First Name & Last Name (Side-by-side on tablet/desktop) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
               <div>
                 <label className="block text-xs sm:text-sm font-bold text-[#0b6839] uppercase tracking-wider mb-2">
                   First Name <span className="text-[#ff0080]">*</span>
@@ -99,7 +99,7 @@ export default function HHGoaFormStep({
                   onChange={(e) =>
                     setFormData((prev) => ({ ...prev, firstName: e.target.value }))
                   }
-                  className="w-full p-3.5 sm:p-4 rounded-xl bg-[#ffffff] border-2 border-gray-300 text-[#000000] placeholder-gray-500 focus:outline-none focus:border-[#ff0080] focus:ring-2 focus:ring-[#ff0080]/30 font-medium transition"
+                  className="w-full min-h-[48px] p-3.5 sm:p-4 rounded-xl bg-[#ffffff] border-2 border-gray-300 text-[#000000] text-base placeholder-gray-500 focus:outline-none focus:border-[#ff0080] focus:ring-2 focus:ring-[#ff0080]/30 font-medium transition"
                 />
               </div>
 
@@ -115,13 +115,13 @@ export default function HHGoaFormStep({
                   onChange={(e) =>
                     setFormData((prev) => ({ ...prev, lastName: e.target.value }))
                   }
-                  className="w-full p-3.5 sm:p-4 rounded-xl bg-[#ffffff] border-2 border-gray-300 text-[#000000] placeholder-gray-500 focus:outline-none focus:border-[#ff0080] focus:ring-2 focus:ring-[#ff0080]/30 font-medium transition"
+                  className="w-full min-h-[48px] p-3.5 sm:p-4 rounded-xl bg-[#ffffff] border-2 border-gray-300 text-[#000000] text-base placeholder-gray-500 focus:outline-none focus:border-[#ff0080] focus:ring-2 focus:ring-[#ff0080]/30 font-medium transition"
                 />
               </div>
             </div>
 
-            {/* Field Grid 2: Primary Role & Secondary Skill (Side-by-side on desktop) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {/* Field Grid 2: Primary Role & Secondary Skill (Side-by-side on tablet/desktop) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
               <div>
                 <label className="block text-xs sm:text-sm font-bold text-[#0b6839] uppercase tracking-wider mb-2">
                   Primary Role / Stack <span className="text-[#ff0080]">*</span>
@@ -132,7 +132,7 @@ export default function HHGoaFormStep({
                   onChange={(e) =>
                     setFormData((prev) => ({ ...prev, primaryRole: e.target.value }))
                   }
-                  className="w-full p-3.5 sm:p-4 rounded-xl bg-[#ffffff] border-2 border-gray-300 text-[#000000] focus:outline-none focus:border-[#ff0080] focus:ring-2 focus:ring-[#ff0080]/30 font-medium cursor-pointer transition"
+                  className="w-full min-h-[48px] p-3.5 sm:p-4 rounded-xl bg-[#ffffff] border-2 border-gray-300 text-[#000000] text-base focus:outline-none focus:border-[#ff0080] focus:ring-2 focus:ring-[#ff0080]/30 font-medium cursor-pointer transition"
                 >
                   <option value="" disabled>Select your primary role...</option>
                   <option value="Full-Stack Developer">Full-Stack Developer</option>
@@ -157,7 +157,7 @@ export default function HHGoaFormStep({
                   onChange={(e) =>
                     setFormData((prev) => ({ ...prev, secondarySkill: e.target.value }))
                   }
-                  className="w-full p-3.5 sm:p-4 rounded-xl bg-[#ffffff] border-2 border-gray-300 text-[#000000] focus:outline-none focus:border-[#ff0080] focus:ring-2 focus:ring-[#ff0080]/30 font-medium cursor-pointer transition"
+                  className="w-full min-h-[48px] p-3.5 sm:p-4 rounded-xl bg-[#ffffff] border-2 border-gray-300 text-[#000000] text-base focus:outline-none focus:border-[#ff0080] focus:ring-2 focus:ring-[#ff0080]/30 font-medium cursor-pointer transition"
                 >
                   <option value="">Select your secondary skill...</option>
                   <option value="React / Next.js / TypeScript">React / Next.js / TypeScript</option>
@@ -176,7 +176,7 @@ export default function HHGoaFormStep({
               </div>
             </div>
 
-            {/* Field 3: Builder Title / Persona (Full width with auto-generate button in Electric Pink) */}
+            {/* Field 3: Builder Title / Persona */}
             <div>
               <div className="flex justify-between items-center mb-2">
                 <label className="text-xs sm:text-sm font-bold text-[#0b6839] uppercase tracking-wider">
@@ -185,9 +185,9 @@ export default function HHGoaFormStep({
                 <button
                   type="button"
                   onClick={handleRandomTitle}
-                  className="text-xs flex items-center gap-1.5 text-[#ff0080] hover:underline font-extrabold cursor-pointer transition"
+                  className="text-xs flex items-center gap-1.5 text-[#ff0080] hover:underline font-extrabold cursor-pointer transition py-1"
                 >
-                  <RefreshCw className="w-3.5 h-3.5 text-[#ff0080]" /> Auto-Generate Title
+                  <RefreshCw className="w-3.5 h-3.5 text-[#ff0080]" /> Auto-Generate
                 </button>
               </div>
               <input
@@ -197,15 +197,15 @@ export default function HHGoaFormStep({
                 onChange={(e) =>
                   setFormData((prev) => ({ ...prev, builderTitle: e.target.value }))
                 }
-                className="w-full p-3.5 sm:p-4 rounded-xl bg-[#ffffff] border-2 border-gray-300 text-[#000000] placeholder-gray-500 focus:outline-none focus:border-[#ff0080] focus:ring-2 focus:ring-[#ff0080]/30 font-medium transition"
+                className="w-full min-h-[48px] p-3.5 sm:p-4 rounded-xl bg-[#ffffff] border-2 border-gray-300 text-[#000000] text-base placeholder-gray-500 focus:outline-none focus:border-[#ff0080] focus:ring-2 focus:ring-[#ff0080]/30 font-medium transition"
               />
             </div>
 
             {/* Primary Action Button */}
-            <div className="pt-4">
+            <div className="pt-2 sm:pt-4">
               <button
                 type="submit"
-                className="w-full py-4 bg-[#f5dc18] hover:bg-[#ff0080] text-[#000000] hover:text-[#fffbea] font-black text-base sm:text-lg rounded-xl shadow-xl transition-all duration-300 cursor-pointer flex items-center justify-center gap-2 group"
+                className="w-full min-h-[52px] py-3.5 sm:py-4 bg-[#f5dc18] hover:bg-[#ff0080] text-[#000000] hover:text-[#fffbea] font-black text-base sm:text-lg rounded-xl shadow-xl transition-all duration-300 cursor-pointer flex items-center justify-center gap-2 group"
               >
                 <span>Next: Upload Photo & Preview</span>
                 <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />

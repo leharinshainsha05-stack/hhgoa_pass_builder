@@ -146,7 +146,7 @@ export default function Step2PhotoUpload({
   const cleanTitleStr = rawTitleStr.startsWith("•") ? rawTitleStr.replace(/^•\s*/, "") : rawTitleStr;
 
   return (
-    <div className="min-h-screen bg-[#0b6839] text-[#fffbea] flex flex-col font-sans">
+    <div className="min-h-[100dvh] bg-[#0b6839] text-[#fffbea] flex flex-col font-sans">
       
       {/* Hidden File & Camera Inputs */}
       <input
@@ -166,14 +166,14 @@ export default function Step2PhotoUpload({
       />
 
       {/* Top Navigation Bar */}
-      <header className="w-full bg-[#ff0080] border-b-2 border-[#f5dc18] px-4 sm:px-8 py-3.5 flex items-center justify-between z-10 shadow-md">
-        <div className="flex items-center gap-3">
+      <header className="w-full bg-[#ff0080] border-b-2 border-[#f5dc18] px-4 sm:px-8 py-3.5 flex items-center justify-between z-10 shadow-md shrink-0">
+        <div className="flex items-center gap-2.5 sm:gap-3">
           <img
             src="/hh-goa-logo.png"
             alt="HH Goa Logo"
             className="w-9 h-9 sm:w-11 sm:h-11 object-cover rounded-xl border border-[#f5dc18]"
           />
-          <span className="font-cinzel text-lg sm:text-xl font-bold text-[#fffbea] tracking-wider">
+          <span className="font-cinzel text-base sm:text-lg md:text-xl font-bold text-[#fffbea] tracking-wider">
             HACKER HOUSE GOA '26
           </span>
         </div>
@@ -182,18 +182,18 @@ export default function Step2PhotoUpload({
           <button
             type="button"
             onClick={onBack}
-            className="inline-flex items-center gap-2 bg-[#0b6839] hover:bg-[#071c11] text-[#fffbea] hover:text-[#f5dc18] px-4 py-2 rounded-full text-xs font-bold border border-[#f5dc18] transition cursor-pointer"
+            className="min-h-[44px] inline-flex items-center gap-1.5 sm:gap-2 bg-[#0b6839] hover:bg-[#071c11] text-[#fffbea] hover:text-[#f5dc18] px-3.5 sm:px-4 py-2 rounded-full text-xs font-bold border border-[#f5dc18] transition cursor-pointer"
           >
-            <ArrowLeft className="w-4 h-4 text-[#f5dc18]" /> Back to Details
+            <ArrowLeft className="w-4 h-4 text-[#f5dc18]" /> <span className="hidden sm:inline">Back to</span> Details
           </button>
         )}
       </header>
 
       {/* Main Split-Screen Container */}
-      <main className="grid grid-cols-1 md:grid-cols-2 flex-1 min-h-[calc(100vh-64px)] md:h-[calc(100vh-64px)] overflow-y-auto md:overflow-hidden">
+      <main className="grid grid-cols-1 md:grid-cols-2 flex-1 min-h-[calc(100dvh-64px)] overflow-y-auto">
         
         {/* Left Panel: Details Summary (Off-White #fffbea) */}
-        <div className="w-full md:col-span-1 bg-[#fffbea] text-[#000000] p-6 md:p-8 lg:p-10 flex flex-col justify-between border-r border-[#0b6839]/10 text-left overflow-y-auto relative overflow-hidden z-0">
+        <div className="w-full md:col-span-1 bg-[#fffbea] text-[#000000] p-5 sm:p-8 lg:p-10 flex flex-col justify-between border-r border-[#0b6839]/10 text-left overflow-y-auto relative overflow-hidden z-0">
           
           {/* Watermark Overlay */}
           <div className="absolute inset-0 z-0 pointer-events-none flex items-center justify-center opacity-[0.06] overflow-hidden">
@@ -208,17 +208,17 @@ export default function Step2PhotoUpload({
             <div className="text-xs md:text-sm font-black tracking-[0.2em] text-[#ff0080] uppercase mb-1">
               STEP 2 OF 3 • PHOTO CAPTURE
             </div>
-            <h2 className="font-cinzel text-3xl md:text-4xl font-black text-[#0b6839] mb-6 md:mb-8">
+            <h2 className="font-cinzel text-2xl sm:text-3xl md:text-4xl font-black text-[#0b6839] mb-5 sm:mb-8">
               Your Details Summary
             </h2>
 
             {/* Summary List */}
-            <div className="space-y-4 md:space-y-6 bg-white/70 p-6 rounded-2xl border border-[#0b6839]/15 shadow-sm">
+            <div className="space-y-4 md:space-y-6 bg-white/70 p-4 sm:p-6 rounded-2xl border border-[#0b6839]/15 shadow-sm">
               <div>
                 <div className="text-xs font-extrabold text-[#0b6839] uppercase tracking-wider mb-1">
                   NAME
                 </div>
-                <div className="text-xl md:text-2xl font-black text-[#000000]">
+                <div className="text-lg sm:text-xl md:text-2xl font-black text-[#000000]">
                   {`${formData.firstName || ""} ${formData.lastName || ""}`.trim() || "BUILDER NAME"}
                 </div>
               </div>
@@ -227,7 +227,7 @@ export default function Step2PhotoUpload({
                 <div className="text-xs font-extrabold text-[#0b6839] uppercase tracking-wider mb-1">
                   ROLE / STACK
                 </div>
-                <div className="text-base md:text-lg font-bold text-[#1a1a1a]">
+                <div className="text-sm sm:text-base md:text-lg font-bold text-[#1a1a1a]">
                   {formData.primaryRole || "Full-Stack Developer"}
                 </div>
               </div>
@@ -236,7 +236,7 @@ export default function Step2PhotoUpload({
                 <div className="text-xs font-extrabold text-[#0b6839] uppercase tracking-wider mb-1">
                   SKILL
                 </div>
-                <div className="text-base md:text-lg font-bold text-[#1a1a1a]">
+                <div className="text-sm sm:text-base md:text-lg font-bold text-[#1a1a1a]">
                   {formData.secondarySkill || "React / Next.js"}
                 </div>
               </div>
@@ -245,7 +245,7 @@ export default function Step2PhotoUpload({
                 <div className="text-xs font-extrabold text-[#0b6839] uppercase tracking-wider mb-1">
                   BUILDER TITLE
                 </div>
-                <div className="text-lg md:text-xl font-black text-[#ff0080] flex items-center gap-2">
+                <div className="text-base sm:text-lg md:text-xl font-black text-[#ff0080] flex items-center gap-2">
                   <span className="text-[#ff0080] text-xl">•</span> {cleanTitleStr}
                 </div>
               </div>
@@ -258,7 +258,7 @@ export default function Step2PhotoUpload({
               <button
                 type="button"
                 onClick={onBack}
-                className="inline-flex items-center gap-2 text-sm font-extrabold text-[#0b6839] hover:text-[#ff0080] py-3 px-5 rounded-xl border border-[#0b6839]/30 hover:border-[#ff0080] bg-white hover:bg-white/90 transition cursor-pointer shadow-sm"
+                className="min-h-[48px] inline-flex items-center gap-2 text-sm font-extrabold text-[#0b6839] hover:text-[#ff0080] py-3 px-5 rounded-xl border border-[#0b6839]/30 hover:border-[#ff0080] bg-white hover:bg-white/90 transition cursor-pointer shadow-sm"
               >
                 <ArrowLeft className="w-4 h-4 text-[#0b6839]" />
                 <span>Back to Details</span>
@@ -268,40 +268,40 @@ export default function Step2PhotoUpload({
         </div>
 
         {/* Right Panel: Dedicated Action Area (Dark Green #0b6839) */}
-        <div className="w-full md:col-span-1 bg-[#0b6839] p-6 md:p-10 flex flex-col items-center justify-center text-center overflow-y-auto">
+        <div className="w-full md:col-span-1 bg-[#0b6839] p-5 sm:p-8 md:p-10 flex flex-col items-center justify-center text-center overflow-y-auto">
           
           <div className="max-w-md w-full flex flex-col items-center">
             
             {/* Step 2 Heading Prompt */}
-            <h3 className="text-2xl sm:text-3xl font-cinzel font-black text-[#fffbea] text-center mb-4 leading-snug">
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-cinzel font-black text-[#fffbea] text-center mb-3 sm:mb-4 leading-snug">
               Take or upload a photo of yourself for your official Hacker House Goa Builder Pass.
             </h3>
 
-            <p className="text-sm text-[#fffbea]/80 mb-8 font-medium">
+            <p className="text-xs sm:text-sm text-[#fffbea]/80 mb-6 sm:mb-8 font-medium">
               Your photo will be auto-fitted onto your custom high-security Builder Pass.
             </p>
 
             {/* Two Large Action Buttons */}
-            <div className="grid grid-cols-2 gap-4 sm:gap-6 w-full mb-6">
+            <div className="grid grid-cols-2 gap-3 sm:gap-6 w-full mb-5 sm:mb-6">
               
               {/* Button 1: 📷 Take Photo */}
               <button
                 type="button"
                 onClick={startWebcam}
-                className="h-32 sm:h-36 bg-[#f5dc18] hover:bg-[#ff0080] hover:text-[#fffbea] text-[#000000] rounded-2xl flex flex-col items-center justify-center p-4 cursor-pointer shadow-2xl transition-all duration-200 hover:scale-105 active:scale-95 group border-2 border-[#f5dc18]"
+                className="min-h-[110px] h-28 sm:h-36 bg-[#f5dc18] hover:bg-[#ff0080] hover:text-[#fffbea] text-[#000000] rounded-2xl flex flex-col items-center justify-center p-3 sm:p-4 cursor-pointer shadow-2xl transition-all duration-200 hover:scale-105 active:scale-95 group border-2 border-[#f5dc18]"
               >
-                <Camera className="w-10 h-10 mb-2 transition-transform group-hover:scale-110" />
-                <span className="text-sm sm:text-base font-black">Take Photo</span>
+                <Camera className="w-8 h-8 sm:w-10 sm:h-10 mb-1.5 transition-transform group-hover:scale-110" />
+                <span className="text-xs sm:text-base font-black">Take Photo</span>
               </button>
 
               {/* Button 2: 📤 Upload Photo */}
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="h-32 sm:h-36 bg-[#f5dc18] hover:bg-[#ff0080] hover:text-[#fffbea] text-[#000000] rounded-2xl flex flex-col items-center justify-center p-4 cursor-pointer shadow-2xl transition-all duration-200 hover:scale-105 active:scale-95 group border-2 border-[#f5dc18]"
+                className="min-h-[110px] h-28 sm:h-36 bg-[#f5dc18] hover:bg-[#ff0080] hover:text-[#fffbea] text-[#000000] rounded-2xl flex flex-col items-center justify-center p-3 sm:p-4 cursor-pointer shadow-2xl transition-all duration-200 hover:scale-105 active:scale-95 group border-2 border-[#f5dc18]"
               >
-                <Upload className="w-10 h-10 mb-2 transition-transform group-hover:scale-110" />
-                <span className="text-sm sm:text-base font-black">Upload Photo</span>
+                <Upload className="w-8 h-8 sm:w-10 sm:h-10 mb-1.5 transition-transform group-hover:scale-110" />
+                <span className="text-xs sm:text-base font-black">Upload Photo</span>
               </button>
             </div>
 
@@ -310,13 +310,13 @@ export default function Step2PhotoUpload({
             </p>
 
             {loading && (
-              <div className="mt-6 flex items-center gap-2 text-sm font-bold text-[#f5dc18] animate-pulse bg-black/30 px-4 py-2.5 rounded-xl border border-[#f5dc18]/30">
-                <RefreshCw className="w-5 h-5 animate-spin text-[#f5dc18]" /> Processing image...
+              <div className="mt-5 flex items-center gap-2 text-xs sm:text-sm font-bold text-[#f5dc18] animate-pulse bg-black/30 px-4 py-2.5 rounded-xl border border-[#f5dc18]/30">
+                <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5 animate-spin text-[#f5dc18]" /> Processing image...
               </div>
             )}
 
             {errorMsg && (
-              <div className="mt-6 p-3.5 bg-[#ff0080]/20 border border-[#ff0080] rounded-xl text-xs sm:text-sm font-semibold text-[#fffbea] flex items-center gap-2.5 text-left">
+              <div className="mt-5 p-3.5 bg-[#ff0080]/20 border border-[#ff0080] rounded-xl text-xs sm:text-sm font-semibold text-[#fffbea] flex items-center gap-2.5 text-left">
                 <AlertCircle className="w-5 h-5 text-[#ff0080] shrink-0" />
                 <span>{errorMsg}</span>
               </div>
@@ -331,7 +331,7 @@ export default function Step2PhotoUpload({
       {/* Webcam Modal */}
       {isWebcamOpen && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#071c11] border-2 border-[#f5dc18] rounded-2xl p-5 sm:p-6 max-w-lg w-full flex flex-col items-center text-center shadow-2xl relative">
+          <div className="bg-[#071c11] border-2 border-[#f5dc18] rounded-2xl p-4 sm:p-6 max-w-lg w-full flex flex-col items-center text-center shadow-2xl relative">
             <button
               type="button"
               onClick={stopWebcam}
@@ -340,11 +340,11 @@ export default function Step2PhotoUpload({
               <X className="w-6 h-6" />
             </button>
 
-            <h4 className="text-xl font-cinzel font-black text-[#f5dc18] mb-4">
+            <h4 className="text-lg sm:text-xl font-cinzel font-black text-[#f5dc18] mb-3 sm:mb-4">
               Capture Profile Photo
             </h4>
 
-            <div className="w-full aspect-video bg-black rounded-xl overflow-hidden mb-5 border border-[#f5dc18]/40 shadow-inner relative">
+            <div className="w-full aspect-video bg-black rounded-xl overflow-hidden mb-4 sm:mb-5 border border-[#f5dc18]/40 shadow-inner relative">
               <video
                 ref={videoRef}
                 autoPlay
@@ -357,7 +357,7 @@ export default function Step2PhotoUpload({
               <button
                 type="button"
                 onClick={captureWebcamPhoto}
-                className="flex-1 py-3.5 bg-[#f5dc18] hover:bg-[#e5ce14] text-[#000000] font-black rounded-xl shadow-lg transition cursor-pointer flex items-center justify-center gap-2"
+                className="min-h-[48px] flex-1 py-3.5 bg-[#f5dc18] hover:bg-[#e5ce14] text-[#000000] font-black text-sm sm:text-base rounded-xl shadow-lg transition cursor-pointer flex items-center justify-center gap-2"
               >
                 <Camera className="w-5 h-5" />
                 <span>Snap Photo</span>
@@ -365,7 +365,7 @@ export default function Step2PhotoUpload({
               <button
                 type="button"
                 onClick={stopWebcam}
-                className="py-3.5 px-5 bg-white/10 hover:bg-white/20 text-[#fffbea] font-bold rounded-xl border border-white/20 transition cursor-pointer"
+                className="min-h-[48px] py-3.5 px-5 bg-white/10 hover:bg-white/20 text-[#fffbea] font-bold text-sm sm:text-base rounded-xl border border-white/20 transition cursor-pointer"
               >
                 Cancel
               </button>

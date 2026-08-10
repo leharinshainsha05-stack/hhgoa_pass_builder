@@ -1050,13 +1050,13 @@ export default function Step3UploadPreview({
   const cleanTitleStr = rawTitleStr.startsWith("•") ? rawTitleStr.replace(/^•\s*/, "") : rawTitleStr;
 
   return (
-    <div className="min-h-screen bg-[#0b6839] text-[#fffbea] flex flex-col font-sans relative">
+    <div className="min-h-[100dvh] bg-[#0b6839] text-[#fffbea] flex flex-col font-sans relative">
       
       {/* Toast Notification Banner */}
       {toastState.show && (
-        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 bg-[#000000] text-[#fffbea] border-2 border-[#f5dc18] px-6 py-3.5 rounded-2xl shadow-2xl transition-all duration-300 animate-bounce">
+        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 bg-[#000000] text-[#fffbea] border-2 border-[#f5dc18] px-5 sm:px-6 py-3 sm:py-3.5 rounded-2xl shadow-2xl transition-all duration-300 animate-bounce max-w-[90vw]">
           <CheckCircle2 className="w-5 h-5 text-[#f5dc18] shrink-0" />
-          <span className="text-sm sm:text-base font-extrabold">{toastState.message}</span>
+          <span className="text-xs sm:text-base font-extrabold text-left">{toastState.message}</span>
         </div>
       )}
 
@@ -1078,14 +1078,14 @@ export default function Step3UploadPreview({
       />
 
       {/* 1. Header Bar (Top Navigation - Clean with No Redundant Buttons) */}
-      <header className="w-full bg-[#ff0080] border-b-2 border-[#f5dc18] px-4 sm:px-8 py-3.5 flex items-center justify-between z-10 shadow-md">
-        <div className="flex items-center gap-3">
+      <header className="w-full bg-[#ff0080] border-b-2 border-[#f5dc18] px-4 sm:px-8 py-3.5 flex items-center justify-between z-10 shadow-md shrink-0">
+        <div className="flex items-center gap-2.5 sm:gap-3">
           <img
             src="/hh-goa-logo.png"
             alt="HH Goa Logo"
             className="w-9 h-9 sm:w-11 sm:h-11 object-cover rounded-xl border border-[#f5dc18]"
           />
-          <span className="font-cinzel text-lg sm:text-xl font-bold text-[#fffbea] tracking-wider">
+          <span className="font-cinzel text-base sm:text-lg md:text-xl font-bold text-[#fffbea] tracking-wider">
             HACKER HOUSE GOA '26
           </span>
         </div>
@@ -1094,18 +1094,18 @@ export default function Step3UploadPreview({
           <button
             type="button"
             onClick={onBackToUpload}
-            className="inline-flex items-center gap-2 bg-[#0b6839] hover:bg-[#071c11] text-[#fffbea] hover:text-[#f5dc18] px-4 py-2 rounded-full text-xs font-bold border border-[#f5dc18] transition cursor-pointer"
+            className="min-h-[44px] inline-flex items-center gap-1.5 sm:gap-2 bg-[#0b6839] hover:bg-[#071c11] text-[#fffbea] hover:text-[#f5dc18] px-3.5 sm:px-4 py-2 rounded-full text-xs font-bold border border-[#f5dc18] transition cursor-pointer"
           >
-            <ArrowLeft className="w-4 h-4 text-[#f5dc18]" /> Re-upload Photo
+            <ArrowLeft className="w-4 h-4 text-[#f5dc18]" /> <span className="hidden sm:inline">Re-upload</span> Photo
           </button>
         )}
       </header>
 
-      {/* 2. Main Body Split-Screen Container (Equal 50/50 Split - Scaled Viewport Fit) */}
-      <main className="grid grid-cols-1 md:grid-cols-2 flex-1 min-h-[calc(100vh-64px)] md:h-[calc(100vh-64px)] overflow-y-auto md:overflow-hidden">
+      {/* 2. Main Body Split-Screen Container (Equal 50/50 Split - Mobile Responsive Stack) */}
+      <main className="grid grid-cols-1 lg:grid-cols-2 flex-1 min-h-[calc(100dvh-64px)] overflow-y-auto pb-36 lg:pb-0">
         
-        {/* Left Half (50% Width): Summary Panel with Off-White Background (#fffbea) */}
-        <div className="w-full md:col-span-1 bg-[#fffbea] text-[#000000] p-6 md:p-8 lg:p-10 flex flex-col justify-between border-r border-[#0b6839]/10 text-left overflow-y-auto relative overflow-hidden z-0">
+        {/* Left Half: Summary Panel with Off-White Background (#fffbea) */}
+        <div className="w-full lg:col-span-1 bg-[#fffbea] text-[#000000] p-5 sm:p-8 lg:p-10 flex flex-col justify-between border-r border-[#0b6839]/10 text-left relative overflow-hidden z-0">
           
           {/* HIGH-SECURITY CODE MATRIX WATERMARK CONTAINER (STRICTLY 6% OPACITY) */}
           <div
@@ -1124,15 +1124,15 @@ export default function Step3UploadPreview({
             <div className="text-xs md:text-sm font-bold tracking-[0.2em] text-[#ff0080] uppercase mb-1">
               STEP 3 OF 3 • CARD PREVIEW
             </div>
-            <h2 className="font-cinzel text-3xl md:text-4xl font-black text-[#0b6839] mb-6 md:mb-8">
+            <h2 className="font-cinzel text-2xl sm:text-3xl md:text-4xl font-black text-[#0b6839] mb-5 sm:mb-8">
               Your Builder Pass
             </h2>
 
             {/* Builder Photo Avatar Card */}
-            <div className="flex items-center gap-4 p-3.5 bg-white/70 rounded-2xl border border-[#0b6839]/15 shadow-sm mb-6">
+            <div className="flex items-center gap-3.5 p-3.5 bg-white/70 rounded-2xl border border-[#0b6839]/15 shadow-sm mb-5 sm:mb-6">
               <div
                 onClick={() => fileInputRef.current?.click()}
-                className="w-16 h-16 rounded-xl bg-[#101010] border-2 border-[#0b6839] overflow-hidden shrink-0 cursor-pointer relative group shadow-inner"
+                className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-[#101010] border-2 border-[#0b6839] overflow-hidden shrink-0 cursor-pointer relative group shadow-inner"
                 title="Click to upload or change profile photo"
               >
                 {imageSrc ? (
@@ -1151,7 +1151,7 @@ export default function Step3UploadPreview({
                 </div>
               </div>
               <div className="flex flex-col justify-center text-left">
-                <div className="text-xs font-extrabold text-[#0b6839] uppercase tracking-wider mb-1">
+                <div className="text-[10px] sm:text-xs font-extrabold text-[#0b6839] uppercase tracking-wider mb-0.5">
                   BUILDER PHOTO
                 </div>
                 <button
@@ -1168,49 +1168,49 @@ export default function Step3UploadPreview({
             {/* Summary List with Expanded Typography & Spacing */}
             <div className="space-y-4 md:space-y-5">
               <div>
-                <div className="text-xs font-extrabold text-[#0b6839] uppercase tracking-wider mb-0.5">
+                <div className="text-[10px] sm:text-xs font-extrabold text-[#0b6839] uppercase tracking-wider mb-0.5">
                   NAME
                 </div>
-                <div className="text-xl md:text-2xl lg:text-3xl font-black text-[#000000]">
+                <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-black text-[#000000]">
                   {`${formData.firstName || ""} ${formData.lastName || ""}`.trim() || "BUILDER NAME"}
                 </div>
               </div>
 
               <div>
-                <div className="text-xs font-extrabold text-[#0b6839] uppercase tracking-wider mb-0.5">
+                <div className="text-[10px] sm:text-xs font-extrabold text-[#0b6839] uppercase tracking-wider mb-0.5">
                   ROLE / STACK
                 </div>
-                <div className="text-base md:text-lg lg:text-xl font-bold text-[#1a1a1a]">
+                <div className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-[#1a1a1a]">
                   {formData.primaryRole || "Full-Stack Developer"}
                 </div>
               </div>
 
               <div>
-                <div className="text-xs font-extrabold text-[#0b6839] uppercase tracking-wider mb-0.5">
+                <div className="text-[10px] sm:text-xs font-extrabold text-[#0b6839] uppercase tracking-wider mb-0.5">
                   SKILL
                 </div>
-                <div className="text-base md:text-lg lg:text-xl font-bold text-[#1a1a1a]">
+                <div className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-[#1a1a1a]">
                   {formData.secondarySkill || "React / Next.js"}
                 </div>
               </div>
 
               <div>
-                <div className="text-xs font-extrabold text-[#0b6839] uppercase tracking-wider mb-0.5">
+                <div className="text-[10px] sm:text-xs font-extrabold text-[#0b6839] uppercase tracking-wider mb-0.5">
                   BUILDER TITLE
                 </div>
-                <div className="text-lg md:text-xl lg:text-2xl font-black text-[#ff0080] flex items-center gap-2">
-                  <span className="text-[#ff0080] text-xl md:text-2xl">•</span> {cleanTitleStr}
+                <div className="text-base sm:text-lg md:text-xl lg:text-2xl font-black text-[#ff0080] flex items-center gap-2">
+                  <span className="text-[#ff0080] text-xl">•</span> {cleanTitleStr}
                 </div>
               </div>
             </div>
           </div>
 
           {/* Bottom Action Buttons: Re-upload Photo + Edit Details */}
-          <div className="pt-6 md:pt-8 flex flex-wrap items-center gap-3 relative z-10">
+          <div className="pt-6 sm:pt-8 flex flex-wrap items-center gap-3 relative z-10">
             <button
               type="button"
               onClick={onBackToUpload || (() => fileInputRef.current?.click())}
-              className="inline-flex items-center gap-2 text-sm font-bold text-[#fffbea] bg-[#0b6839] hover:bg-[#071c11] hover:text-[#f5dc18] py-2.5 px-4 rounded-xl border border-[#f5dc18] transition cursor-pointer shadow-md"
+              className="min-h-[44px] inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-[#fffbea] bg-[#0b6839] hover:bg-[#071c11] hover:text-[#f5dc18] py-2.5 px-4 rounded-xl border border-[#f5dc18] transition cursor-pointer shadow-md"
             >
               <RefreshCw className="w-4 h-4 text-[#f5dc18]" />
               <span>Re-upload Photo</span>
@@ -1220,7 +1220,7 @@ export default function Step3UploadPreview({
               <button
                 type="button"
                 onClick={onBackToForm}
-                className="inline-flex items-center gap-2 text-sm font-bold text-[#0b6839] hover:text-[#ff0080] py-2.5 px-4 rounded-xl border border-[#0b6839]/30 hover:border-[#ff0080] bg-white/60 hover:bg-white transition cursor-pointer shadow-sm"
+                className="min-h-[44px] inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-[#0b6839] hover:text-[#ff0080] py-2.5 px-4 rounded-xl border border-[#0b6839]/30 hover:border-[#ff0080] bg-white/60 hover:bg-white transition cursor-pointer shadow-sm"
               >
                 <Edit3 className="w-4 h-4 text-[#0b6839]" />
                 <span>Edit Details</span>
@@ -1229,8 +1229,8 @@ export default function Step3UploadPreview({
           </div>
         </div>
 
-        {/* Right Half (50% Width): Upload & Scaled Preview Zone with Dark Green Background (#0b6839) */}
-        <div className="w-full md:col-span-1 bg-[#0b6839] p-4 md:p-6 flex flex-col items-center justify-between overflow-y-auto">
+        {/* Right Half: Upload & Scaled Preview Zone with Dark Green Background (#0b6839) */}
+        <div className="w-full lg:col-span-1 bg-[#0b6839] p-4 sm:p-6 lg:p-8 flex flex-col items-center justify-between overflow-y-auto">
           
           {/* Hidden Canvas specifically for Standalone Builder Pass Export (#builder-id-card) */}
           <canvas
@@ -1247,12 +1247,12 @@ export default function Step3UploadPreview({
             {/* STATE 1: BEFORE PHOTO UPLOAD */}
             {!imageSrc && (
               <div className="flex flex-col items-center justify-center text-center max-w-lg">
-                <h3 className="text-2xl md:text-3xl font-serif text-[#fffbea] text-center max-w-lg mb-8 leading-snug">
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-serif text-[#fffbea] text-center max-w-lg mb-6 sm:mb-8 leading-snug">
                   Take or upload a photo of yourself for your new HH Goa '26 Builder Pass.
                 </h3>
 
                 {/* Two Large Square Action Buttons */}
-                <div className="flex items-center justify-center gap-6 mb-6">
+                <div className="flex items-center justify-center gap-4 sm:gap-6 mb-6">
                   {/* Camera Box */}
                   <button
                     type="button"
@@ -1296,10 +1296,10 @@ export default function Step3UploadPreview({
             {/* STATE 2: AFTER PHOTO UPLOAD (Scaled Live Presentation Canvas Preview Fitting Screen) */}
             {imageSrc && (
               <div className="w-full flex flex-col items-center justify-center">
-                {/* Scaled Presentation Canvas Container Frame (4:5 Aspect Ratio, Max Width 360-380px) */}
+                {/* Scaled Presentation Canvas Container Frame (Fluid scaling: max-w-[290px] to max-w-[370px]) */}
                 <div
                   id="builder-id-card-frame"
-                  className="w-full max-w-[340px] sm:max-w-[360px] md:max-w-[370px] aspect-[4/5] bg-[#0b6839] rounded-2xl overflow-hidden shadow-2xl border-2 border-[#f5dc18] flex flex-col items-center shrink-0 relative group"
+                  className="w-full max-w-[290px] sm:max-w-[340px] md:max-w-[370px] aspect-[4/5] bg-[#0b6839] rounded-2xl overflow-hidden shadow-2xl border-2 border-[#f5dc18] flex flex-col items-center shrink-0 relative group transition-all duration-200"
                 >
                   <canvas
                     ref={canvasRef}
@@ -1327,18 +1327,18 @@ export default function Step3UploadPreview({
                   >
                     {hasCustomPhoto ? (
                       <div className="flex flex-col items-center gap-1 p-1 text-center">
-                        <Camera className="w-5 h-5 text-[#f5dc18] drop-shadow-md" />
-                        <span className="text-[10px] font-black tracking-wide text-[#fffbea] uppercase drop-shadow">
+                        <Camera className="w-4 h-4 sm:w-5 sm:h-5 text-[#f5dc18] drop-shadow-md" />
+                        <span className="text-[9px] sm:text-[10px] font-black tracking-wide text-[#fffbea] uppercase drop-shadow">
                           Change Photo
                         </span>
                       </div>
                     ) : (
                       <div className="flex flex-col items-center justify-center gap-1 p-1.5 text-center">
-                        <div className="w-8 h-8 rounded-full bg-[#0b6839]/10 flex items-center justify-center mb-0.5">
-                          <Upload className="w-4 h-4 text-[#0b6839]" />
+                        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#0b6839]/10 flex items-center justify-center mb-0.5">
+                          <Upload className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0b6839]" />
                         </div>
-                        <span className="text-[10px] sm:text-[11px] font-extrabold text-[#0b6839] leading-tight">
-                          Click to Upload Photo
+                        <span className="text-[9px] sm:text-[11px] font-extrabold text-[#0b6839] leading-tight">
+                          Upload Photo
                         </span>
                       </div>
                     )}
@@ -1348,36 +1348,39 @@ export default function Step3UploadPreview({
             )}
           </div>
 
-          {/* 2. UI BUTTONS & CONTROLS CONTAINER - STRICTLY OUTSIDE #poster-canvas-wrapper */}
+          {/* 2. UI BUTTONS & CONTROLS CONTAINER - STICKY MOBILE ACTION DRAWER (< lg) / INLINE (lg+) */}
           {imageSrc && (
-            <div className="w-full max-w-[340px] sm:max-w-[360px] md:max-w-[370px] space-y-2.5 mt-4 z-10">
+            <div className="w-full max-w-[340px] sm:max-w-[360px] md:max-w-[370px] space-y-2 mt-4 z-30 fixed bottom-0 left-0 right-0 p-4 bg-[#071c11]/95 backdrop-blur-md border-t-2 border-[#f5dc18] shadow-2xl lg:relative lg:bg-transparent lg:border-0 lg:p-0 lg:shadow-none lg:z-10 lg:max-w-[370px] lg:mx-auto">
               
-              {/* Download Button: Triggers Standalone Builder Pass Export (#builder-id-card) */}
-              <button
-                type="button"
-                onClick={handleDownloadCardOnly}
-                className="w-full py-3 sm:py-3.5 bg-[#f5dc18] hover:bg-[#e5ce14] active:scale-[0.99] text-[#000000] font-black text-sm sm:text-base rounded-xl flex items-center justify-center gap-2 shadow-xl transition cursor-pointer"
-              >
-                <Download className="w-4 h-4 sm:w-5 sm:h-5 text-[#000000]" />
-                <span>Download Card (PNG)</span>
-              </button>
+              {/* Main Action Buttons Grid on Mobile / Stack on Desktop */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2">
+                {/* Download Button: Triggers Standalone Builder Pass Export (#builder-id-card) */}
+                <button
+                  type="button"
+                  onClick={handleDownloadCardOnly}
+                  className="w-full min-h-[48px] py-3 sm:py-3.5 bg-[#f5dc18] hover:bg-[#e5ce14] active:scale-[0.99] text-[#000000] font-black text-sm sm:text-base rounded-xl flex items-center justify-center gap-2 shadow-xl transition cursor-pointer"
+                >
+                  <Download className="w-4 h-4 sm:w-5 sm:h-5 text-[#000000]" />
+                  <span>Download Card (PNG)</span>
+                </button>
 
-              {/* Share to X Button: Triggers Full Poster Export (#poster-canvas-wrapper) & Opens X Intent */}
-              <button
-                type="button"
-                onClick={handleShareToX}
-                className="w-full py-3 sm:py-3.5 bg-[#000000] hover:bg-neutral-900 active:scale-[0.99] text-[#fffbea] hover:text-[#f5dc18] border-2 border-[#f5dc18] font-bold text-sm sm:text-base rounded-xl flex items-center justify-center gap-2 shadow-xl transition cursor-pointer"
-              >
-                <Share2 className="w-4 h-4 sm:w-5 sm:h-5 text-[#f5dc18]" />
-                <span>Share to X (#FrameInGoa)</span>
-              </button>
+                {/* Share to X Button: Triggers Full Poster Export (#poster-canvas-wrapper) & Opens X Intent */}
+                <button
+                  type="button"
+                  onClick={handleShareToX}
+                  className="w-full min-h-[48px] py-3 sm:py-3.5 bg-[#000000] hover:bg-neutral-900 active:scale-[0.99] text-[#fffbea] hover:text-[#f5dc18] border-2 border-[#f5dc18] font-bold text-sm sm:text-base rounded-xl flex items-center justify-center gap-2 shadow-xl transition cursor-pointer"
+                >
+                  <Share2 className="w-4 h-4 sm:w-5 sm:h-5 text-[#f5dc18]" />
+                  <span>Share to X (#FrameInGoa)</span>
+                </button>
+              </div>
 
               {/* Secondary Action Options: Re-upload & Adjust Photo Controls */}
               <div className="flex items-center justify-between text-xs pt-0.5 px-1">
                 <button
                   type="button"
                   onClick={onBackToUpload || (() => fileInputRef.current?.click())}
-                  className="text-[#f5dc18] hover:underline font-bold cursor-pointer inline-flex items-center gap-1"
+                  className="text-[#f5dc18] hover:underline font-bold cursor-pointer inline-flex items-center gap-1 py-1"
                 >
                   <RefreshCw className="w-3.5 h-3.5" /> Re-upload Photo
                 </button>
@@ -1385,7 +1388,7 @@ export default function Step3UploadPreview({
                 <button
                   type="button"
                   onClick={() => setShowAdjustControls(!showAdjustControls)}
-                  className="text-[#fffbea] hover:text-[#f5dc18] font-bold cursor-pointer inline-flex items-center gap-1.5"
+                  className="text-[#fffbea] hover:text-[#f5dc18] font-bold cursor-pointer inline-flex items-center gap-1.5 py-1"
                 >
                   <Sliders className="w-3.5 h-3.5 text-[#ff0080]" />
                   <span>{showAdjustControls ? "Hide Controls" : "Adjust Photo Fit"}</span>
@@ -1394,7 +1397,7 @@ export default function Step3UploadPreview({
 
               {/* Expandable Photo Position & Zoom Adjustment Sliders Panel */}
               {showAdjustControls && (
-                <div className="bg-[#000000]/80 p-3.5 rounded-2xl border border-[#f5dc18]/40 space-y-2.5 mt-1 text-left">
+                <div className="bg-[#000000]/90 p-3.5 rounded-2xl border border-[#f5dc18]/40 space-y-2.5 mt-1 text-left max-h-[40vh] overflow-y-auto">
                   <div className="flex justify-between items-center text-xs font-bold text-[#f5dc18]">
                     <span>Manual Crop Adjustments</span>
                     <button
@@ -1423,7 +1426,7 @@ export default function Step3UploadPreview({
                       step="0.05"
                       value={zoom}
                       onChange={(e) => setZoom(parseFloat(e.target.value))}
-                      className="w-full accent-[#f5dc18] cursor-pointer"
+                      className="w-full accent-[#f5dc18] cursor-pointer min-h-[36px]"
                     />
                   </div>
 
@@ -1439,7 +1442,7 @@ export default function Step3UploadPreview({
                       max="200"
                       value={offsetX}
                       onChange={(e) => setOffsetX(parseInt(e.target.value))}
-                      className="w-full accent-[#f5dc18] cursor-pointer"
+                      className="w-full accent-[#f5dc18] cursor-pointer min-h-[36px]"
                     />
                   </div>
 
@@ -1455,7 +1458,7 @@ export default function Step3UploadPreview({
                       max="200"
                       value={offsetY}
                       onChange={(e) => setOffsetY(parseInt(e.target.value))}
-                      className="w-full accent-[#f5dc18] cursor-pointer"
+                      className="w-full accent-[#f5dc18] cursor-pointer min-h-[36px]"
                     />
                   </div>
                 </div>
