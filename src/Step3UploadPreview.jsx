@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import heic2any from "heic2any";
 import { toPng } from "html-to-image";
+import html2canvas from "html2canvas";
 import { saveAs } from "file-saver";
 import {
   Camera,
@@ -1020,17 +1021,39 @@ export default function Step3UploadPreview({
 
   // --- TRIGGER 2: FULL POSTER DOWNLOAD & OPEN X COMPOSER (#FrameInGoa) ---
   const handleShareToX = async () => {
-    try {
-      const node = document.getElementById("poster-canvas-wrapper");
-      if (node) {
+    const element = document.getElementById("poster-canvas-wrapper");
+    if (element) {
+      try {
+        // Reset scroll offsets before capture
+        element.scrollLeft = 0;
+        element.scrollTop = 0;
+
         await new Promise((resolve) => setTimeout(resolve, 300));
-        const dataUrl = await toPng(node, {
-          quality: 0.95,
-          pixelRatio: 3,
-          cacheBust: true,
+
+        const canvas = await html2canvas(element, {
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: null,
+          width: element.scrollWidth,
+          height: element.scrollHeight,
+          windowWidth: 1200,
+          onclone: (clonedDoc) => {
+            const clonedElement = clonedDoc.getElementById("poster-canvas-wrapper");
+            if (clonedElement) {
+              clonedElement.style.transform = "none";
+              clonedElement.style.maxWidth = "none";
+              clonedElement.style.width = "420px";
+              clonedElement.style.overflow = "visible";
+              clonedElement.style.margin = "0 auto";
+            }
+          },
         });
+
+        const dataUrl = canvas.toDataURL("image/png", 1.0);
         saveAs(dataUrl, "HHGoa_2026_Share_Poster.png");
-      } else {
+      } catch (err) {
+        console.error("Share to X export error:", err);
         const offscreenCanvas = document.createElement("canvas");
         const offscreenCtx = offscreenCanvas.getContext("2d");
         if (offscreenCtx) {
@@ -1039,8 +1062,7 @@ export default function Step3UploadPreview({
           saveAs(dataUrl, "HHGoa_2026_Share_Poster.png");
         }
       }
-    } catch (err) {
-      console.warn("html-to-image poster export fallback", err);
+    } else {
       const offscreenCanvas = document.createElement("canvas");
       const offscreenCtx = offscreenCanvas.getContext("2d");
       if (offscreenCtx) {
