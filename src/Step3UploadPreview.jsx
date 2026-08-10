@@ -565,15 +565,15 @@ export default function Step3UploadPreview({
       footerY + 134
     );
 
-    // Coconut Surfer Mascot Layer (Z-Index: 25 - Bottom-Left Card Footer Overlap)
+    // Coconut Surfer Mascot Accent Layer (Z-Index: 10 - Subtle Bottom-Left Accent)
     const mascotImg = mascotObjRef.current;
     if (mascotImg && mascotImg.complete && mascotImg.naturalWidth > 0) {
       ctx.save();
-      const mascotH = 270;
+      const mascotH = 120;
       const mascotAspect = mascotImg.naturalWidth / mascotImg.naturalHeight;
       const mascotW = mascotH * mascotAspect;
-      const mascotX = cardX - 15;
-      const mascotY = cardY + cardH - 260;
+      const mascotX = cardX + 15;
+      const mascotY = cardY + cardH - 140;
       ctx.drawImage(mascotImg, mascotX, mascotY, mascotW, mascotH);
       ctx.restore();
     }
@@ -945,14 +945,14 @@ export default function Step3UploadPreview({
       footerY + 90
     );
 
-    // Coconut Surfer Mascot Layer (Z-Index: 25 - Bottom-Left Card Footer Overlap)
+    // Coconut Surfer Mascot Accent Layer (Z-Index: 10 - Subtle Bottom-Left Accent)
     if (mascotImg && mascotImg.complete && mascotImg.naturalWidth > 0) {
       ctx.save();
-      const mascotH = 175;
+      const mascotH = 75;
       const mascotAspect = mascotImg.naturalWidth / mascotImg.naturalHeight;
       const mascotW = mascotH * mascotAspect;
-      const mascotX = cardX - 15;
-      const mascotY = cardY + cardH - 155;
+      const mascotX = cardX + 10;
+      const mascotY = cardY + cardH - 90;
       ctx.drawImage(mascotImg, mascotX, mascotY, mascotW, mascotH);
       ctx.restore();
     }
@@ -1263,15 +1263,15 @@ export default function Step3UploadPreview({
                 style={{ top: "16px", right: "40px", transform: "rotate(8deg)", zIndex: 20 }}
               />
 
-              {/* Bottom-Left Surfer Mascot Sticker */}
+              {/* Bottom-Left Surfer Mascot Accent Sticker */}
               <img
                 src="/mascot-removebg-preview.png"
                 alt="Surfer Mascot Sticker"
-                className="absolute bottom-[-5px] left-[-15px] w-24 sm:w-28 h-auto object-contain z-[25] pointer-events-none drop-shadow-lg"
+                className="absolute bottom-2 left-2 h-10 sm:h-12 w-auto object-contain z-10 pointer-events-none drop-shadow-md"
                 onError={(e) => {
                   e.currentTarget.style.display = "none";
                 }}
-                style={{ zIndex: 25 }}
+                style={{ zIndex: 10 }}
               />
 
               {/* STATE 1: BEFORE PHOTO UPLOAD */}
