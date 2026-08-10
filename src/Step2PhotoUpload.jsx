@@ -184,7 +184,7 @@ export default function Step2PhotoUpload({
             onClick={onBack}
             className="min-h-[44px] inline-flex items-center gap-1.5 sm:gap-2 bg-[#0b6839] hover:bg-[#071c11] text-[#fffbea] hover:text-[#f5dc18] px-3.5 sm:px-4 py-2 rounded-full text-xs font-bold border border-[#f5dc18] transition cursor-pointer"
           >
-            <ArrowLeft className="w-4 h-4 text-[#f5dc18]" /> <span className="hidden sm:inline">Back to</span> Details
+            <ArrowLeft className="w-4 h-4 text-[#f5dc18]" /> Details
           </button>
         )}
       </header>
@@ -252,19 +252,6 @@ export default function Step2PhotoUpload({
             </div>
           </div>
 
-          {/* Bottom Back Button */}
-          <div className="pt-6 relative z-10">
-            {onBack && (
-              <button
-                type="button"
-                onClick={onBack}
-                className="min-h-[48px] inline-flex items-center gap-2 text-sm font-extrabold text-[#0b6839] hover:text-[#ff0080] py-3 px-5 rounded-xl border border-[#0b6839]/30 hover:border-[#ff0080] bg-white hover:bg-white/90 transition cursor-pointer shadow-sm"
-              >
-                <ArrowLeft className="w-4 h-4 text-[#0b6839]" />
-                <span>Back to Details</span>
-              </button>
-            )}
-          </div>
         </div>
 
         {/* Right Panel: Dedicated Action Area (Dark Green #0b6839) */}
