@@ -572,7 +572,7 @@ export default function Step3UploadPreview({
       const mascotH = 290;
       const mascotAspect = mascotImg.naturalWidth / mascotImg.naturalHeight;
       const mascotW = mascotH * mascotAspect;
-      const mascotX = cardX;
+      const mascotX = cardX + 25;
       const mascotY = cardY + cardH - 490;
       ctx.drawImage(mascotImg, mascotX, mascotY, mascotW, mascotH);
       ctx.restore();
@@ -951,7 +951,7 @@ export default function Step3UploadPreview({
       const mascotH = 180;
       const mascotAspect = mascotImg.naturalWidth / mascotImg.naturalHeight;
       const mascotW = mascotH * mascotAspect;
-      const mascotX = cardX - 10;
+      const mascotX = cardX + 5;
       const mascotY = cardY + cardH - 300;
       ctx.drawImage(mascotImg, mascotX, mascotY, mascotW, mascotH);
       ctx.restore();
@@ -1267,11 +1267,11 @@ export default function Step3UploadPreview({
               <img
                 src="/mascot-removebg-preview.png"
                 alt="Surfer Mascot Sticker"
-                className="absolute bottom-[80px] left-[0px] h-28 sm:h-32 w-auto object-contain z-[30] pointer-events-none drop-shadow-lg"
+                className="absolute bottom-[80px] left-[12px] h-28 sm:h-32 w-auto object-contain z-[30] pointer-events-none drop-shadow-lg"
                 onError={(e) => {
                   e.currentTarget.style.display = "none";
                 }}
-                style={{ zIndex: 30, bottom: "80px", left: "0px" }}
+                style={{ zIndex: 30, bottom: "80px", left: "12px" }}
               />
 
               {/* STATE 1: BEFORE PHOTO UPLOAD */}
