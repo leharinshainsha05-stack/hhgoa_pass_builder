@@ -1106,7 +1106,7 @@ export default function Step3UploadPreview({
       </header>
 
       {/* 2. Main Body Split-Screen Container (Equal 50/50 Split - Mobile Responsive Stack) */}
-      <main className="grid grid-cols-1 lg:grid-cols-2 flex-1 min-h-[calc(100dvh-64px)] overflow-y-auto pb-36 lg:pb-0">
+      <main className="grid grid-cols-1 lg:grid-cols-2 flex-1 min-h-[calc(100dvh-64px)] overflow-y-auto pb-8 lg:pb-0">
         
         {/* Left Half: Summary Panel with Clean Solid Off-White Background (#fffbea) */}
         <div className="w-full lg:col-span-1 bg-[#fffbea] text-[#000000] p-5 sm:p-8 lg:p-10 flex flex-col justify-between border-r border-[#0b6839]/10 text-left relative z-0">
@@ -1222,7 +1222,7 @@ export default function Step3UploadPreview({
         </div>
 
         {/* Right Half: Upload & Scaled Preview Zone with Dark Green Background (#0b6839) */}
-        <div className="w-full lg:col-span-1 bg-[#0b6839] p-4 sm:p-6 lg:p-8 flex flex-col items-center justify-between overflow-y-auto">
+        <div className="w-full lg:col-span-1 bg-[#0b6839] px-4 py-6 sm:p-6 lg:p-8 flex flex-col items-center justify-between overflow-y-auto">
           
           {/* Hidden Canvas specifically for Standalone Builder Pass Export (#builder-id-card) */}
           <canvas
@@ -1234,7 +1234,7 @@ export default function Step3UploadPreview({
           {/* 1. POSTER CANVAS WRAPPER - EXCLUSIVELY WRAPPED IN id="poster-canvas-wrapper" */}
           <div
             id="poster-canvas-wrapper"
-            className="w-full flex-1 flex flex-col items-center justify-center p-2 rounded-2xl relative"
+            className="w-full max-w-[420px] mx-auto overflow-hidden flex flex-col items-center justify-center p-2 rounded-2xl relative"
           >
             {/* STATE 1: BEFORE PHOTO UPLOAD */}
             {!imageSrc && (
@@ -1288,10 +1288,10 @@ export default function Step3UploadPreview({
             {/* STATE 2: AFTER PHOTO UPLOAD (Scaled Live Presentation Canvas Preview Fitting Screen) */}
             {imageSrc && (
               <div className="w-full flex flex-col items-center justify-center">
-                {/* Scaled Presentation Canvas Container Frame (Fluid scaling: max-w-[290px] to max-w-[370px]) */}
+                {/* Scaled Presentation Canvas Container Frame (Fluid scaling: max-w-[420px]) */}
                 <div
                   id="builder-id-card-frame"
-                  className="w-full max-w-[290px] sm:max-w-[340px] md:max-w-[370px] aspect-[4/5] bg-[#0b6839] rounded-2xl overflow-hidden shadow-2xl border-2 border-[#f5dc18] flex flex-col items-center shrink-0 relative group transition-all duration-200"
+                  className="w-full max-w-[420px] aspect-[4/5] bg-[#0b6839] rounded-2xl overflow-hidden shadow-2xl border-2 border-[#f5dc18] flex flex-col items-center shrink-0 relative group transition-all duration-200"
                 >
                   <canvas
                     ref={canvasRef}
@@ -1340,32 +1340,29 @@ export default function Step3UploadPreview({
             )}
           </div>
 
-          {/* 2. UI BUTTONS & CONTROLS CONTAINER - STICKY MOBILE ACTION DRAWER (< lg) / INLINE (lg+) */}
+          {/* 2. UI BUTTONS & CONTROLS CONTAINER - SEAMLESS FULL-WIDTH ACTION AREA */}
           {imageSrc && (
-            <div className="w-full max-w-[340px] sm:max-w-[360px] md:max-w-[370px] space-y-2 mt-4 z-30 fixed bottom-0 left-0 right-0 p-4 bg-[#071c11]/95 backdrop-blur-md border-t-2 border-[#f5dc18] shadow-2xl lg:relative lg:bg-transparent lg:border-0 lg:p-0 lg:shadow-none lg:z-10 lg:max-w-[370px] lg:mx-auto">
+            <div className="w-full max-w-[420px] mx-auto flex flex-col gap-3 mt-6 px-2 z-10">
               
-              {/* Main Action Buttons Grid on Mobile / Stack on Desktop */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2">
-                {/* Download Button: Triggers Standalone Builder Pass Export (#builder-id-card) */}
-                <button
-                  type="button"
-                  onClick={handleDownloadCardOnly}
-                  className="w-full min-h-[48px] py-3 sm:py-3.5 bg-[#f5dc18] hover:bg-[#e5ce14] active:scale-[0.99] text-[#000000] font-black text-sm sm:text-base rounded-xl flex items-center justify-center gap-2 shadow-xl transition cursor-pointer"
-                >
-                  <Download className="w-4 h-4 sm:w-5 sm:h-5 text-[#000000]" />
-                  <span>Download Card (PNG)</span>
-                </button>
+              {/* Download Button: Triggers Standalone Builder Pass Export (#builder-id-card) */}
+              <button
+                type="button"
+                onClick={handleDownloadCardOnly}
+                className="w-full min-h-[48px] py-3.5 bg-[#f5dc18] hover:bg-[#e5ce14] active:scale-[0.99] text-[#000000] font-black text-sm sm:text-base rounded-xl flex items-center justify-center gap-2 shadow-xl transition cursor-pointer"
+              >
+                <Download className="w-4 h-4 sm:w-5 sm:h-5 text-[#000000]" />
+                <span>Download Card (PNG)</span>
+              </button>
 
-                {/* Share to X Button: Triggers Full Poster Export (#poster-canvas-wrapper) & Opens X Intent */}
-                <button
-                  type="button"
-                  onClick={handleShareToX}
-                  className="w-full min-h-[48px] py-3 sm:py-3.5 bg-[#000000] hover:bg-neutral-900 active:scale-[0.99] text-[#fffbea] hover:text-[#f5dc18] border-2 border-[#f5dc18] font-bold text-sm sm:text-base rounded-xl flex items-center justify-center gap-2 shadow-xl transition cursor-pointer"
-                >
-                  <Share2 className="w-4 h-4 sm:w-5 sm:h-5 text-[#f5dc18]" />
-                  <span>Share to X (#FrameInGoa)</span>
-                </button>
-              </div>
+              {/* Share to X Button: Triggers Full Poster Export (#poster-canvas-wrapper) & Opens X Intent */}
+              <button
+                type="button"
+                onClick={handleShareToX}
+                className="w-full min-h-[48px] py-3.5 bg-[#000000] hover:bg-neutral-900 active:scale-[0.99] text-[#fffbea] hover:text-[#f5dc18] border-2 border-[#f5dc18] font-bold text-sm sm:text-base rounded-xl flex items-center justify-center gap-2 shadow-xl transition cursor-pointer"
+              >
+                <Share2 className="w-4 h-4 sm:w-5 sm:h-5 text-[#f5dc18]" />
+                <span>Share to X (#FrameInGoa)</span>
+              </button>
 
               {/* Secondary Action Options: Re-upload & Adjust Photo Controls */}
               <div className="flex items-center justify-between text-xs pt-0.5 px-1">
