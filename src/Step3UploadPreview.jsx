@@ -1210,7 +1210,7 @@ export default function Step3UploadPreview({
               <img
                 src="/image_351993.png"
                 alt="HHG GOA '26 Builder Pass Sticker"
-                className="absolute top-3 left-3 w-20 sm:w-28 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
+                className="absolute top-2 left-2 w-20 sm:w-28 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
                 style={{ transform: "rotate(-12deg)", zIndex: 20 }}
               />
 
@@ -1218,7 +1218,7 @@ export default function Step3UploadPreview({
               <img
                 src="/image_351997.png"
                 alt="Verified Aug 2026 Stamp Sticker"
-                className="absolute top-3 right-3 w-16 sm:w-24 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
+                className="absolute top-10 right-2 w-16 sm:w-24 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
                 style={{ transform: "rotate(8deg)", zIndex: 20 }}
               />
 
