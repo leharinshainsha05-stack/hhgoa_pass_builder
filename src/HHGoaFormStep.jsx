@@ -207,7 +207,7 @@ export default function HHGoaFormStep({
                 type="submit"
                 className="w-full min-h-[52px] py-3.5 sm:py-4 bg-[#f5dc18] hover:bg-[#ff0080] text-[#000000] hover:text-[#fffbea] font-black text-base sm:text-lg rounded-xl shadow-xl transition-all duration-300 cursor-pointer flex items-center justify-center gap-2 group"
               >
-                <span>Next: Upload Photo & Preview</span>
+                <span>Upload Photo</span>
                 <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
               </button>
             </div>
