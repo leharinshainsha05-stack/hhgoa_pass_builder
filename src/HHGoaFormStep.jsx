@@ -94,7 +94,7 @@ export default function HHGoaFormStep({
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Leharin"
+                  placeholder="e.g. Alex"
                   value={formData.firstName || ""}
                   onChange={(e) =>
                     setFormData((prev) => ({ ...prev, firstName: e.target.value }))
@@ -110,7 +110,7 @@ export default function HHGoaFormStep({
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Nisha"
+                  placeholder="e.g. Sharma"
                   value={formData.lastName || ""}
                   onChange={(e) =>
                     setFormData((prev) => ({ ...prev, lastName: e.target.value }))
