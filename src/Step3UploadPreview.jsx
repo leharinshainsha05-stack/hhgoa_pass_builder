@@ -1209,8 +1209,8 @@ export default function Step3UploadPreview({
               {/* Top-Left Ticket Sticker */}
               <img
                 src="/image_351993.png"
-                alt="HHG GOA '26 Builder Pass Sticker"
-                className="absolute -top-[2px] left-6 w-20 sm:w-28 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
+                alt="HH GOA '26 Builder Pass Sticker"
+                className="absolute top-5 left-3 w-20 sm:w-28 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
                 style={{ transform: "rotate(-8deg)", zIndex: 20 }}
               />
 
