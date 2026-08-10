@@ -15,6 +15,13 @@ import {
   CheckCircle2,
 } from "lucide-react";
 
+// Preload sticker PNG assets for canvas rendering fallback
+const stickerTicketImg = typeof window !== "undefined" ? new Image() : null;
+if (stickerTicketImg) stickerTicketImg.src = "/image_351993.png";
+
+const stickerVerifiedImg = typeof window !== "undefined" ? new Image() : null;
+if (stickerVerifiedImg) stickerVerifiedImg.src = "/image_351997.png";
+
 export default function Step3UploadPreview({
   formData = {},
   setFormData,
@@ -922,44 +929,52 @@ export default function Step3UploadPreview({
     // ==========================================
     // Floating interface stickers sit at the highest level (overlapping card edges)
 
-    // 3.1 Top Left (Yellow Sticker): HH GOA '26 • BUILDER PASS (rotated)
+    // 3.1 Top Left Badge: HHG GOA '26 - BUILDER PASS - (rotated -12deg)
     ctx.save();
     ctx.translate(145, 125);
     ctx.rotate((-12 * Math.PI) / 180);
-    ctx.beginPath();
-    ctx.roundRect(-105, -34, 210, 68, 16);
-    ctx.fillStyle = "#f5dc18";
-    ctx.fill();
-    ctx.strokeStyle = "#000000";
-    ctx.lineWidth = 3.5;
-    ctx.stroke();
+    if (stickerTicketImg && stickerTicketImg.complete && stickerTicketImg.naturalWidth > 0) {
+      ctx.drawImage(stickerTicketImg, -110, -110, 220, 220);
+    } else {
+      ctx.beginPath();
+      ctx.roundRect(-105, -34, 210, 68, 16);
+      ctx.fillStyle = "#f5dc18";
+      ctx.fill();
+      ctx.strokeStyle = "#000000";
+      ctx.lineWidth = 3.5;
+      ctx.stroke();
 
-    ctx.fillStyle = "#000000";
-    ctx.font = "900 17px 'Plus Jakarta Sans', sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText("HH GOA '26", 0, -4);
-    ctx.font = "bold 12px monospace";
-    ctx.fillText("• BUILDER PASS •", 0, 17);
+      ctx.fillStyle = "#000000";
+      ctx.font = "900 17px 'Plus Jakarta Sans', sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("HH GOA '26", 0, -4);
+      ctx.font = "bold 12px monospace";
+      ctx.fillText("• BUILDER PASS •", 0, 17);
+    }
     ctx.restore();
 
-    // 3.2 Top Right (Pink Stamp): ✓ VERIFIED • AUG 2026 (rotated)
+    // 3.2 Top Right Badge: VERIFIED / AUG 2026 Stamp (rotated 8deg)
     ctx.save();
     ctx.translate(935, 135);
-    ctx.rotate((15 * Math.PI) / 180);
-    ctx.beginPath();
-    ctx.roundRect(-95, -32, 190, 64, 14);
-    ctx.fillStyle = "#ff0080";
-    ctx.fill();
-    ctx.strokeStyle = "#fffbea";
-    ctx.lineWidth = 3.5;
-    ctx.stroke();
+    ctx.rotate((8 * Math.PI) / 180);
+    if (stickerVerifiedImg && stickerVerifiedImg.complete && stickerVerifiedImg.naturalWidth > 0) {
+      ctx.drawImage(stickerVerifiedImg, -95, -95, 190, 190);
+    } else {
+      ctx.beginPath();
+      ctx.roundRect(-95, -32, 190, 64, 14);
+      ctx.fillStyle = "#ff0080";
+      ctx.fill();
+      ctx.strokeStyle = "#fffbea";
+      ctx.lineWidth = 3.5;
+      ctx.stroke();
 
-    ctx.fillStyle = "#fffbea";
-    ctx.font = "900 16px 'Plus Jakarta Sans', sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText("✓ VERIFIED", 0, -3);
-    ctx.font = "bold 12px monospace";
-    ctx.fillText("• AUG 2026 •", 0, 16);
+      ctx.fillStyle = "#fffbea";
+      ctx.font = "900 16px 'Plus Jakarta Sans', sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("✓ VERIFIED", 0, -3);
+      ctx.font = "bold 12px monospace";
+      ctx.fillText("• AUG 2026 •", 0, 16);
+    }
     ctx.restore();
 
     // ==========================================
@@ -1236,6 +1251,21 @@ export default function Step3UploadPreview({
             id="poster-canvas-wrapper"
             className="w-full max-w-[420px] mx-auto overflow-hidden flex flex-col items-center justify-center p-2 rounded-2xl relative"
           >
+            {/* Top-Left Badge: HHG GOA '26 - BUILDER PASS - */}
+            <img
+              src="/image_351993.png"
+              alt="HHG GOA '26 Builder Pass Sticker"
+              className="absolute top-1 left-1 w-28 sm:w-36 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
+              style={{ transform: "rotate(-12deg)", zIndex: 20 }}
+            />
+
+            {/* Top-Right Badge: VERIFIED / AUG 2026 Stamp */}
+            <img
+              src="/image_351997.png"
+              alt="Verified Aug 2026 Stamp Sticker"
+              className="absolute top-1 right-1 w-24 sm:w-32 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
+              style={{ transform: "rotate(8deg)", zIndex: 20 }}
+            />
             {/* STATE 1: BEFORE PHOTO UPLOAD */}
             {!imageSrc && (
               <div className="flex flex-col items-center justify-center text-center max-w-lg">
