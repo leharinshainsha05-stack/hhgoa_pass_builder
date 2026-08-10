@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import heic2any from "heic2any";
-import * as htmlToImage from "html-to-image";
-import html2canvas from "html2canvas";
+import { toPng } from "html-to-image";
 import { saveAs } from "file-saver";
 import {
   Camera,
@@ -988,34 +987,24 @@ export default function Step3UploadPreview({
   // --- TRIGGER 1: STANDALONE CARD DOWNLOAD (HHGoa_2026_Builder_Card.png) ---
   const handleDownloadCardOnly = async () => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      const element = document.getElementById("builder-id-card") || document.getElementById("poster-canvas-wrapper");
-      if (element) {
-        if (element.tagName === "CANVAS") {
-          const dataUrl = element.toDataURL("image/png", 1.0);
+      const node = document.getElementById("builder-id-card") || document.getElementById("poster-canvas-wrapper");
+      if (node) {
+        if (node.tagName === "CANVAS") {
+          const dataUrl = node.toDataURL("image/png", 1.0);
           saveAs(dataUrl, "HHGoa_2026_Builder_Card.png");
           return;
         }
-        const canvas = await html2canvas(element, {
-          scale: 3,
-          useCORS: true,
-          allowTaint: true,
-          backgroundColor: null,
-          logging: false,
-          onclone: (clonedDoc) => {
-            const clonedEl = clonedDoc.getElementById("builder-id-card") || clonedDoc.getElementById("poster-canvas-wrapper");
-            if (clonedEl) {
-              clonedEl.style.display = "block";
-              clonedEl.style.transform = "none";
-            }
-          },
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        const dataUrl = await toPng(node, {
+          quality: 0.95,
+          pixelRatio: 3,
+          cacheBust: true,
         });
-        const dataUrl = canvas.toDataURL("image/png", 1.0);
         saveAs(dataUrl, "HHGoa_2026_Builder_Card.png");
         return;
       }
     } catch (err) {
-      console.warn("html2canvas card export fallback", err);
+      console.warn("html-to-image card export fallback", err);
     }
 
     // Fallback using offscreen canvas drawRawBuilderCard
@@ -1032,24 +1021,14 @@ export default function Step3UploadPreview({
   // --- TRIGGER 2: FULL POSTER DOWNLOAD & OPEN X COMPOSER (#FrameInGoa) ---
   const handleShareToX = async () => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      const posterElement = document.getElementById("poster-canvas-wrapper");
-      if (posterElement) {
-        const canvas = await html2canvas(posterElement, {
-          scale: 3,
-          useCORS: true,
-          allowTaint: true,
-          backgroundColor: null,
-          logging: false,
-          onclone: (clonedDoc) => {
-            const clonedEl = clonedDoc.getElementById("poster-canvas-wrapper");
-            if (clonedEl) {
-              clonedEl.style.display = "block";
-              clonedEl.style.transform = "none";
-            }
-          },
+      const node = document.getElementById("poster-canvas-wrapper");
+      if (node) {
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        const dataUrl = await toPng(node, {
+          quality: 0.95,
+          pixelRatio: 3,
+          cacheBust: true,
         });
-        const dataUrl = canvas.toDataURL("image/png", 1.0);
         saveAs(dataUrl, "HHGoa_2026_Share_Poster.png");
       } else {
         const offscreenCanvas = document.createElement("canvas");
@@ -1061,7 +1040,7 @@ export default function Step3UploadPreview({
         }
       }
     } catch (err) {
-      console.warn("html2canvas poster export fallback", err);
+      console.warn("html-to-image poster export fallback", err);
       const offscreenCanvas = document.createElement("canvas");
       const offscreenCtx = offscreenCanvas.getContext("2d");
       if (offscreenCtx) {
