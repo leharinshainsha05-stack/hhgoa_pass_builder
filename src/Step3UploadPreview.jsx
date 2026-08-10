@@ -1210,7 +1210,7 @@ export default function Step3UploadPreview({
               <img
                 src="/image_351993.png"
                 alt="HHG GOA '26 Builder Pass Sticker"
-                className="absolute top-1 left-6 w-20 sm:w-28 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
+                className="absolute top-0 left-6 w-20 sm:w-28 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
                 style={{ transform: "rotate(-8deg)", zIndex: 20 }}
               />
 
