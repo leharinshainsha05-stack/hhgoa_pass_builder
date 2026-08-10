@@ -572,7 +572,7 @@ export default function Step3UploadPreview({
       const mascotH = 290;
       const mascotAspect = mascotImg.naturalWidth / mascotImg.naturalHeight;
       const mascotW = mascotH * mascotAspect;
-      const mascotX = cardX - 15;
+      const mascotX = cardX + 27;
       const mascotY = cardY + cardH - 490;
       ctx.drawImage(mascotImg, mascotX, mascotY, mascotW, mascotH);
       ctx.restore();
@@ -951,7 +951,7 @@ export default function Step3UploadPreview({
       const mascotH = 180;
       const mascotAspect = mascotImg.naturalWidth / mascotImg.naturalHeight;
       const mascotW = mascotH * mascotAspect;
-      const mascotX = cardX - 20;
+      const mascotX = cardX + 7;
       const mascotY = cardY + cardH - 300;
       ctx.drawImage(mascotImg, mascotX, mascotY, mascotW, mascotH);
       ctx.restore();
@@ -987,7 +987,7 @@ export default function Step3UploadPreview({
   // --- TRIGGER 1: STANDALONE CARD DOWNLOAD (HHGoa_2026_Builder_Card.png) ---
   const handleDownloadCardOnly = async () => {
     try {
-      const node = document.getElementById("poster-canvas-wrapper") || document.getElementById("builder-id-card");
+      const node = document.getElementById("builder-id-card") || document.getElementById("poster-canvas-wrapper");
       if (node) {
         if (node.tagName === "CANVAS") {
           const dataUrl = node.toDataURL("image/png", 1.0);
@@ -1275,11 +1275,11 @@ export default function Step3UploadPreview({
                 src="/mascot-removebg-preview.png"
                 alt="Surfer Mascot Sticker"
                 crossOrigin="anonymous"
-                className="absolute bottom-[80px] left-[-11px] h-28 sm:h-32 w-auto object-contain z-[30] pointer-events-none drop-shadow-lg"
+                className="absolute bottom-[80px] left-[14px] h-28 sm:h-32 w-auto object-contain z-[30] pointer-events-none drop-shadow-lg"
                 onError={(e) => {
                   e.currentTarget.style.display = "none";
                 }}
-                style={{ zIndex: 30, bottom: "80px", left: "-11px" }}
+                style={{ zIndex: 30, bottom: "80px", left: "14px" }}
               />
 
               {/* Poster Bottom-Right Footer */}
