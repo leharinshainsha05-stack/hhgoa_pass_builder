@@ -599,19 +599,19 @@ export default function Step3UploadPreview({
     // ==========================================
     // LAYER 2: CENTRAL ID PASS (FLOATING LAYER)
     // ==========================================
-    // Positioned in the absolute center of 1080px x 1350px canvas
-    const cardW = 640;
-    const cardH = 980;
-    const cardX = (canvas.width - cardW) / 2; // 220px (Absolute Center X)
-    const cardY = (canvas.height - cardH) / 2; // 185px (Absolute Center Y)
-    const cardR = 32;
+    // Positioned in the absolute center of 1080px x 1350px canvas with optimal margin
+    const cardW = 580;
+    const cardH = 880;
+    const cardX = (canvas.width - cardW) / 2; // 250px (Absolute Center X)
+    const cardY = (canvas.height - cardH) / 2; // 235px (Absolute Center Y)
+    const cardR = 28;
 
-    // Heavy 3D Drop Shadow: shadow-[0_25px_60px_-15px_rgba(0,0,0,0.6)]
+    // Heavy 3D Drop Shadow
     ctx.save();
     ctx.shadowColor = "rgba(0, 0, 0, 0.65)";
-    ctx.shadowBlur = 60;
+    ctx.shadowBlur = 50;
     ctx.shadowOffsetX = 0;
-    ctx.shadowOffsetY = 25;
+    ctx.shadowOffsetY = 20;
 
     ctx.beginPath();
     ctx.roundRect(cardX, cardY, cardW, cardH, cardR);
@@ -931,10 +931,10 @@ export default function Step3UploadPreview({
 
     // 3.1 Top Left Badge: HHG GOA '26 - BUILDER PASS - (rotated -12deg)
     ctx.save();
-    ctx.translate(145, 125);
+    ctx.translate(165, 175);
     ctx.rotate((-12 * Math.PI) / 180);
     if (stickerTicketImg && stickerTicketImg.complete && stickerTicketImg.naturalWidth > 0) {
-      ctx.drawImage(stickerTicketImg, -110, -110, 220, 220);
+      ctx.drawImage(stickerTicketImg, -110, -70, 220, 140);
     } else {
       ctx.beginPath();
       ctx.roundRect(-105, -34, 210, 68, 16);
@@ -955,7 +955,7 @@ export default function Step3UploadPreview({
 
     // 3.2 Top Right Badge: VERIFIED / AUG 2026 Stamp (rotated 8deg)
     ctx.save();
-    ctx.translate(935, 135);
+    ctx.translate(915, 185);
     ctx.rotate((8 * Math.PI) / 180);
     if (stickerVerifiedImg && stickerVerifiedImg.complete && stickerVerifiedImg.naturalWidth > 0) {
       ctx.drawImage(stickerVerifiedImg, -95, -95, 190, 190);
@@ -1249,26 +1249,11 @@ export default function Step3UploadPreview({
           {/* 1. POSTER CANVAS WRAPPER - EXCLUSIVELY WRAPPED IN id="poster-canvas-wrapper" */}
           <div
             id="poster-canvas-wrapper"
-            className="w-full max-w-[420px] mx-auto overflow-hidden flex flex-col items-center justify-center p-2 rounded-2xl relative"
+            className="w-full max-w-[440px] sm:max-w-[500px] lg:max-w-[540px] aspect-[4/5] mx-auto overflow-hidden flex flex-col items-center justify-center rounded-2xl relative shadow-2xl bg-[#0b6839]"
           >
-            {/* Top-Left Badge: HHG GOA '26 - BUILDER PASS - */}
-            <img
-              src="/image_351993.png"
-              alt="HHG GOA '26 Builder Pass Sticker"
-              className="absolute top-1 left-1 w-28 sm:w-36 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
-              style={{ transform: "rotate(-12deg)", zIndex: 20 }}
-            />
-
-            {/* Top-Right Badge: VERIFIED / AUG 2026 Stamp */}
-            <img
-              src="/image_351997.png"
-              alt="Verified Aug 2026 Stamp Sticker"
-              className="absolute top-1 right-1 w-24 sm:w-32 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
-              style={{ transform: "rotate(8deg)", zIndex: 20 }}
-            />
             {/* STATE 1: BEFORE PHOTO UPLOAD */}
             {!imageSrc && (
-              <div className="flex flex-col items-center justify-center text-center max-w-lg">
+              <div className="flex flex-col items-center justify-center text-center max-w-lg p-6">
                 <h3 className="text-xl sm:text-2xl md:text-3xl font-serif text-[#fffbea] text-center max-w-lg mb-6 sm:mb-8 leading-snug">
                   Take or upload a photo of yourself for your new HH Goa '26 Builder Pass.
                 </h3>
@@ -1317,15 +1302,15 @@ export default function Step3UploadPreview({
 
             {/* STATE 2: AFTER PHOTO UPLOAD (Scaled Live Presentation Canvas Preview Fitting Screen) */}
             {imageSrc && (
-              <div className="w-full flex flex-col items-center justify-center">
-                {/* Scaled Presentation Canvas Container Frame (Fluid scaling: max-w-[420px]) */}
+              <div className="w-full h-full flex flex-col items-center justify-center relative">
+                {/* Presentation Canvas Frame */}
                 <div
                   id="builder-id-card-frame"
-                  className="w-full max-w-[420px] aspect-[4/5] bg-[#0b6839] rounded-2xl overflow-hidden shadow-2xl border-2 border-[#f5dc18] flex flex-col items-center shrink-0 relative group transition-all duration-200"
+                  className="w-full h-full relative group transition-all duration-200"
                 >
                   <canvas
                     ref={canvasRef}
-                    className="w-full h-full object-contain block"
+                    className="w-full h-full object-contain block rounded-2xl"
                   />
 
                   {/* Direct Interactive Photo Frame Overlay on Card */}
@@ -1341,10 +1326,10 @@ export default function Step3UploadPreview({
                         : "bg-[#fffbea]/90 hover:bg-[#fffbea] border-2 border-dashed border-[#0b6839] text-[#0b6839] shadow-inner hover:scale-[1.01]"
                     }`}
                     style={{
-                      left: "22.4%",
-                      top: "25.3%",
-                      width: "23.15%",
-                      height: "18.5%",
+                      left: "25.2%",
+                      top: "27.8%",
+                      width: "20.4%",
+                      height: "16.3%",
                     }}
                   >
                     {hasCustomPhoto ? (
