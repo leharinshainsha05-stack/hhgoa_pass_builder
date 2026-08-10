@@ -29,6 +29,8 @@ export default function Step3UploadPreview({
   onBackToForm,
   onBackToHero,
 }) {
+  const safeFormData = formData || {};
+
   // Default Sample Avatar SVG Data URI for immediate poster preview
   const DEFAULT_AVATAR = `data:image/svg+xml;utf8,${encodeURIComponent(`
   <svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" viewBox="0 0 500 500">
@@ -52,7 +54,7 @@ export default function Step3UploadPreview({
   </svg>
   `)}`;
 
-  const [imageSrc, setImageSrc] = useState(formData.userPhoto || DEFAULT_AVATAR);
+  const [imageSrc, setImageSrc] = useState(safeFormData.userPhoto || DEFAULT_AVATAR);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [showAdjustControls, setShowAdjustControls] = useState(false);
@@ -68,7 +70,7 @@ export default function Step3UploadPreview({
   };
 
   // Check if a custom user photo is present (vs default sample avatar)
-  const hasCustomPhoto = Boolean(formData.userPhoto) || (Boolean(imageSrc) && imageSrc !== DEFAULT_AVATAR);
+  const hasCustomPhoto = Boolean(safeFormData.userPhoto) || (Boolean(imageSrc) && imageSrc !== DEFAULT_AVATAR);
 
   // Manual Photo Repositioning & Zoom Controls
   const [zoom, setZoom] = useState(1);
@@ -193,21 +195,25 @@ export default function Step3UploadPreview({
 
   const handleImageUpload = handlePhotoUpload;
 
-  // Live Canvas Drawing Routine
+  // Live Canvas Drawing Routine with try/catch Error Boundary
   const drawGraphic = () => {
-    const canvas = canvasRef.current;
-    if (canvas) {
-      const ctx = canvas.getContext("2d");
-      if (ctx) {
-        drawCompositeBuilderCard(canvas, ctx);
+    try {
+      const canvas = canvasRef.current;
+      if (canvas) {
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          drawCompositeBuilderCard(canvas, ctx);
+        }
       }
-    }
-    const rawCanvas = rawCardCanvasRef.current;
-    if (rawCanvas) {
-      const rawCtx = rawCanvas.getContext("2d");
-      if (rawCtx) {
-        drawRawBuilderCard(rawCanvas, rawCtx);
+      const rawCanvas = rawCardCanvasRef.current;
+      if (rawCanvas) {
+        const rawCtx = rawCanvas.getContext("2d");
+        if (rawCtx) {
+          drawRawBuilderCard(rawCanvas, rawCtx);
+        }
       }
+    } catch (err) {
+      console.warn("Canvas drawing safely caught error:", err);
     }
   };
 
