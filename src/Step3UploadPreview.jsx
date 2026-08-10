@@ -569,11 +569,11 @@ export default function Step3UploadPreview({
     const mascotImg = mascotObjRef.current;
     if (mascotImg && mascotImg.complete && mascotImg.naturalWidth > 0) {
       ctx.save();
-      const mascotH = 340;
+      const mascotH = 270;
       const mascotAspect = mascotImg.naturalWidth / mascotImg.naturalHeight;
       const mascotW = mascotH * mascotAspect;
-      const mascotX = cardX - 25;
-      const mascotY = cardY + cardH - 330;
+      const mascotX = cardX - 15;
+      const mascotY = cardY + cardH - 260;
       ctx.drawImage(mascotImg, mascotX, mascotY, mascotW, mascotH);
       ctx.restore();
     }
@@ -948,11 +948,11 @@ export default function Step3UploadPreview({
     // Coconut Surfer Mascot Layer (Z-Index: 25 - Bottom-Left Card Footer Overlap)
     if (mascotImg && mascotImg.complete && mascotImg.naturalWidth > 0) {
       ctx.save();
-      const mascotH = 220;
+      const mascotH = 175;
       const mascotAspect = mascotImg.naturalWidth / mascotImg.naturalHeight;
       const mascotW = mascotH * mascotAspect;
-      const mascotX = cardX - 25;
-      const mascotY = cardY + cardH - 195;
+      const mascotX = cardX - 15;
+      const mascotY = cardY + cardH - 155;
       ctx.drawImage(mascotImg, mascotX, mascotY, mascotW, mascotH);
       ctx.restore();
     }
@@ -1267,7 +1267,7 @@ export default function Step3UploadPreview({
               <img
                 src="/mascot-removebg-preview.png"
                 alt="Surfer Mascot Sticker"
-                className="absolute bottom-[-10px] left-[-20px] w-28 sm:w-32 h-auto object-contain z-[25] pointer-events-none drop-shadow-lg"
+                className="absolute bottom-[-5px] left-[-15px] w-24 sm:w-28 h-auto object-contain z-[25] pointer-events-none drop-shadow-lg"
                 onError={(e) => {
                   e.currentTarget.style.display = "none";
                 }}
