@@ -2,14 +2,14 @@ import React from "react";
 
 export default function HHGoaLandingPage({ onGetStarted }) {
   return (
-    <div className="relative w-full h-[100dvh] min-h-[100dvh] overflow-hidden flex flex-col items-center justify-center bg-[#071c11] text-[#fffbea] select-none">
+    <div className="relative w-full min-h-[100dvh] overflow-hidden flex flex-col items-center justify-center bg-[#071c11] text-[#fffbea] select-none">
       {/* Fullscreen Looping Background Video */}
       <video
         autoPlay
         loop
         muted
         playsInline
-        className="absolute inset-0 w-full h-full object-cover z-0"
+        className="fixed inset-0 w-full h-full object-cover z-0"
         src="/hero-bg.mp4"
       />
 
