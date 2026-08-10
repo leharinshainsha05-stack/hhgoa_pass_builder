@@ -927,55 +927,8 @@ export default function Step3UploadPreview({
     // ==========================================
     // LAYER 3: BRANDING & STAMPS (TOP LAYER)
     // ==========================================
-    // Floating interface stickers sit at the highest level (overlapping card edges)
-
-    // 3.1 Top Left Badge: HHG GOA '26 - BUILDER PASS - (rotated -12deg)
-    ctx.save();
-    ctx.translate(165, 175);
-    ctx.rotate((-12 * Math.PI) / 180);
-    if (stickerTicketImg && stickerTicketImg.complete && stickerTicketImg.naturalWidth > 0) {
-      ctx.drawImage(stickerTicketImg, -110, -70, 220, 140);
-    } else {
-      ctx.beginPath();
-      ctx.roundRect(-105, -34, 210, 68, 16);
-      ctx.fillStyle = "#f5dc18";
-      ctx.fill();
-      ctx.strokeStyle = "#000000";
-      ctx.lineWidth = 3.5;
-      ctx.stroke();
-
-      ctx.fillStyle = "#000000";
-      ctx.font = "900 17px 'Plus Jakarta Sans', sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText("HH GOA '26", 0, -4);
-      ctx.font = "bold 12px monospace";
-      ctx.fillText("• BUILDER PASS •", 0, 17);
-    }
-    ctx.restore();
-
-    // 3.2 Top Right Badge: VERIFIED / AUG 2026 Stamp (rotated 8deg)
-    ctx.save();
-    ctx.translate(915, 185);
-    ctx.rotate((8 * Math.PI) / 180);
-    if (stickerVerifiedImg && stickerVerifiedImg.complete && stickerVerifiedImg.naturalWidth > 0) {
-      ctx.drawImage(stickerVerifiedImg, -95, -95, 190, 190);
-    } else {
-      ctx.beginPath();
-      ctx.roundRect(-95, -32, 190, 64, 14);
-      ctx.fillStyle = "#ff0080";
-      ctx.fill();
-      ctx.strokeStyle = "#fffbea";
-      ctx.lineWidth = 3.5;
-      ctx.stroke();
-
-      ctx.fillStyle = "#fffbea";
-      ctx.font = "900 16px 'Plus Jakarta Sans', sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText("✓ VERIFIED", 0, -3);
-      ctx.font = "bold 12px monospace";
-      ctx.fillText("• AUG 2026 •", 0, 16);
-    }
-    ctx.restore();
+    // Rendered via absolute DOM img tags in #poster-canvas-wrapper (top-3 left-3 & top-3 right-3)
+    // to guarantee single sticker authority and zero duplicate overlays.
 
     // ==========================================
     // LAYER 4: AUTHORITATIVE FOOTER (OVERLAY LAYER)
@@ -1069,7 +1022,7 @@ export default function Step3UploadPreview({
   const cleanTitleStr = rawTitleStr.startsWith("•") ? rawTitleStr.replace(/^•\s*/, "") : rawTitleStr;
 
   return (
-    <div className="min-h-[100dvh] bg-[#0b6839] text-[#fffbea] flex flex-col font-sans relative">
+    <div className="h-[100dvh] max-h-screen bg-[#0b6839] text-[#fffbea] flex flex-col font-sans relative overflow-hidden">
       
       {/* Toast Notification Banner */}
       {toastState.show && (
@@ -1097,12 +1050,12 @@ export default function Step3UploadPreview({
       />
 
       {/* 1. Header Bar (Top Navigation - Clean with No Redundant Buttons) */}
-      <header className="w-full bg-[#ff0080] border-b-2 border-[#f5dc18] px-4 sm:px-8 py-3.5 flex items-center justify-between z-10 shadow-md shrink-0">
+      <header className="w-full bg-[#ff0080] border-b-2 border-[#f5dc18] px-4 sm:px-8 py-3 flex items-center justify-between z-10 shadow-md shrink-0 h-16">
         <div className="flex items-center gap-2.5 sm:gap-3">
           <img
             src="/hh-goa-logo.png"
             alt="HH Goa Logo"
-            className="w-9 h-9 sm:w-11 sm:h-11 object-cover rounded-xl border border-[#f5dc18]"
+            className="w-9 h-9 sm:w-10 sm:h-10 object-cover rounded-xl border border-[#f5dc18]"
           />
           <span className="font-cinzel text-base sm:text-lg md:text-xl font-bold text-[#fffbea] tracking-wider">
             HACKER HOUSE GOA '26
@@ -1113,30 +1066,30 @@ export default function Step3UploadPreview({
           <button
             type="button"
             onClick={onBackToUpload}
-            className="min-h-[44px] inline-flex items-center gap-1.5 sm:gap-2 bg-[#0b6839] hover:bg-[#071c11] text-[#fffbea] hover:text-[#f5dc18] px-3.5 sm:px-4 py-2 rounded-full text-xs font-bold border border-[#f5dc18] transition cursor-pointer"
+            className="min-h-[40px] inline-flex items-center gap-1.5 sm:gap-2 bg-[#0b6839] hover:bg-[#071c11] text-[#fffbea] hover:text-[#f5dc18] px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs font-bold border border-[#f5dc18] transition cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4 text-[#f5dc18]" /> <span className="hidden sm:inline">Re-upload</span> Photo
           </button>
         )}
       </header>
 
-      {/* 2. Main Body Split-Screen Container (Equal 50/50 Split - Mobile Responsive Stack) */}
-      <main className="grid grid-cols-1 lg:grid-cols-2 flex-1 min-h-[calc(100dvh-64px)] overflow-y-auto pb-8 lg:pb-0">
+      {/* 2. Main Body Split-Screen Container */}
+      <main className="grid grid-cols-1 lg:grid-cols-2 flex-1 h-[calc(100dvh-64px)] overflow-hidden">
         
         {/* Left Half: Summary Panel with Clean Solid Off-White Background (#fffbea) */}
-        <div className="w-full lg:col-span-1 bg-[#fffbea] text-[#000000] p-5 sm:p-8 lg:p-10 flex flex-col justify-between border-r border-[#0b6839]/10 text-left relative z-0">
+        <div className="w-full lg:col-span-1 bg-[#fffbea] text-[#000000] p-4 sm:p-6 lg:p-8 flex flex-col justify-between border-r border-[#0b6839]/10 text-left relative z-0 overflow-y-auto max-h-full h-full">
           
           <div className="relative z-10">
             {/* Header */}
             <div className="text-xs md:text-sm font-bold tracking-[0.2em] text-[#ff0080] uppercase mb-1">
               STEP 3 OF 3 • CARD PREVIEW
             </div>
-            <h2 className="font-cinzel text-2xl sm:text-3xl md:text-4xl font-black text-[#0b6839] mb-5 sm:mb-8">
+            <h2 className="font-cinzel text-2xl sm:text-3xl md:text-4xl font-black text-[#0b6839] mb-4 sm:mb-6">
               Your Builder Pass
             </h2>
 
             {/* Builder Photo Avatar Card */}
-            <div className="flex items-center gap-3.5 p-3.5 bg-white/70 rounded-2xl border border-[#0b6839]/15 shadow-sm mb-5 sm:mb-6">
+            <div className="flex items-center gap-3.5 p-3.5 bg-white/70 rounded-2xl border border-[#0b6839]/15 shadow-sm mb-4 sm:mb-5">
               <div
                 onClick={() => fileInputRef.current?.click()}
                 className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-[#101010] border-2 border-[#0b6839] overflow-hidden shrink-0 cursor-pointer relative group shadow-inner"
@@ -1173,12 +1126,12 @@ export default function Step3UploadPreview({
             </div>
 
             {/* Summary List with Expanded Typography & Spacing */}
-            <div className="space-y-4 md:space-y-5">
+            <div className="space-y-3.5 md:space-y-4">
               <div>
                 <div className="text-[10px] sm:text-xs font-extrabold text-[#0b6839] uppercase tracking-wider mb-0.5">
                   NAME
                 </div>
-                <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-black text-[#000000]">
+                <div className="text-lg sm:text-xl md:text-2xl font-black text-[#000000]">
                   {`${formData.firstName || ""} ${formData.lastName || ""}`.trim() || "BUILDER NAME"}
                 </div>
               </div>
@@ -1187,7 +1140,7 @@ export default function Step3UploadPreview({
                 <div className="text-[10px] sm:text-xs font-extrabold text-[#0b6839] uppercase tracking-wider mb-0.5">
                   ROLE / STACK
                 </div>
-                <div className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-[#1a1a1a]">
+                <div className="text-sm sm:text-base md:text-lg font-bold text-[#1a1a1a]">
                   {formData.primaryRole || "Full-Stack Developer"}
                 </div>
               </div>
@@ -1196,7 +1149,7 @@ export default function Step3UploadPreview({
                 <div className="text-[10px] sm:text-xs font-extrabold text-[#0b6839] uppercase tracking-wider mb-0.5">
                   SKILL
                 </div>
-                <div className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-[#1a1a1a]">
+                <div className="text-sm sm:text-base md:text-lg font-bold text-[#1a1a1a]">
                   {formData.secondarySkill || "React / Next.js"}
                 </div>
               </div>
@@ -1205,7 +1158,7 @@ export default function Step3UploadPreview({
                 <div className="text-[10px] sm:text-xs font-extrabold text-[#0b6839] uppercase tracking-wider mb-0.5">
                   BUILDER TITLE
                 </div>
-                <div className="text-base sm:text-lg md:text-xl lg:text-2xl font-black text-[#ff0080] flex items-center gap-2">
+                <div className="text-base sm:text-lg md:text-xl font-black text-[#ff0080] flex items-center gap-2">
                   <span className="text-[#ff0080] text-xl">•</span> {cleanTitleStr}
                 </div>
               </div>
@@ -1213,11 +1166,11 @@ export default function Step3UploadPreview({
           </div>
 
           {/* Bottom Action Buttons: Re-upload Photo + Edit Details */}
-          <div className="pt-6 sm:pt-8 flex flex-wrap items-center gap-3 relative z-10">
+          <div className="pt-4 sm:pt-6 flex flex-wrap items-center gap-3 relative z-10">
             <button
               type="button"
               onClick={onBackToUpload || (() => fileInputRef.current?.click())}
-              className="min-h-[44px] inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-[#fffbea] bg-[#0b6839] hover:bg-[#071c11] hover:text-[#f5dc18] py-2.5 px-4 rounded-xl border border-[#f5dc18] transition cursor-pointer shadow-md"
+              className="min-h-[42px] inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-[#fffbea] bg-[#0b6839] hover:bg-[#071c11] hover:text-[#f5dc18] py-2 px-4 rounded-xl border border-[#f5dc18] transition cursor-pointer shadow-md"
             >
               <RefreshCw className="w-4 h-4 text-[#f5dc18]" />
               <span>Re-upload Photo</span>
@@ -1227,7 +1180,7 @@ export default function Step3UploadPreview({
               <button
                 type="button"
                 onClick={onBackToForm}
-                className="min-h-[44px] inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-[#0b6839] hover:text-[#ff0080] py-2.5 px-4 rounded-xl border border-[#0b6839]/30 hover:border-[#ff0080] bg-white/60 hover:bg-white transition cursor-pointer shadow-sm"
+                className="min-h-[42px] inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-[#0b6839] hover:text-[#ff0080] py-2 px-4 rounded-xl border border-[#0b6839]/30 hover:border-[#ff0080] bg-white/60 hover:bg-white transition cursor-pointer shadow-sm"
               >
                 <Edit3 className="w-4 h-4 text-[#0b6839]" />
                 <span>Edit Details</span>
@@ -1237,7 +1190,7 @@ export default function Step3UploadPreview({
         </div>
 
         {/* Right Half: Upload & Scaled Preview Zone with Dark Green Background (#0b6839) */}
-        <div className="w-full lg:col-span-1 bg-[#0b6839] px-4 py-6 sm:p-6 lg:p-8 flex flex-col items-center justify-between overflow-y-auto">
+        <div className="w-full lg:col-span-1 bg-[#0b6839] p-4 sm:p-5 flex flex-col items-center justify-between overflow-hidden h-full">
           
           {/* Hidden Canvas specifically for Standalone Builder Pass Export (#builder-id-card) */}
           <canvas
@@ -1246,126 +1199,144 @@ export default function Step3UploadPreview({
             className="hidden"
           />
 
-          {/* 1. POSTER CANVAS WRAPPER - EXCLUSIVELY WRAPPED IN id="poster-canvas-wrapper" */}
-          <div
-            id="poster-canvas-wrapper"
-            className="w-full max-w-[440px] sm:max-w-[500px] lg:max-w-[540px] aspect-[4/5] mx-auto overflow-hidden flex flex-col items-center justify-center rounded-2xl relative shadow-2xl bg-[#0b6839]"
-          >
-            {/* STATE 1: BEFORE PHOTO UPLOAD */}
-            {!imageSrc && (
-              <div className="flex flex-col items-center justify-center text-center max-w-lg p-6">
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-serif text-[#fffbea] text-center max-w-lg mb-6 sm:mb-8 leading-snug">
-                  Take or upload a photo of yourself for your new HH Goa '26 Builder Pass.
-                </h3>
+          {/* Poster Preview Scaling Container Constrained to Viewport Height */}
+          <div className="flex-1 w-full max-h-[58vh] sm:max-h-[62vh] lg:max-h-[68vh] flex items-center justify-center relative my-auto overflow-hidden">
+            {/* 1. POSTER CANVAS WRAPPER - EXCLUSIVELY WRAPPED IN id="poster-canvas-wrapper" */}
+            <div
+              id="poster-canvas-wrapper"
+              className="h-full aspect-[4/5] mx-auto overflow-hidden rounded-2xl relative shadow-2xl bg-[#0b6839] flex flex-col items-center justify-center p-0 shrink-0"
+            >
+              {/* Top-Left Ticket Sticker */}
+              <img
+                src="/image_351993.png"
+                alt="HHG GOA '26 Builder Pass Sticker"
+                className="absolute top-3 left-3 w-20 sm:w-28 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
+                style={{ transform: "rotate(-12deg)", zIndex: 20 }}
+              />
 
-                {/* Two Large Square Action Buttons */}
-                <div className="flex items-center justify-center gap-4 sm:gap-6 mb-6">
-                  {/* Camera Box */}
-                  <button
-                    type="button"
-                    onClick={() => cameraInputRef.current?.click()}
-                    className="w-24 h-24 sm:w-28 sm:h-28 bg-[#f5dc18] hover:bg-[#ff0080] hover:text-[#fffbea] rounded-2xl flex flex-col items-center justify-center text-[#000000] cursor-pointer shadow-xl transition-all duration-200 hover:scale-105 active:scale-95 group"
-                  >
-                    <Camera className="w-8 h-8 mb-1 transition-transform group-hover:scale-110" />
-                    <span className="text-xs sm:text-sm font-black">Camera</span>
-                  </button>
+              {/* Top-Right Seal Sticker */}
+              <img
+                src="/image_351997.png"
+                alt="Verified Aug 2026 Stamp Sticker"
+                className="absolute top-3 right-3 w-16 sm:w-24 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
+                style={{ transform: "rotate(8deg)", zIndex: 20 }}
+              />
 
-                  {/* Upload Box */}
-                  <button
-                    type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    className="w-24 h-24 sm:w-28 sm:h-28 bg-[#f5dc18] hover:bg-[#ff0080] hover:text-[#fffbea] rounded-2xl flex flex-col items-center justify-center text-[#000000] cursor-pointer shadow-xl transition-all duration-200 hover:scale-105 active:scale-95 group"
-                  >
-                    <Upload className="w-8 h-8 mb-1 transition-transform group-hover:scale-110" />
-                    <span className="text-xs sm:text-sm font-black">Upload</span>
-                  </button>
+              {/* STATE 1: BEFORE PHOTO UPLOAD */}
+              {!imageSrc && (
+                <div className="flex flex-col items-center justify-center text-center max-w-lg p-6">
+                  <h3 className="text-base sm:text-lg md:text-xl font-serif text-[#fffbea] text-center max-w-lg mb-4 leading-snug">
+                    Take or upload a photo of yourself for your new HH Goa '26 Builder Pass.
+                  </h3>
+
+                  {/* Two Large Square Action Buttons */}
+                  <div className="flex items-center justify-center gap-4 sm:gap-6 mb-4">
+                    {/* Camera Box */}
+                    <button
+                      type="button"
+                      onClick={() => cameraInputRef.current?.click()}
+                      className="w-20 h-20 sm:w-24 sm:h-24 bg-[#f5dc18] hover:bg-[#ff0080] hover:text-[#fffbea] rounded-2xl flex flex-col items-center justify-center text-[#000000] cursor-pointer shadow-xl transition-all duration-200 hover:scale-105 active:scale-95 group"
+                    >
+                      <Camera className="w-7 h-7 mb-1 transition-transform group-hover:scale-110" />
+                      <span className="text-xs sm:text-sm font-black">Camera</span>
+                    </button>
+
+                    {/* Upload Box */}
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="w-20 h-20 sm:w-24 sm:h-24 bg-[#f5dc18] hover:bg-[#ff0080] hover:text-[#fffbea] rounded-2xl flex flex-col items-center justify-center text-[#000000] cursor-pointer shadow-xl transition-all duration-200 hover:scale-105 active:scale-95 group"
+                    >
+                      <Upload className="w-7 h-7 mb-1 transition-transform group-hover:scale-110" />
+                      <span className="text-xs sm:text-sm font-black">Upload</span>
+                    </button>
+                  </div>
+
+                  <p className="text-xs text-[#fffbea]/70 font-mono">
+                    Supports JPG, PNG, and iPhone HEIC (Auto-centered & cropped)
+                  </p>
+
+                  {loading && (
+                    <div className="mt-4 flex items-center gap-2 text-xs font-bold text-[#f5dc18] animate-pulse">
+                      <RefreshCw className="w-4 h-4 animate-spin" /> Processing image (HEIC converting)...
+                    </div>
+                  )}
+
+                  {errorMsg && (
+                    <div className="mt-4 p-3 bg-[#ff0080]/20 border border-[#ff0080] rounded-xl text-xs font-semibold text-[#fffbea] flex items-center gap-2">
+                      <AlertCircle className="w-4 h-4 text-[#ff0080] shrink-0" />
+                      <span>{errorMsg}</span>
+                    </div>
+                  )}
                 </div>
+              )}
 
-                <p className="text-xs text-[#fffbea]/70 font-mono">
-                  Supports JPG, PNG, and iPhone HEIC (Auto-centered & cropped)
-                </p>
-
-                {loading && (
-                  <div className="mt-4 flex items-center gap-2 text-xs font-bold text-[#f5dc18] animate-pulse">
-                    <RefreshCw className="w-4 h-4 animate-spin" /> Processing image (HEIC converting)...
-                  </div>
-                )}
-
-                {errorMsg && (
-                  <div className="mt-4 p-3 bg-[#ff0080]/20 border border-[#ff0080] rounded-xl text-xs font-semibold text-[#fffbea] flex items-center gap-2">
-                    <AlertCircle className="w-4 h-4 text-[#ff0080] shrink-0" />
-                    <span>{errorMsg}</span>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* STATE 2: AFTER PHOTO UPLOAD (Scaled Live Presentation Canvas Preview Fitting Screen) */}
-            {imageSrc && (
-              <div className="w-full h-full flex flex-col items-center justify-center relative">
-                {/* Presentation Canvas Frame */}
-                <div
-                  id="builder-id-card-frame"
-                  className="w-full h-full relative group transition-all duration-200"
-                >
-                  <canvas
-                    ref={canvasRef}
-                    className="w-full h-full object-contain block rounded-2xl"
-                  />
-
-                  {/* Direct Interactive Photo Frame Overlay on Card */}
+              {/* STATE 2: AFTER PHOTO UPLOAD */}
+              {imageSrc && (
+                <div className="w-full h-full flex flex-col items-center justify-center relative">
+                  {/* Presentation Canvas Frame */}
                   <div
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      fileInputRef.current?.click();
-                    }}
-                    title={hasCustomPhoto ? "Click to change photo" : "Click to upload photo"}
-                    className={`absolute rounded-[18px] transition-all duration-200 flex flex-col items-center justify-center cursor-pointer select-none ${
-                      hasCustomPhoto
-                        ? "bg-black/0 hover:bg-black/55 opacity-0 hover:opacity-100 text-[#fffbea]"
-                        : "bg-[#fffbea]/90 hover:bg-[#fffbea] border-2 border-dashed border-[#0b6839] text-[#0b6839] shadow-inner hover:scale-[1.01]"
-                    }`}
-                    style={{
-                      left: "25.2%",
-                      top: "27.8%",
-                      width: "20.4%",
-                      height: "16.3%",
-                    }}
+                    id="builder-id-card-frame"
+                    className="w-full h-full relative group transition-all duration-200"
                   >
-                    {hasCustomPhoto ? (
-                      <div className="flex flex-col items-center gap-1 p-1 text-center">
-                        <Camera className="w-4 h-4 sm:w-5 sm:h-5 text-[#f5dc18] drop-shadow-md" />
-                        <span className="text-[9px] sm:text-[10px] font-black tracking-wide text-[#fffbea] uppercase drop-shadow">
-                          Change Photo
-                        </span>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col items-center justify-center gap-1 p-1.5 text-center">
-                        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#0b6839]/10 flex items-center justify-center mb-0.5">
-                          <Upload className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0b6839]" />
+                    <canvas
+                      ref={canvasRef}
+                      className="w-full h-full object-contain block rounded-2xl"
+                    />
+
+                    {/* Direct Interactive Photo Frame Overlay on Card */}
+                    <div
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        fileInputRef.current?.click();
+                      }}
+                      title={hasCustomPhoto ? "Click to change photo" : "Click to upload photo"}
+                      className={`absolute rounded-[18px] transition-all duration-200 flex flex-col items-center justify-center cursor-pointer select-none ${
+                        hasCustomPhoto
+                          ? "bg-black/0 hover:bg-black/55 opacity-0 hover:opacity-100 text-[#fffbea]"
+                          : "bg-[#fffbea]/90 hover:bg-[#fffbea] border-2 border-dashed border-[#0b6839] text-[#0b6839] shadow-inner hover:scale-[1.01]"
+                      }`}
+                      style={{
+                        left: "25.2%",
+                        top: "27.8%",
+                        width: "20.4%",
+                        height: "16.3%",
+                      }}
+                    >
+                      {hasCustomPhoto ? (
+                        <div className="flex flex-col items-center gap-1 p-1 text-center">
+                          <Camera className="w-4 h-4 sm:w-5 sm:h-5 text-[#f5dc18] drop-shadow-md" />
+                          <span className="text-[9px] sm:text-[10px] font-black tracking-wide text-[#fffbea] uppercase drop-shadow">
+                            Change Photo
+                          </span>
                         </div>
-                        <span className="text-[9px] sm:text-[11px] font-extrabold text-[#0b6839] leading-tight">
-                          Upload Photo
-                        </span>
-                      </div>
-                    )}
+                      ) : (
+                        <div className="flex flex-col items-center justify-center gap-1 p-1.5 text-center">
+                          <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#0b6839]/10 flex items-center justify-center mb-0.5">
+                            <Upload className="w-3.5 h-3.5 text-[#0b6839]" />
+                          </div>
+                          <span className="text-[9px] sm:text-[10px] font-extrabold text-[#0b6839] leading-tight">
+                            Upload Photo
+                          </span>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
 
-          {/* 2. UI BUTTONS & CONTROLS CONTAINER - SEAMLESS FULL-WIDTH ACTION AREA */}
+          {/* 2. UI BUTTONS & CONTROLS CONTAINER */}
           {imageSrc && (
-            <div className="w-full max-w-[420px] mx-auto flex flex-col gap-3 mt-6 px-2 z-10">
-              
+            <div className="w-full max-w-[380px] mx-auto flex flex-col gap-2 mt-2 px-2 z-10 shrink-0">
               {/* Download Button: Triggers Standalone Builder Pass Export (#builder-id-card) */}
               <button
                 type="button"
                 onClick={handleDownloadCardOnly}
-                className="w-full min-h-[48px] py-3.5 bg-[#f5dc18] hover:bg-[#e5ce14] active:scale-[0.99] text-[#000000] font-black text-sm sm:text-base rounded-xl flex items-center justify-center gap-2 shadow-xl transition cursor-pointer"
+                className="w-full min-h-[42px] py-2.5 bg-[#f5dc18] hover:bg-[#e5ce14] active:scale-[0.99] text-[#000000] font-black text-xs sm:text-sm rounded-xl flex items-center justify-center gap-2 shadow-xl transition cursor-pointer"
               >
-                <Download className="w-4 h-4 sm:w-5 sm:h-5 text-[#000000]" />
+                <Download className="w-4 h-4 text-[#000000]" />
                 <span>Download Card (PNG)</span>
               </button>
 
@@ -1373,9 +1344,9 @@ export default function Step3UploadPreview({
               <button
                 type="button"
                 onClick={handleShareToX}
-                className="w-full min-h-[48px] py-3.5 bg-[#000000] hover:bg-neutral-900 active:scale-[0.99] text-[#fffbea] hover:text-[#f5dc18] border-2 border-[#f5dc18] font-bold text-sm sm:text-base rounded-xl flex items-center justify-center gap-2 shadow-xl transition cursor-pointer"
+                className="w-full min-h-[42px] py-2.5 bg-[#000000] hover:bg-neutral-900 active:scale-[0.99] text-[#fffbea] hover:text-[#f5dc18] border-2 border-[#f5dc18] font-bold text-xs sm:text-sm rounded-xl flex items-center justify-center gap-2 shadow-xl transition cursor-pointer"
               >
-                <Share2 className="w-4 h-4 sm:w-5 sm:h-5 text-[#f5dc18]" />
+                <Share2 className="w-4 h-4 text-[#f5dc18]" />
                 <span>Share to X (#FrameInGoa)</span>
               </button>
 
