@@ -1210,8 +1210,8 @@ export default function Step3UploadPreview({
               <img
                 src="/image_351993.png"
                 alt="HHG GOA '26 Builder Pass Sticker"
-                className="absolute w-20 sm:w-28 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
-                style={{ top: "-12px", left: "-10px", transform: "rotate(-8deg)", zIndex: 20 }}
+                className="absolute top-2 left-6 w-20 sm:w-28 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
+                style={{ transform: "rotate(-8deg)", zIndex: 20 }}
               />
 
               {/* Top-Right Seal Sticker */}
