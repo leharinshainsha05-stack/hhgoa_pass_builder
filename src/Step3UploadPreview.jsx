@@ -90,7 +90,7 @@ export default function Step3UploadPreview({
     };
 
     const wm = new Image();
-    wm.src = "/Gemini_Generated_Image_2kt6er2kt6er2kt6.png";
+    wm.src = "/image_48.png";
     wm.onload = () => {
       watermarkObjRef.current = wm;
       if (imageSrc) {
@@ -254,14 +254,32 @@ export default function Step3UploadPreview({
     ctx.fillStyle = "#fffbea";
     ctx.fillRect(cardX, cardY, cardW, cardH);
 
-    // CLEAN OFF-WHITE SECURITY WATERMARK BACKGROUND IMAGE (Gemini_Generated_Image_2kt6er2kt6er2kt6.png) AT 100% OPACITY
+    // DISTINCTLY VISIBLE SECURITY WATERMARK PATTERN INSIDE CARD BODY (20% OPACITY)
     const wmImg = watermarkObjRef.current;
     if (wmImg) {
       ctx.save();
-      ctx.globalAlpha = 1.0;
+      ctx.globalAlpha = 0.20;
       ctx.drawImage(wmImg, cardX, cardY + 190, cardW, cardH - 190 - 175);
       ctx.restore();
     }
+
+    // Card Body Security Grid Line Accents
+    ctx.save();
+    ctx.strokeStyle = "rgba(11, 104, 57, 0.08)";
+    ctx.lineWidth = 2;
+    for (let x = cardX; x < cardX + cardW; x += 55) {
+      ctx.beginPath();
+      ctx.moveTo(x, cardY + 190);
+      ctx.lineTo(x, cardY + cardH - 175);
+      ctx.stroke();
+    }
+    for (let y = cardY + 190; y < cardY + cardH - 175; y += 55) {
+      ctx.beginPath();
+      ctx.moveTo(cardX, y);
+      ctx.lineTo(cardX + cardW, y);
+      ctx.stroke();
+    }
+    ctx.restore();
 
     // Header Bar (#ff0080)
     const headerH = 190;
@@ -548,15 +566,15 @@ export default function Step3UploadPreview({
     const wmImg = watermarkObjRef.current;
     if (wmImg) {
       ctx.save();
-      ctx.globalAlpha = 0.45; // Vibrant full-color backdrop matrix pattern
+      ctx.globalAlpha = 0.65; // High contrast full-color backdrop matrix pattern
       ctx.drawImage(wmImg, 0, 0, canvas.width, canvas.height);
       ctx.restore();
     }
 
-    // High-tech terminal code lines backdrop accents
+    // High-tech terminal code lines backdrop accents - HIGH VISIBILITY NEON YELLOW (65% OPACITY)
     ctx.save();
-    ctx.fillStyle = "rgba(245, 220, 24, 0.12)";
-    ctx.font = "bold 13px monospace";
+    ctx.fillStyle = "rgba(245, 220, 24, 0.65)";
+    ctx.font = "bold 16px monospace";
     const codeSnippets = [
       ">> status: VERIFIED BUILDER • LOCATION: GOA, INDIA",
       "const builder = await HHGoa.verify({ pass: 'ALL_ACCESS' });",
@@ -566,8 +584,8 @@ export default function Step3UploadPreview({
       "import { Solana, AgenticAI, ZeroKnowledge } from '@hhgoa/2026';",
     ];
     codeSnippets.forEach((line, index) => {
-      ctx.fillText(line, 45, 65 + index * 210);
-      ctx.fillText(line, 520, 150 + index * 220);
+      ctx.fillText(line, 40, 70 + index * 200);
+      ctx.fillText(line, 500, 160 + index * 210);
     });
     ctx.restore();
 
@@ -601,17 +619,34 @@ export default function Step3UploadPreview({
     ctx.clip();
 
     // Off-White Card Body Background (#fffbea)
-    // Off-White Card Body Background (#fffbea)
     ctx.fillStyle = "#fffbea";
     ctx.fillRect(cardX, cardY, cardW, cardH);
 
-    // CLEAN OFF-WHITE SECURITY WATERMARK BACKGROUND IMAGE (Gemini_Generated_Image_2kt6er2kt6er2kt6.png) AT 100% OPACITY
+    // DISTINCTLY VISIBLE SECURITY WATERMARK PATTERN INSIDE CARD BODY (20% OPACITY)
     if (wmImg) {
       ctx.save();
-      ctx.globalAlpha = 1.0;
+      ctx.globalAlpha = 0.20;
       ctx.drawImage(wmImg, cardX, cardY + 135, cardW, cardH - 135 - 115);
       ctx.restore();
     }
+
+    // Card Body Security Grid Line Accents
+    ctx.save();
+    ctx.strokeStyle = "rgba(11, 104, 57, 0.08)";
+    ctx.lineWidth = 1.5;
+    for (let x = cardX; x < cardX + cardW; x += 45) {
+      ctx.beginPath();
+      ctx.moveTo(x, cardY + 135);
+      ctx.lineTo(x, cardY + cardH - 115);
+      ctx.stroke();
+    }
+    for (let y = cardY + 135; y < cardY + cardH - 115; y += 45) {
+      ctx.beginPath();
+      ctx.moveTo(cardX, y);
+      ctx.lineTo(cardX + cardW, y);
+      ctx.stroke();
+    }
+    ctx.restore();
 
     // Header Bar (#ff0080)
     const headerH = 135;
