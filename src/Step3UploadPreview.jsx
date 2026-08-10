@@ -565,15 +565,15 @@ export default function Step3UploadPreview({
       footerY + 134
     );
 
-    // Coconut Surfer Mascot Layer (Z-Index: 25 - Bottom-Left Prominent Mascot)
+    // Coconut Surfer Mascot Layer (Z-Index: 30 - Overlapping Left Border & Footer Banner)
     const mascotImg = mascotObjRef.current;
     if (mascotImg && mascotImg.complete && mascotImg.naturalWidth > 0) {
       ctx.save();
-      const mascotH = 250;
+      const mascotH = 290;
       const mascotAspect = mascotImg.naturalWidth / mascotImg.naturalHeight;
       const mascotW = mascotH * mascotAspect;
-      const mascotX = cardX - 10;
-      const mascotY = cardY + cardH - 340;
+      const mascotX = cardX - 50;
+      const mascotY = cardY + cardH - 390;
       ctx.drawImage(mascotImg, mascotX, mascotY, mascotW, mascotH);
       ctx.restore();
     }
@@ -945,14 +945,14 @@ export default function Step3UploadPreview({
       footerY + 90
     );
 
-    // Coconut Surfer Mascot Layer (Z-Index: 25 - Bottom-Left Prominent Mascot)
+    // Coconut Surfer Mascot Layer (Z-Index: 30 - Overlapping Left Border & Footer Banner)
     if (mascotImg && mascotImg.complete && mascotImg.naturalWidth > 0) {
       ctx.save();
-      const mascotH = 160;
+      const mascotH = 180;
       const mascotAspect = mascotImg.naturalWidth / mascotImg.naturalHeight;
       const mascotW = mascotH * mascotAspect;
-      const mascotX = cardX - 10;
-      const mascotY = cardY + cardH - 200;
+      const mascotX = cardX - 45;
+      const mascotY = cardY + cardH - 240;
       ctx.drawImage(mascotImg, mascotX, mascotY, mascotW, mascotH);
       ctx.restore();
     }
@@ -1267,11 +1267,11 @@ export default function Step3UploadPreview({
               <img
                 src="/mascot-removebg-preview.png"
                 alt="Surfer Mascot Sticker"
-                className="absolute bottom-[108px] left-[16px] h-24 sm:h-28 w-auto object-contain z-[25] pointer-events-none drop-shadow-lg"
+                className="absolute bottom-[28px] left-[-32px] h-28 sm:h-32 w-auto object-contain z-[30] pointer-events-none drop-shadow-lg"
                 onError={(e) => {
                   e.currentTarget.style.display = "none";
                 }}
-                style={{ zIndex: 25, bottom: "108px", left: "16px" }}
+                style={{ zIndex: 30, bottom: "28px", left: "-32px" }}
               />
 
               {/* STATE 1: BEFORE PHOTO UPLOAD */}
