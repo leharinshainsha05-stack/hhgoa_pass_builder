@@ -508,12 +508,12 @@ export default function Step3UploadPreview({
     ctx.stroke();
 
     ctx.fillStyle = "#000000";
-    ctx.font = "bold 24px sans-serif";
-    ctx.fillText("ACCESS LEVEL: ALL ACCESS • VIP BUILDER", badgeBoxX + 30, badgeBoxY + 55);
+    ctx.font = "bold 22px sans-serif";
+    ctx.fillText("ACCESS LEVEL: ALL ACCESS • VIP BUILDER", badgeBoxX + 25, badgeBoxY + 55);
 
     ctx.fillStyle = "#0b6839";
-    ctx.font = "bold 20px monospace";
-    ctx.fillText("VENUE: GOA, INDIA  •  DATE: AUG 2026", badgeBoxX + 30, badgeBoxY + 120);
+    ctx.font = "bold 19px monospace";
+    ctx.fillText("VENUE: GOA, INDIA  •  DATE: AUG 2026", badgeBoxX + 25, badgeBoxY + 120);
 
     ctx.beginPath();
     ctx.roundRect(badgeBoxX + badgeBoxW - 265, badgeBoxY + 28, 240, 46, 23);
@@ -888,22 +888,22 @@ export default function Step3UploadPreview({
     ctx.stroke();
 
     ctx.fillStyle = "#000000";
-    ctx.font = "bold 17px sans-serif";
-    ctx.fillText("ACCESS LEVEL: ALL ACCESS • VIP BUILDER", badgeBoxX + 20, badgeBoxY + 38);
+    ctx.font = "bold 13px sans-serif";
+    ctx.fillText("ACCESS LEVEL: ALL ACCESS • VIP BUILDER", badgeBoxX + 16, badgeBoxY + 38);
 
     ctx.fillStyle = "#0b6839";
-    ctx.font = "bold 14px monospace";
-    ctx.fillText("VENUE: GOA, INDIA  •  DATE: AUG 2026", badgeBoxX + 20, badgeBoxY + 84);
+    ctx.font = "bold 12px monospace";
+    ctx.fillText("VENUE: GOA, INDIA  •  DATE: AUG 2026", badgeBoxX + 16, badgeBoxY + 84);
 
     ctx.beginPath();
-    ctx.roundRect(badgeBoxX + badgeBoxW - 180, badgeBoxY + 20, 160, 32, 16);
+    ctx.roundRect(badgeBoxX + badgeBoxW - 170, badgeBoxY + 20, 155, 32, 16);
     ctx.fillStyle = "#0b6839";
     ctx.fill();
 
     ctx.fillStyle = "#fffbea";
-    ctx.font = "bold 13px sans-serif";
+    ctx.font = "bold 12px sans-serif";
     ctx.textAlign = "center";
-    ctx.fillText("✓ VERIFIED BUILDER", badgeBoxX + badgeBoxW - 100, badgeBoxY + 41);
+    ctx.fillText("✓ VERIFIED BUILDER", badgeBoxX + badgeBoxW - 92.5, badgeBoxY + 41);
     ctx.textAlign = "left";
 
     // Barcode
