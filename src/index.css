@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #ff0080;
+  --color-accent: #f5dc18;
+  --color-bg-green: #0b6839;
+  --color-card-text: #fffbea;
+  --color-card-dark: #000000;
+}
+
+/* Theme Fallback Utility Classes */
+.bg-bgGreen { background-color: #0b6839; }
+.bg-cardDark { background-color: #000000; }
+.bg-primary { background-color: #ff0080; }
+.bg-accent { background-color: #f5dc18; }
+
+.text-primary { color: #ff0080; }
+.text-accent { color: #f5dc18; }
+.text-cardText { color: #fffbea; }
+.text-cardDark { color: #000000; }
+
+.border-accent { border-color: #f5dc18; }
+.border-bgGreen { border-color: #0b6839; }
+.border-primary { border-color: #ff0080; }
+
+.font-script {
+  font-family: 'Caveat', 'Dancing Script', 'Satisfy', cursive;
+}
+
+.font-cinzel {
+  font-family: 'Cinzel', 'Playfair Display', Georgia, Cambria, serif;
+}
+
+.font-serif-hero {
+  font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
+}
+
+body {
+  margin: 0;
+  background-color: #0b6839;
+  color: #fffbea;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
