@@ -1021,69 +1021,55 @@ export default function Step3UploadPreview({
 
   // --- TRIGGER 2: FULL POSTER DOWNLOAD & OPEN X COMPOSER (#FrameInGoa) ---
   const handleShareToX = async () => {
-    const element = document.getElementById("poster-canvas-wrapper");
-    if (element) {
-      try {
-        // Reset scroll offsets before capture
-        element.scrollLeft = 0;
-        element.scrollTop = 0;
-
-        await new Promise((resolve) => setTimeout(resolve, 300));
-
-        const canvas = await html2canvas(element, {
-          scale: 2,
-          useCORS: true,
-          allowTaint: true,
-          backgroundColor: null,
-          width: element.scrollWidth,
-          height: element.scrollHeight,
-          windowWidth: 1200,
-          onclone: (clonedDoc) => {
-            const clonedElement = clonedDoc.getElementById("poster-canvas-wrapper");
-            if (clonedElement) {
-              clonedElement.style.transform = "none";
-              clonedElement.style.maxWidth = "none";
-              clonedElement.style.width = "420px";
-              clonedElement.style.overflow = "visible";
-              clonedElement.style.margin = "0 auto";
-            }
-          },
-        });
-
-        const dataUrl = canvas.toDataURL("image/png", 1.0);
-        saveAs(dataUrl, "HHGoa_2026_Share_Poster.png");
-      } catch (err) {
-        console.error("Share to X export error:", err);
-        const offscreenCanvas = document.createElement("canvas");
-        const offscreenCtx = offscreenCanvas.getContext("2d");
-        if (offscreenCtx) {
-          drawCompositeBuilderCard(offscreenCanvas, offscreenCtx);
-          const dataUrl = offscreenCanvas.toDataURL("image/png", 1.0);
-          saveAs(dataUrl, "HHGoa_2026_Share_Poster.png");
-        }
-      }
-    } else {
-      const offscreenCanvas = document.createElement("canvas");
-      const offscreenCtx = offscreenCanvas.getContext("2d");
-      if (offscreenCtx) {
-        drawCompositeBuilderCard(offscreenCanvas, offscreenCtx);
-        const dataUrl = offscreenCanvas.toDataURL("image/png", 1.0);
-        saveAs(dataUrl, "HHGoa_2026_Share_Poster.png");
-      }
+    const node = document.getElementById('poster-canvas-wrapper');
+    if (!node) {
+      console.error("Poster element '#poster-canvas-wrapper' not found in DOM.");
+      return;
     }
 
-    // 2. Toast Guidance
-    toast.success("Poster image downloaded! Attach it to your post.");
+    try {
+      // 1. Force convert images to data URLs before capture to avoid blank CORS canvas
+      const images = node.querySelectorAll('img');
+      await Promise.all(
+        Array.from(images).map((img) => {
+          if (img.complete) return Promise.resolve();
+          return new Promise((resolve) => {
+            img.onload = resolve;
+            img.onerror = resolve;
+          });
+        })
+      );
 
-    // 3. Open X Composer
-    const shareText = encodeURIComponent(
-      "Building at Hacker House Goa 2026! Check out my official Builder Pass. See you in Goa! #FrameInGoa"
-    );
-    window.open(
-      `https://x.com/intent/tweet?text=${shareText}`,
-      "_blank",
-      "noopener,noreferrer"
-    );
+      // 2. Generate PNG Data URL with html-to-image
+      const dataUrl = await toPng(node, {
+        quality: 0.95,
+        pixelRatio: 2,
+        cacheBust: true,
+        backgroundColor: '#0b6839', // Fallback background color matching poster
+        style: {
+          transform: 'none',
+          margin: '0 auto',
+        },
+      });
+
+      // 3. Trigger File Download
+      const link = document.createElement('a');
+      link.download = 'HHGoa_2026_Share_Poster.png';
+      link.href = dataUrl;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // 4. Open Twitter / X Share Intent (placed outside download promise chain)
+      const text = encodeURIComponent(
+        "Just claimed my Builder Pass for Hacker House Goa '26! 🚀🌴\n\nSee you guys in Goa! #FrameInGoa #HackerHouseGoa"
+      );
+      window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank', 'noopener,noreferrer');
+
+    } catch (err) {
+      console.error('Error in handleShareToX:', err);
+      alert('Could not export poster. Check console for error details.');
+    }
   };
 
   const rawTitleStr = formData.builderTitle?.trim() || "Goa Beach Hacker";
