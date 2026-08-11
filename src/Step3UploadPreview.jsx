@@ -1039,16 +1039,24 @@ export default function Step3UploadPreview({
           useCORS: true,
           allowTaint: true,
           backgroundColor: '#ffffff', // Explicit solid white background to prevent transparency
-          width: cardElement.offsetWidth || 1080,
-          height: cardElement.offsetHeight || 1440,
+          width: 420,
+          height: 600,
           ignoreElements: (element) =>
             element.id === 'surfer-mascot-sticker' ||
             (element.classList && element.classList.contains('surfer-mascot-element')),
           onclone: (clonedDoc) => {
+            const clonedPoster = clonedDoc.getElementById('poster-canvas-wrapper');
+            if (clonedPoster) {
+              clonedPoster.style.width = '420px';
+              clonedPoster.style.height = '600px';
+              clonedPoster.style.transform = 'none';
+              clonedPoster.style.position = 'relative';
+              clonedPoster.style.margin = '0 auto';
+              clonedPoster.style.overflow = 'visible';
+            }
             const clonedEl =
               clonedDoc.getElementById('builder-id-card') ||
-              clonedDoc.getElementById('builder-id-card-frame') ||
-              clonedDoc.getElementById('poster-canvas-wrapper');
+              clonedDoc.getElementById('builder-id-card-frame');
             if (clonedEl) {
               clonedEl.style.transform = 'none';
               clonedEl.style.margin = '0 auto';
@@ -1143,17 +1151,44 @@ export default function Step3UploadPreview({
         })
       );
 
-      // 2. Generate PNG Data URL with html-to-image
-      const dataUrl = await toPng(node, {
-        quality: 0.95,
-        pixelRatio: 2,
-        cacheBust: true,
-        backgroundColor: '#0b6839', // Fallback background color matching poster
-        style: {
-          transform: 'none',
-          margin: '0 auto',
-        },
-      });
+      // 2. Generate PNG Data URL with html2canvas (or toPng fallback) with onclone desktop resets
+      let dataUrl = "";
+      try {
+        const canvas = await html2canvas(node, {
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: '#0b6839',
+          width: 420,
+          height: 600,
+          onclone: (clonedDoc) => {
+            const clonedPoster = clonedDoc.getElementById('poster-canvas-wrapper');
+            if (clonedPoster) {
+              clonedPoster.style.width = '420px';
+              clonedPoster.style.height = '600px';
+              clonedPoster.style.transform = 'none';
+              clonedPoster.style.position = 'relative';
+              clonedPoster.style.margin = '0 auto';
+              clonedPoster.style.overflow = 'visible';
+            }
+          },
+        });
+        dataUrl = canvas.toDataURL('image/png', 1.0);
+      } catch (h2cErr) {
+        console.warn("html2canvas share to X fallback to toPng:", h2cErr);
+        dataUrl = await toPng(node, {
+          quality: 0.95,
+          pixelRatio: 2,
+          cacheBust: true,
+          backgroundColor: '#0b6839',
+          style: {
+            width: '420px',
+            height: '600px',
+            transform: 'none',
+            margin: '0 auto',
+          },
+        });
+      }
 
       // 3. Trigger File Download
       const link = document.createElement('a');
@@ -1357,42 +1392,42 @@ export default function Step3UploadPreview({
           />
 
           {/* Poster Preview Scaling Container Constrained to Viewport Height */}
-          <div className="flex-1 w-full max-h-[58vh] sm:max-h-[62vh] lg:max-h-[68vh] flex items-center justify-center relative my-auto overflow-hidden">
-            {/* 1. POSTER CANVAS WRAPPER - EXCLUSIVELY WRAPPED IN id="poster-canvas-wrapper" */}
-            <div
-              id="poster-canvas-wrapper"
-              className="h-full aspect-[4/5] mx-auto overflow-hidden rounded-2xl relative shadow-2xl bg-[#0b6839] flex flex-col items-center justify-center p-0 shrink-0"
-            >
-              {/* Top-Left Ticket Sticker */}
-              <img
-                src="/image_351993.png"
-                alt="HH GOA '26 Builder Pass Sticker"
-                crossOrigin="anonymous"
-                className="absolute top-5 left-3 w-20 sm:w-28 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
-                style={{ transform: "rotate(-8deg)", zIndex: 20 }}
-              />
+          <div className="flex-1 w-full max-h-[58vh] sm:max-h-[62vh] lg:max-h-[68vh] flex items-center justify-center relative my-auto overflow-hidden p-2 sm:p-4">
+            <div className="transform scale-[0.82] min-[380px]:scale-90 sm:scale-100 transition-transform duration-200 origin-center flex items-center justify-center">
+              {/* 1. POSTER CANVAS WRAPPER - EXCLUSIVELY WRAPPED IN id="poster-canvas-wrapper" */}
+              <div
+                id="poster-canvas-wrapper"
+                className="relative w-[360px] sm:w-[420px] h-[540px] sm:h-[600px] shrink-0 mx-auto bg-[#0b6839] rounded-2xl p-4 overflow-hidden shadow-2xl flex flex-col items-center justify-center"
+              >
+                {/* Top-Left Ticket Sticker */}
+                <img
+                  src="/image_351993.png"
+                  alt="HH GOA '26 Builder Pass Sticker"
+                  crossOrigin="anonymous"
+                  className="absolute top-5 left-3 w-20 sm:w-28 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
+                  style={{ transform: "rotate(-8deg)", zIndex: 20 }}
+                />
 
-              {/* Top-Right Seal Sticker */}
-              <img
-                src="/image_351997.png"
-                alt="Verified Aug 2026 Stamp Sticker"
-                crossOrigin="anonymous"
-                className="absolute w-16 sm:w-24 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
-                style={{ top: "16px", right: "40px", transform: "rotate(8deg)", zIndex: 20 }}
-              />
+                {/* Top-Right Seal Sticker */}
+                <img
+                  src="/image_351997.png"
+                  alt="Verified Aug 2026 Stamp Sticker"
+                  crossOrigin="anonymous"
+                  className="absolute w-16 sm:w-24 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
+                  style={{ top: "16px", right: "40px", transform: "rotate(8deg)", zIndex: 20 }}
+                />
 
-              {/* Bottom-Left Surfer Mascot Sticker */}
-              <img
-                id="surfer-mascot-sticker"
-                src="/mascot-removebg-preview.png"
-                alt="Surfer Mascot Sticker"
-                crossOrigin="anonymous"
-                className="absolute bottom-[80px] left-[14px] h-28 sm:h-32 w-auto object-contain z-[30] pointer-events-none drop-shadow-lg surfer-mascot-element"
-                onError={(e) => {
-                  e.currentTarget.style.display = "none";
-                }}
-                style={{ zIndex: 30, bottom: "80px", left: "14px" }}
-              />
+                {/* Bottom-Left Surfer Mascot Sticker */}
+                <img
+                  id="surfer-mascot-sticker"
+                  src="/mascot-removebg-preview.png"
+                  alt="Surfer Mascot Sticker"
+                  crossOrigin="anonymous"
+                  className="absolute bottom-[70px] sm:bottom-[80px] left-[10px] sm:left-[15px] h-24 sm:h-28 w-auto object-contain z-30 pointer-events-none drop-shadow-lg surfer-mascot-element"
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
+                  }}
+                />
 
               {/* Poster Bottom-Right Footer */}
               <div className="absolute bottom-3 right-4 text-right z-10 pointer-events-none">
@@ -1503,6 +1538,7 @@ export default function Step3UploadPreview({
                   </div>
                 </div>
               )}
+              </div>
             </div>
           </div>
 
