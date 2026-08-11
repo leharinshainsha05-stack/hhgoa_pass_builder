@@ -1049,9 +1049,10 @@ export default function Step3UploadPreview({
             if (clonedPoster) {
               clonedPoster.style.width = '420px';
               clonedPoster.style.height = '600px';
+              clonedPoster.style.maxHeight = '600px';
+              clonedPoster.style.margin = '0 auto';
               clonedPoster.style.transform = 'none';
               clonedPoster.style.position = 'relative';
-              clonedPoster.style.margin = '0 auto';
               clonedPoster.style.overflow = 'visible';
             }
             const clonedEl =
@@ -1166,9 +1167,10 @@ export default function Step3UploadPreview({
             if (clonedPoster) {
               clonedPoster.style.width = '420px';
               clonedPoster.style.height = '600px';
+              clonedPoster.style.maxHeight = '600px';
+              clonedPoster.style.margin = '0 auto';
               clonedPoster.style.transform = 'none';
               clonedPoster.style.position = 'relative';
-              clonedPoster.style.margin = '0 auto';
               clonedPoster.style.overflow = 'visible';
             }
           },
@@ -1397,14 +1399,14 @@ export default function Step3UploadPreview({
               {/* 1. POSTER CANVAS WRAPPER - EXCLUSIVELY WRAPPED IN id="poster-canvas-wrapper" */}
               <div
                 id="poster-canvas-wrapper"
-                className="relative w-[360px] sm:w-[420px] h-[540px] sm:h-[600px] shrink-0 mx-auto bg-[#0b6839] rounded-2xl p-4 overflow-hidden shadow-2xl flex flex-col items-center justify-center"
+                className="relative w-[360px] sm:w-[420px] h-[520px] sm:h-[600px] bg-[#0b6839] rounded-2xl p-4 flex flex-col items-center justify-between overflow-hidden shadow-2xl mx-auto shrink-0"
               >
                 {/* Top-Left Ticket Sticker */}
                 <img
                   src="/image_351993.png"
                   alt="HH GOA '26 Builder Pass Sticker"
                   crossOrigin="anonymous"
-                  className="absolute top-5 left-3 w-20 sm:w-28 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
+                  className="absolute top-3 left-3 w-20 sm:w-28 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
                   style={{ transform: "rotate(-8deg)", zIndex: 20 }}
                 />
 
@@ -1413,8 +1415,8 @@ export default function Step3UploadPreview({
                   src="/image_351997.png"
                   alt="Verified Aug 2026 Stamp Sticker"
                   crossOrigin="anonymous"
-                  className="absolute w-16 sm:w-24 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
-                  style={{ top: "16px", right: "40px", transform: "rotate(8deg)", zIndex: 20 }}
+                  className="absolute top-3 right-3 w-16 sm:w-24 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
+                  style={{ transform: "rotate(8deg)", zIndex: 20 }}
                 />
 
                 {/* Bottom-Left Surfer Mascot Sticker */}
