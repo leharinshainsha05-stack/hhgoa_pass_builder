@@ -1411,7 +1411,7 @@ export default function Step3UploadPreview({
 
           {/* Poster Preview Scaling Container Constrained to Viewport Height */}
           <div className="flex-1 w-full max-h-[58vh] sm:max-h-[62vh] lg:max-h-[68vh] flex items-center justify-center relative my-auto overflow-hidden p-2 sm:p-4">
-            <div className="origin-top scale-[0.75] xs:scale-[0.85] sm:scale-100 transition-transform duration-200 flex items-center justify-center shrink-0">
+            <div className="origin-top scale-[0.8] sm:scale-100 transition-transform duration-200 flex items-center justify-center shrink-0">
               {/* 1. POSTER CANVAS WRAPPER - EXCLUSIVELY WRAPPED IN id="poster-canvas-wrapper" */}
               <div
                 id="poster-canvas-wrapper"
