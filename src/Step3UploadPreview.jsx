@@ -566,18 +566,6 @@ export default function Step3UploadPreview({
       footerY + 134
     );
 
-    // Coconut Surfer Mascot Layer (Z-Index: 30 - Overlapping Left Border & Footer Banner)
-    const mascotImg = mascotObjRef.current;
-    if (mascotImg && mascotImg.complete && mascotImg.naturalWidth > 0) {
-      ctx.save();
-      const mascotH = 290;
-      const mascotAspect = mascotImg.naturalWidth / mascotImg.naturalHeight;
-      const mascotW = mascotH * mascotAspect;
-      const mascotX = cardX + 27;
-      const mascotY = cardY + cardH - 490;
-      ctx.drawImage(mascotImg, mascotX, mascotY, mascotW, mascotH);
-      ctx.restore();
-    }
     ctx.restore();
 
     ctx.beginPath();
@@ -1021,12 +1009,22 @@ export default function Step3UploadPreview({
         })
       );
 
-      // Export card with forced white/pink background
+      // Export card with forced white/pink background, excluding surfer mascot
       const dataUrl = await toPng(cardElement, {
         quality: 0.95,
         pixelRatio: 3,
         cacheBust: true,
         backgroundColor: '#ffffff', // Ensures non-transparent card canvas
+        filter: (node) => node.id !== 'surfer-mascot' && (!node.classList || !node.classList.contains('surfer-mascot')),
+        ignoreElements: (element) => element.id === 'surfer-mascot' || (element.classList && element.classList.contains('surfer-mascot')),
+        onclone: (clonedDoc) => {
+          const mascot = clonedDoc.getElementById('surfer-mascot');
+          if (mascot) mascot.style.display = 'none';
+          const mascotsByClass = clonedDoc.getElementsByClassName('surfer-mascot');
+          Array.from(mascotsByClass).forEach((m) => {
+            m.style.display = 'none';
+          });
+        },
         style: {
           transform: 'none',
           margin: '0 auto',
@@ -1312,10 +1310,11 @@ export default function Step3UploadPreview({
 
               {/* Bottom-Left Surfer Mascot Sticker */}
               <img
+                id="surfer-mascot"
                 src="/mascot-removebg-preview.png"
                 alt="Surfer Mascot Sticker"
                 crossOrigin="anonymous"
-                className="absolute bottom-[80px] left-[14px] h-28 sm:h-32 w-auto object-contain z-[30] pointer-events-none drop-shadow-lg"
+                className="surfer-mascot absolute bottom-[80px] left-[14px] h-28 sm:h-32 w-auto object-contain z-[30] pointer-events-none drop-shadow-lg"
                 onError={(e) => {
                   e.currentTarget.style.display = "none";
                 }}
