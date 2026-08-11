@@ -255,7 +255,7 @@ export default function Step3UploadPreview({
   };
 
   // --- 1. RAW ID BADGE CANVAS RENDERING (1080 x 1500 STANDALONE PASS) ---
-  const drawRawBuilderCard = (canvas, ctx) => {
+  const drawRawBuilderCard = (canvas, ctx, includeMascot = true) => {
     canvas.width = 1080;
     canvas.height = 1500;
 
@@ -567,16 +567,18 @@ export default function Step3UploadPreview({
     );
 
     // Coconut Surfer Mascot Layer (Z-Index: 30 - Overlapping Left Border & Footer Banner)
-    const mascotImg = mascotObjRef.current;
-    if (mascotImg && mascotImg.complete && mascotImg.naturalWidth > 0) {
-      ctx.save();
-      const mascotH = 290;
-      const mascotAspect = mascotImg.naturalWidth / mascotImg.naturalHeight;
-      const mascotW = mascotH * mascotAspect;
-      const mascotX = cardX + 27;
-      const mascotY = cardY + cardH - 490;
-      ctx.drawImage(mascotImg, mascotX, mascotY, mascotW, mascotH);
-      ctx.restore();
+    if (includeMascot) {
+      const mascotImg = mascotObjRef.current;
+      if (mascotImg && mascotImg.complete && mascotImg.naturalWidth > 0) {
+        ctx.save();
+        const mascotH = 290;
+        const mascotAspect = mascotImg.naturalWidth / mascotImg.naturalHeight;
+        const mascotW = mascotH * mascotAspect;
+        const mascotX = cardX + 27;
+        const mascotY = cardY + cardH - 490;
+        ctx.drawImage(mascotImg, mascotX, mascotY, mascotW, mascotH);
+        ctx.restore();
+      }
     }
     ctx.restore();
 
@@ -1003,7 +1005,7 @@ export default function Step3UploadPreview({
       if (cardElement.tagName === "CANVAS") {
         const ctx = cardElement.getContext("2d");
         if (ctx) {
-          drawRawBuilderCard(cardElement, ctx);
+          drawRawBuilderCard(cardElement, ctx, false); // Exclude surfer mascot for ID Card only
         }
         const dataUrl = cardElement.toDataURL("image/png", 1.0);
         if (dataUrl && dataUrl.length > 100) {
@@ -1039,6 +1041,9 @@ export default function Step3UploadPreview({
           backgroundColor: '#ffffff', // Explicit solid white background to prevent transparency
           width: cardElement.offsetWidth || 1080,
           height: cardElement.offsetHeight || 1440,
+          ignoreElements: (element) =>
+            element.id === 'surfer-mascot-sticker' ||
+            (element.classList && element.classList.contains('surfer-mascot-element')),
           onclone: (clonedDoc) => {
             const clonedEl =
               clonedDoc.getElementById('builder-id-card') ||
@@ -1048,6 +1053,12 @@ export default function Step3UploadPreview({
               clonedEl.style.transform = 'none';
               clonedEl.style.margin = '0 auto';
               clonedEl.style.backgroundColor = '#ffffff';
+            }
+            const clonedMascot =
+              clonedDoc.getElementById('surfer-mascot-sticker') ||
+              clonedDoc.querySelector('.surfer-mascot-element');
+            if (clonedMascot) {
+              clonedMascot.style.display = 'none';
             }
           },
         });
@@ -1059,6 +1070,9 @@ export default function Step3UploadPreview({
           pixelRatio: 3,
           cacheBust: true,
           backgroundColor: '#ffffff', // Ensures non-transparent card canvas
+          filter: (node) =>
+            node.id !== 'surfer-mascot-sticker' &&
+            !(node.classList && node.classList.contains('surfer-mascot-element')),
           style: {
             transform: 'none',
             margin: '0 auto',
@@ -1082,12 +1096,12 @@ export default function Step3UploadPreview({
     } catch (err) {
       console.error('Error downloading card:', err);
 
-      // Final Fallback: Render raw builder card to offscreen canvas
+      // Final Fallback: Render raw builder card to offscreen canvas without mascot
       try {
         const offscreenCanvas = document.createElement("canvas");
         const offscreenCtx = offscreenCanvas.getContext("2d");
         if (offscreenCtx) {
-          drawRawBuilderCard(offscreenCanvas, offscreenCtx);
+          drawRawBuilderCard(offscreenCanvas, offscreenCtx, false);
           const dataUrl = offscreenCanvas.toDataURL("image/png", 1.0);
           const link = document.createElement("a");
           link.download = "HHGoa_2026_ID_Card.png";
@@ -1369,10 +1383,11 @@ export default function Step3UploadPreview({
 
               {/* Bottom-Left Surfer Mascot Sticker */}
               <img
+                id="surfer-mascot-sticker"
                 src="/mascot-removebg-preview.png"
                 alt="Surfer Mascot Sticker"
                 crossOrigin="anonymous"
-                className="absolute bottom-[80px] left-[14px] h-28 sm:h-32 w-auto object-contain z-[30] pointer-events-none drop-shadow-lg"
+                className="absolute bottom-[80px] left-[14px] h-28 sm:h-32 w-auto object-contain z-[30] pointer-events-none drop-shadow-lg surfer-mascot-element"
                 onError={(e) => {
                   e.currentTarget.style.display = "none";
                 }}
