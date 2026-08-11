@@ -1049,10 +1049,15 @@ export default function Step3UploadPreview({
             if (clonedPoster) {
               clonedPoster.style.width = '420px';
               clonedPoster.style.height = '600px';
-              clonedPoster.style.maxHeight = '600px';
-              clonedPoster.style.margin = '0 auto';
-              clonedPoster.style.transform = 'none';
               clonedPoster.style.position = 'relative';
+              clonedPoster.style.margin = '0 auto';
+              clonedPoster.style.padding = '16px';
+              clonedPoster.style.boxSizing = 'border-box';
+              clonedPoster.style.display = 'flex';
+              clonedPoster.style.flexDirection = 'column';
+              clonedPoster.style.justifyContent = 'space-between';
+              clonedPoster.style.alignItems = 'center';
+              clonedPoster.style.transform = 'none';
               clonedPoster.style.overflow = 'visible';
             }
             const clonedEl =
@@ -1167,10 +1172,15 @@ export default function Step3UploadPreview({
             if (clonedPoster) {
               clonedPoster.style.width = '420px';
               clonedPoster.style.height = '600px';
-              clonedPoster.style.maxHeight = '600px';
-              clonedPoster.style.margin = '0 auto';
-              clonedPoster.style.transform = 'none';
               clonedPoster.style.position = 'relative';
+              clonedPoster.style.margin = '0 auto';
+              clonedPoster.style.padding = '16px';
+              clonedPoster.style.boxSizing = 'border-box';
+              clonedPoster.style.display = 'flex';
+              clonedPoster.style.flexDirection = 'column';
+              clonedPoster.style.justifyContent = 'space-between';
+              clonedPoster.style.alignItems = 'center';
+              clonedPoster.style.transform = 'none';
               clonedPoster.style.overflow = 'visible';
             }
           },
@@ -1425,18 +1435,18 @@ export default function Step3UploadPreview({
                   src="/mascot-removebg-preview.png"
                   alt="Surfer Mascot Sticker"
                   crossOrigin="anonymous"
-                  className="absolute bottom-[70px] sm:bottom-[80px] left-[10px] sm:left-[15px] h-24 sm:h-28 w-auto object-contain z-30 pointer-events-none drop-shadow-lg surfer-mascot-element"
+                  className="absolute bottom-[75px] left-[-11px] h-24 sm:h-28 w-auto object-contain z-30 pointer-events-none drop-shadow-lg surfer-mascot-element"
                   onError={(e) => {
                     e.currentTarget.style.display = "none";
                   }}
                 />
 
-              {/* Poster Bottom-Right Footer */}
-              <div className="absolute bottom-3 right-4 text-right z-10 pointer-events-none">
-                <p className="font-extrabold text-sm sm:text-base text-yellow-400 tracking-wide drop-shadow">
-                  #FrameInGoa
-                </p>
-              </div>
+                {/* Poster Bottom-Right Footer */}
+                <div className="absolute bottom-3 right-4 text-right z-20 pointer-events-none">
+                  <p className="font-extrabold text-sm sm:text-base text-yellow-400 tracking-wide drop-shadow">
+                    #FrameInGoa
+                  </p>
+                </div>
 
               {/* STATE 1: BEFORE PHOTO UPLOAD */}
               {!imageSrc && (
