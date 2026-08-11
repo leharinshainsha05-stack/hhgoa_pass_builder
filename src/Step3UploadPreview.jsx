@@ -255,7 +255,7 @@ export default function Step3UploadPreview({
   };
 
   // --- 1. RAW ID BADGE CANVAS RENDERING (1080 x 1500 STANDALONE PASS) ---
-  const drawRawBuilderCard = (canvas, ctx, includeMascot = true) => {
+  const drawRawBuilderCard = (canvas, ctx) => {
     canvas.width = 1080;
     canvas.height = 1500;
 
@@ -567,18 +567,16 @@ export default function Step3UploadPreview({
     );
 
     // Coconut Surfer Mascot Layer (Z-Index: 30 - Overlapping Left Border & Footer Banner)
-    if (includeMascot) {
-      const mascotImg = mascotObjRef.current;
-      if (mascotImg && mascotImg.complete && mascotImg.naturalWidth > 0) {
-        ctx.save();
-        const mascotH = 290;
-        const mascotAspect = mascotImg.naturalWidth / mascotImg.naturalHeight;
-        const mascotW = mascotH * mascotAspect;
-        const mascotX = cardX + 27;
-        const mascotY = cardY + cardH - 490;
-        ctx.drawImage(mascotImg, mascotX, mascotY, mascotW, mascotH);
-        ctx.restore();
-      }
+    const mascotImg = mascotObjRef.current;
+    if (mascotImg && mascotImg.complete && mascotImg.naturalWidth > 0) {
+      ctx.save();
+      const mascotH = 290;
+      const mascotAspect = mascotImg.naturalWidth / mascotImg.naturalHeight;
+      const mascotW = mascotH * mascotAspect;
+      const mascotX = cardX + 27;
+      const mascotY = cardY + cardH - 490;
+      ctx.drawImage(mascotImg, mascotX, mascotY, mascotW, mascotH);
+      ctx.restore();
     }
     ctx.restore();
 
@@ -989,37 +987,29 @@ export default function Step3UploadPreview({
 
   // --- TRIGGER 1: STANDALONE CARD DOWNLOAD (HHGoa_2026_ID_Card.png) ---
   const handleDownloadCard = async () => {
-    const cardElement =
-      document.getElementById('builder-id-card') ||
-      document.getElementById('builder-id-card-frame') ||
-      document.getElementById('poster-canvas-wrapper');
-
+    const cardElement = document.getElementById('builder-id-card');
     if (!cardElement) {
       console.error("Card element '#builder-id-card' not found.");
-      alert('Could not find card element to download.');
       return;
     }
 
     try {
-      // 1. If target is a canvas (e.g. #builder-id-card raw canvas ref)
       if (cardElement.tagName === "CANVAS") {
         const ctx = cardElement.getContext("2d");
         if (ctx) {
-          drawRawBuilderCard(cardElement, ctx, false); // Exclude surfer mascot for ID Card only
+          drawRawBuilderCard(cardElement, ctx);
         }
         const dataUrl = cardElement.toDataURL("image/png", 1.0);
-        if (dataUrl && dataUrl.length > 100) {
-          const link = document.createElement('a');
-          link.download = 'HHGoa_2026_ID_Card.png';
-          link.href = dataUrl;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          return;
-        }
+        const link = document.createElement('a');
+        link.download = 'HHGoa_2026_ID_Card.png';
+        link.href = dataUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        return;
       }
 
-      // 2. Pre-load images inside the card to prevent transparent snapshots
+      // Preload images inside the card to prevent transparent snapshots
       const images = cardElement.querySelectorAll('img');
       await Promise.all(
         Array.from(images).map((img) => {
@@ -1031,107 +1021,29 @@ export default function Step3UploadPreview({
         })
       );
 
-      // 3. Render canvas with clone and layout resets using html2canvas & toPng fallback
-      let dataUrl = "";
-      try {
-        const canvas = await html2canvas(cardElement, {
-          scale: 3,
-          useCORS: true,
-          allowTaint: true,
-          backgroundColor: '#ffffff', // Explicit solid white background to prevent transparency
-          width: 420,
-          height: 560,
-          ignoreElements: (element) =>
-            element.id === 'surfer-mascot-sticker' ||
-            (element.classList && element.classList.contains('surfer-mascot-element')),
-          onclone: (clonedDoc) => {
-            const clonedPoster = clonedDoc.getElementById('poster-canvas-wrapper');
-            if (clonedPoster) {
-              clonedPoster.style.width = '420px';
-              clonedPoster.style.height = '560px';
-              clonedPoster.style.position = 'relative';
-              clonedPoster.style.margin = '0 auto';
-              clonedPoster.style.padding = '16px';
-              clonedPoster.style.boxSizing = 'border-box';
-              clonedPoster.style.display = 'flex';
-              clonedPoster.style.flexDirection = 'column';
-              clonedPoster.style.justifyContent = 'space-between';
-              clonedPoster.style.alignItems = 'center';
-              clonedPoster.style.transform = 'none';
-              clonedPoster.style.overflow = 'visible';
-              if (clonedPoster.parentElement) {
-                clonedPoster.parentElement.style.transform = 'none';
-              }
-            }
-            const clonedEl =
-              clonedDoc.getElementById('builder-id-card') ||
-              clonedDoc.getElementById('builder-id-card-frame');
-            if (clonedEl) {
-              clonedEl.style.transform = 'none';
-              clonedEl.style.margin = '0 auto';
-              clonedEl.style.backgroundColor = '#ffffff';
-            }
-            const clonedMascot =
-              clonedDoc.getElementById('surfer-mascot-sticker') ||
-              clonedDoc.querySelector('.surfer-mascot-element');
-            if (clonedMascot) {
-              clonedMascot.style.display = 'none';
-            }
-          },
-        });
-        dataUrl = canvas.toDataURL('image/png', 1.0);
-      } catch (h2cErr) {
-        console.warn("html2canvas capture fallback to toPng:", h2cErr);
-        dataUrl = await toPng(cardElement, {
-          quality: 0.95,
-          pixelRatio: 3,
-          cacheBust: true,
-          backgroundColor: '#ffffff', // Ensures non-transparent card canvas
-          filter: (node) =>
-            node.id !== 'surfer-mascot-sticker' &&
-            !(node.classList && node.classList.contains('surfer-mascot-element')),
-          style: {
-            transform: 'none',
-            margin: '0 auto',
-            borderRadius: '16px', // Preserves ID card rounded corners
-          },
-        });
-      }
+      // Export card with forced white/pink background
+      const dataUrl = await toPng(cardElement, {
+        quality: 0.95,
+        pixelRatio: 3,
+        cacheBust: true,
+        backgroundColor: '#ffffff', // Ensures non-transparent card canvas
+        style: {
+          transform: 'none',
+          margin: '0 auto',
+          borderRadius: '16px', // Preserves ID card rounded corners
+        },
+      });
 
-      // 4. Trigger PNG download
-      if (dataUrl) {
-        const link = document.createElement('a');
-        link.download = 'HHGoa_2026_ID_Card.png';
-        link.href = dataUrl;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      } else {
-        throw new Error("Canvas export produced an empty data URL.");
-      }
+      // Trigger PNG download
+      const link = document.createElement('a');
+      link.download = 'HHGoa_2026_ID_Card.png';
+      link.href = dataUrl;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
 
     } catch (err) {
       console.error('Error downloading card:', err);
-
-      // Final Fallback: Render raw builder card to offscreen canvas without mascot
-      try {
-        const offscreenCanvas = document.createElement("canvas");
-        const offscreenCtx = offscreenCanvas.getContext("2d");
-        if (offscreenCtx) {
-          drawRawBuilderCard(offscreenCanvas, offscreenCtx, false);
-          const dataUrl = offscreenCanvas.toDataURL("image/png", 1.0);
-          const link = document.createElement("a");
-          link.download = "HHGoa_2026_ID_Card.png";
-          link.href = dataUrl;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          return;
-        }
-      } catch (fallbackErr) {
-        console.error("Offscreen canvas fallback error:", fallbackErr);
-      }
-
       alert('Could not download card. Please try again.');
     }
   };
@@ -1160,53 +1072,17 @@ export default function Step3UploadPreview({
         })
       );
 
-      // 2. Generate PNG Data URL with html2canvas (or toPng fallback) with onclone desktop resets
-      let dataUrl = "";
-      try {
-        const canvas = await html2canvas(node, {
-          scale: 2,
-          useCORS: true,
-          allowTaint: true,
-          backgroundColor: '#0b6839',
-          width: 420,
-          height: 560,
-          onclone: (clonedDoc) => {
-            const clonedPoster = clonedDoc.getElementById('poster-canvas-wrapper');
-            if (clonedPoster) {
-              clonedPoster.style.width = '420px';
-              clonedPoster.style.height = '560px';
-              clonedPoster.style.position = 'relative';
-              clonedPoster.style.margin = '0 auto';
-              clonedPoster.style.padding = '16px';
-              clonedPoster.style.boxSizing = 'border-box';
-              clonedPoster.style.display = 'flex';
-              clonedPoster.style.flexDirection = 'column';
-              clonedPoster.style.justifyContent = 'space-between';
-              clonedPoster.style.alignItems = 'center';
-              clonedPoster.style.transform = 'none';
-              clonedPoster.style.overflow = 'visible';
-              if (clonedPoster.parentElement) {
-                clonedPoster.parentElement.style.transform = 'none';
-              }
-            }
-          },
-        });
-        dataUrl = canvas.toDataURL('image/png', 1.0);
-      } catch (h2cErr) {
-        console.warn("html2canvas share to X fallback to toPng:", h2cErr);
-        dataUrl = await toPng(node, {
-          quality: 0.95,
-          pixelRatio: 2,
-          cacheBust: true,
-          backgroundColor: '#0b6839',
-          style: {
-            width: '420px',
-            height: '560px',
-            transform: 'none',
-            margin: '0 auto',
-          },
-        });
-      }
+      // 2. Generate PNG Data URL with html-to-image
+      const dataUrl = await toPng(node, {
+        quality: 0.95,
+        pixelRatio: 2,
+        cacheBust: true,
+        backgroundColor: '#0b6839', // Fallback background color matching poster
+        style: {
+          transform: 'none',
+          margin: '0 auto',
+        },
+      });
 
       // 3. Trigger File Download
       const link = document.createElement('a');
@@ -1410,49 +1286,48 @@ export default function Step3UploadPreview({
           />
 
           {/* Poster Preview Scaling Container Constrained to Viewport Height */}
-          <div className="flex-1 w-full max-h-[58vh] sm:max-h-[62vh] lg:max-h-[68vh] flex items-center justify-center relative my-auto overflow-hidden p-2 sm:p-4">
-            <div className="origin-top scale-[0.8] sm:scale-100 transition-transform duration-200 flex items-center justify-center shrink-0">
-              {/* 1. POSTER CANVAS WRAPPER - EXCLUSIVELY WRAPPED IN id="poster-canvas-wrapper" */}
-              <div
-                id="poster-canvas-wrapper"
-                className="relative w-[420px] h-[560px] bg-[#0b6839] rounded-2xl p-4 flex flex-col items-center justify-between overflow-hidden shadow-2xl mx-auto shrink-0"
-              >
-                {/* Top-Left Ticket Sticker */}
-                <img
-                  src="/image_351993.png"
-                  alt="HH GOA '26 Builder Pass Sticker"
-                  crossOrigin="anonymous"
-                  className="absolute top-3 left-3 w-28 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
-                  style={{ transform: "rotate(-8deg)", zIndex: 20 }}
-                />
+          <div className="flex-1 w-full max-h-[58vh] sm:max-h-[62vh] lg:max-h-[68vh] flex items-center justify-center relative my-auto overflow-hidden">
+            {/* 1. POSTER CANVAS WRAPPER - EXCLUSIVELY WRAPPED IN id="poster-canvas-wrapper" */}
+            <div
+              id="poster-canvas-wrapper"
+              className="h-full aspect-[4/5] mx-auto overflow-hidden rounded-2xl relative shadow-2xl bg-[#0b6839] flex flex-col items-center justify-center p-0 shrink-0"
+            >
+              {/* Top-Left Ticket Sticker */}
+              <img
+                src="/image_351993.png"
+                alt="HH GOA '26 Builder Pass Sticker"
+                crossOrigin="anonymous"
+                className="absolute top-5 left-3 w-20 sm:w-28 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
+                style={{ transform: "rotate(-8deg)", zIndex: 20 }}
+              />
 
-                {/* Top-Right Seal Sticker */}
-                <img
-                  src="/image_351997.png"
-                  alt="Verified Aug 2026 Stamp Sticker"
-                  crossOrigin="anonymous"
-                  className="absolute top-3 right-3 w-24 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
-                  style={{ transform: "rotate(8deg)", zIndex: 20 }}
-                />
+              {/* Top-Right Seal Sticker */}
+              <img
+                src="/image_351997.png"
+                alt="Verified Aug 2026 Stamp Sticker"
+                crossOrigin="anonymous"
+                className="absolute w-16 sm:w-24 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
+                style={{ top: "16px", right: "40px", transform: "rotate(8deg)", zIndex: 20 }}
+              />
 
-                {/* Bottom-Left Surfer Mascot Sticker */}
-                <img
-                  id="surfer-mascot-sticker"
-                  src="/mascot-removebg-preview.png"
-                  alt="Surfer Mascot Sticker"
-                  crossOrigin="anonymous"
-                  className="absolute bottom-[75px] left-[-11px] h-28 w-auto object-contain z-30 pointer-events-none drop-shadow-lg surfer-mascot-element"
-                  onError={(e) => {
-                    e.currentTarget.style.display = "none";
-                  }}
-                />
+              {/* Bottom-Left Surfer Mascot Sticker */}
+              <img
+                src="/mascot-removebg-preview.png"
+                alt="Surfer Mascot Sticker"
+                crossOrigin="anonymous"
+                className="absolute bottom-[80px] left-[14px] h-28 sm:h-32 w-auto object-contain z-[30] pointer-events-none drop-shadow-lg"
+                onError={(e) => {
+                  e.currentTarget.style.display = "none";
+                }}
+                style={{ zIndex: 30, bottom: "80px", left: "14px" }}
+              />
 
-                {/* Poster Bottom-Right Footer */}
-                <div className="absolute bottom-3 right-4 text-right z-20 pointer-events-none">
-                  <p className="font-extrabold text-sm sm:text-base text-yellow-400 tracking-wide drop-shadow">
-                    #FrameInGoa
-                  </p>
-                </div>
+              {/* Poster Bottom-Right Footer */}
+              <div className="absolute bottom-3 right-4 text-right z-10 pointer-events-none">
+                <p className="font-extrabold text-sm sm:text-base text-yellow-400 tracking-wide drop-shadow">
+                  #FrameInGoa
+                </p>
+              </div>
 
               {/* STATE 1: BEFORE PHOTO UPLOAD */}
               {!imageSrc && (
@@ -1556,7 +1431,6 @@ export default function Step3UploadPreview({
                   </div>
                 </div>
               )}
-              </div>
             </div>
           </div>
 
