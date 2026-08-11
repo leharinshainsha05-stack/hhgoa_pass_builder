@@ -985,39 +985,71 @@ export default function Step3UploadPreview({
     ctx.restore();
   };
 
-  // --- TRIGGER 1: STANDALONE CARD DOWNLOAD (HHGoa_2026_Builder_Card.png) ---
-  const handleDownloadCardOnly = async () => {
-    try {
-      const node = document.getElementById("builder-id-card") || document.getElementById("poster-canvas-wrapper");
-      if (node) {
-        if (node.tagName === "CANVAS") {
-          const dataUrl = node.toDataURL("image/png", 1.0);
-          saveAs(dataUrl, "HHGoa_2026_Builder_Card.png");
-          return;
-        }
-        await new Promise((resolve) => setTimeout(resolve, 300));
-        const dataUrl = await toPng(node, {
-          quality: 0.95,
-          pixelRatio: 3,
-          cacheBust: true,
-        });
-        saveAs(dataUrl, "HHGoa_2026_Builder_Card.png");
-        return;
-      }
-    } catch (err) {
-      console.warn("html-to-image card export fallback", err);
+  // --- TRIGGER 1: STANDALONE CARD DOWNLOAD (HHGoa_2026_ID_Card.png) ---
+  const handleDownloadCard = async () => {
+    const cardElement = document.getElementById('builder-id-card');
+    if (!cardElement) {
+      console.error("Card element '#builder-id-card' not found.");
+      return;
     }
 
-    // Fallback using offscreen canvas drawRawBuilderCard
-    const offscreenCanvas = document.createElement("canvas");
-    const offscreenCtx = offscreenCanvas.getContext("2d");
-    if (!offscreenCtx) return;
-    drawRawBuilderCard(offscreenCanvas, offscreenCtx);
-    const dataUrl = offscreenCanvas.toDataURL("image/png", 1.0);
-    saveAs(dataUrl, "HHGoa_2026_Builder_Card.png");
+    try {
+      if (cardElement.tagName === "CANVAS") {
+        const ctx = cardElement.getContext("2d");
+        if (ctx) {
+          drawRawBuilderCard(cardElement, ctx);
+        }
+        const dataUrl = cardElement.toDataURL("image/png", 1.0);
+        const link = document.createElement('a');
+        link.download = 'HHGoa_2026_ID_Card.png';
+        link.href = dataUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        return;
+      }
+
+      // Preload images inside the card to prevent transparent snapshots
+      const images = cardElement.querySelectorAll('img');
+      await Promise.all(
+        Array.from(images).map((img) => {
+          if (img.complete) return Promise.resolve();
+          return new Promise((resolve) => {
+            img.onload = resolve;
+            img.onerror = resolve;
+          });
+        })
+      );
+
+      // Export card with forced white/pink background
+      const dataUrl = await toPng(cardElement, {
+        quality: 0.95,
+        pixelRatio: 3,
+        cacheBust: true,
+        backgroundColor: '#ffffff', // Ensures non-transparent card canvas
+        style: {
+          transform: 'none',
+          margin: '0 auto',
+          borderRadius: '16px', // Preserves ID card rounded corners
+        },
+      });
+
+      // Trigger PNG download
+      const link = document.createElement('a');
+      link.download = 'HHGoa_2026_ID_Card.png';
+      link.href = dataUrl;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+    } catch (err) {
+      console.error('Error downloading card:', err);
+      alert('Could not download card. Please try again.');
+    }
   };
 
-  const handleDownloadPNG = handleDownloadCardOnly;
+  const handleDownloadCardOnly = handleDownloadCard;
+  const handleDownloadPNG = handleDownloadCard;
 
   // --- TRIGGER 2: FULL POSTER DOWNLOAD & OPEN X COMPOSER (#FrameInGoa) ---
   const handleShareToX = async () => {
