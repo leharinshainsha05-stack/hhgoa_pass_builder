@@ -1040,7 +1040,7 @@ export default function Step3UploadPreview({
           allowTaint: true,
           backgroundColor: '#ffffff', // Explicit solid white background to prevent transparency
           width: 420,
-          height: 600,
+          height: 560,
           ignoreElements: (element) =>
             element.id === 'surfer-mascot-sticker' ||
             (element.classList && element.classList.contains('surfer-mascot-element')),
@@ -1048,7 +1048,7 @@ export default function Step3UploadPreview({
             const clonedPoster = clonedDoc.getElementById('poster-canvas-wrapper');
             if (clonedPoster) {
               clonedPoster.style.width = '420px';
-              clonedPoster.style.height = '600px';
+              clonedPoster.style.height = '560px';
               clonedPoster.style.position = 'relative';
               clonedPoster.style.margin = '0 auto';
               clonedPoster.style.padding = '16px';
@@ -1169,12 +1169,12 @@ export default function Step3UploadPreview({
           allowTaint: true,
           backgroundColor: '#0b6839',
           width: 420,
-          height: 600,
+          height: 560,
           onclone: (clonedDoc) => {
             const clonedPoster = clonedDoc.getElementById('poster-canvas-wrapper');
             if (clonedPoster) {
               clonedPoster.style.width = '420px';
-              clonedPoster.style.height = '600px';
+              clonedPoster.style.height = '560px';
               clonedPoster.style.position = 'relative';
               clonedPoster.style.margin = '0 auto';
               clonedPoster.style.padding = '16px';
@@ -1201,7 +1201,7 @@ export default function Step3UploadPreview({
           backgroundColor: '#0b6839',
           style: {
             width: '420px',
-            height: '600px',
+            height: '560px',
             transform: 'none',
             margin: '0 auto',
           },
@@ -1411,11 +1411,11 @@ export default function Step3UploadPreview({
 
           {/* Poster Preview Scaling Container Constrained to Viewport Height */}
           <div className="flex-1 w-full max-h-[58vh] sm:max-h-[62vh] lg:max-h-[68vh] flex items-center justify-center relative my-auto overflow-hidden p-2 sm:p-4">
-            <div className="origin-top scale-[0.72] min-[380px]:scale-[0.80] sm:scale-100 transition-transform duration-200 flex items-center justify-center shrink-0">
+            <div className="origin-top scale-[0.75] xs:scale-[0.85] sm:scale-100 transition-transform duration-200 flex items-center justify-center shrink-0">
               {/* 1. POSTER CANVAS WRAPPER - EXCLUSIVELY WRAPPED IN id="poster-canvas-wrapper" */}
               <div
                 id="poster-canvas-wrapper"
-                className="relative w-[420px] h-[600px] bg-[#0b6839] rounded-2xl p-4 flex flex-col items-center justify-between overflow-hidden shadow-2xl mx-auto shrink-0"
+                className="relative w-[420px] h-[560px] bg-[#0b6839] rounded-2xl p-4 flex flex-col items-center justify-between overflow-hidden shadow-2xl mx-auto shrink-0"
               >
                 {/* Top-Left Ticket Sticker */}
                 <img
