@@ -1027,7 +1027,7 @@ export default function Step3UploadPreview({
     );
     const xIntentUrl = `https://twitter.com/intent/tweet?text=${shareText}`;
 
-    // 1. Synchronously open Twitter/X intent window immediately at start of click handler to prevent popup blocking
+    // 1. Open Twitter/X intent window immediately
     try {
       window.open(xIntentUrl, '_blank', 'noopener,noreferrer');
     } catch (winErr) {
@@ -1041,7 +1041,7 @@ export default function Step3UploadPreview({
     }
 
     try {
-      // 2. Preload image assets inside poster container, resolving gracefully on load or error
+      // 2. Preload image assets inside poster container
       const images = node.querySelectorAll('img');
       await Promise.all(
         Array.from(images).map((img) => {
@@ -1053,41 +1053,78 @@ export default function Step3UploadPreview({
         })
       );
 
-      // 3. Generate PNG using modern-screenshot (domToPng) or html-to-image (toPng) - natively supporting oklab/oklch
+      // 3. ✨ CRITICAL FIX: Force element positioning for export
+      const originalDisplay = node.style.display;
+      const originalPosition = node.style.position;
+      const originalZIndex = node.style.zIndex;
+
+      node.style.position = 'fixed';
+      node.style.top = '0';
+      node.style.left = '0';
+      node.style.zIndex = '9999';
+      node.style.display = 'block';
+
+      // Small delay to ensure render completes
+      await new Promise(resolve => setTimeout(resolve, 100));
+
       let dataUrl;
       try {
+        // ✨ CRITICAL FIX: Add explicit width/height
         dataUrl = await domToPng(node, {
           scale: 2,
           quality: 1.0,
           backgroundColor: '#0b6839',
+          width: 420,        // ← NEW
+          height: 560,       // ← NEW
           style: {
             transform: 'none',
+            margin: '0',     // ← NEW
+            padding: '0',    // ← NEW
           },
         });
       } catch (modernErr) {
         console.warn("domToPng fallback to html-to-image toPng:", modernErr);
+        
+        // ✨ CRITICAL FIX: Add explicit width/height to fallback too
         dataUrl = await toPng(node, {
           quality: 0.95,
           pixelRatio: 2,
           cacheBust: true,
           backgroundColor: '#0b6839',
+          width: 420,        // ← NEW
+          height: 560,       // ← NEW
           style: {
             transform: 'none',
+            margin: '0',     // ← NEW
+            padding: '0',    // ← NEW
           },
         });
       }
 
+      // ✨ CRITICAL FIX: Restore original styles
+      node.style.display = originalDisplay || '';
+      node.style.position = originalPosition || '';
+      node.style.zIndex = originalZIndex || '';
+
       if (dataUrl) {
-        // 4. Trigger programmatic PNG file download
         const link = document.createElement('a');
         link.download = 'HHGoa_2026_Share_Poster.png';
         link.href = dataUrl;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+
+        toast.success("✓ Poster downloaded! Shared to X 🚀");
       }
     } catch (err) {
       console.error("Export Error:", err);
+      alert('Could not export poster. Please try again.');
+
+      // Restore styles in case of error
+      node.style.position = '';
+      node.style.top = '';
+      node.style.left = '';
+      node.style.zIndex = '';
     }
   };
 
