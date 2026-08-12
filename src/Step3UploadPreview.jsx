@@ -1312,7 +1312,7 @@ export default function Step3UploadPreview({
         </div>
 
         {/* Right Half: Upload & Scaled Preview Zone with Dark Green Background (#0b6839) */}
-        <div className="w-full lg:col-span-1 bg-[#0b6839] p-4 sm:p-5 flex flex-col items-center justify-between overflow-hidden h-full">
+        <div className="w-full lg:col-span-1 bg-[#0b6839] flex flex-col items-center justify-start h-full min-h-0 overflow-y-auto p-4 sm:p-6 space-y-4">
           
           {/* Hidden Canvas specifically for Standalone Builder Pass Export (#builder-id-card) */}
           <canvas
@@ -1475,7 +1475,7 @@ export default function Step3UploadPreview({
 
           {/* 2. UI BUTTONS & CONTROLS CONTAINER */}
           {imageSrc && (
-            <div className="w-full max-w-[380px] mx-auto flex flex-col gap-2 mt-2 px-2 z-10 shrink-0">
+            <div className="w-full max-w-[420px] mx-auto flex flex-col space-y-3 pb-6 z-10 shrink-0">
               {/* Download Button: Triggers Standalone Builder Pass Export (#builder-id-card) */}
               <button
                 type="button"
