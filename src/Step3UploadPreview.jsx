@@ -1069,6 +1069,21 @@ export default function Step3UploadPreview({
       return;
     }
 
+    const triggerDataUrlDownload = (cvs) => {
+      try {
+        const dataUrl = cvs.toDataURL('image/png', 1.0);
+        const link = document.createElement('a');
+        link.setAttribute('download', 'HHGoa_2026_Share_Poster.png');
+        link.setAttribute('href', dataUrl);
+        link.setAttribute('target', '_blank');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch (e) {
+        console.error("DataURL download fallback error:", e);
+      }
+    };
+
     try {
       // 2. Preload image assets inside poster container, resolving gracefully on load or error
       const images = node.querySelectorAll('img');
@@ -1082,13 +1097,15 @@ export default function Step3UploadPreview({
         })
       );
 
-      // 3. Generate PNG Blob with html2canvas (allowTaint: true, useCORS: false, locked to unscaled 420x560 layout)
+      // 3. Generate PNG Canvas with html2canvas (sanitized options & locked 420x560 layout)
       const canvas = await html2canvas(node, {
         width: 420,
         height: 560,
         scale: 2,
-        useCORS: false,
+        useCORS: true,
         allowTaint: true,
+        foreignObjectRendering: false,
+        logging: true,
         backgroundColor: '#0b6839',
         onclone: (clonedDoc) => {
           if (!clonedDoc) return;
@@ -1105,28 +1122,37 @@ export default function Step3UploadPreview({
       });
 
       if (canvas) {
-        // 4. Safe Blob Download Execution
-        canvas.toBlob((blob) => {
-          if (!blob) {
-            console.error('Failed to generate PNG blob from canvas.');
-            return;
-          }
-          const blobUrl = URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.setAttribute('download', 'HHGoa_2026_Share_Poster.png');
-          link.setAttribute('href', blobUrl);
-          link.setAttribute('target', '_blank');
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
+        // 4. Robust Blob / DataURL Download Execution
+        try {
+          if (canvas.toBlob) {
+            canvas.toBlob((blob) => {
+              if (blob) {
+                const blobUrl = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.setAttribute('download', 'HHGoa_2026_Share_Poster.png');
+                link.setAttribute('href', blobUrl);
+                link.setAttribute('target', '_blank');
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
 
-          setTimeout(() => {
-            URL.revokeObjectURL(blobUrl);
-          }, 1000);
-        }, 'image/png', 1.0);
+                setTimeout(() => {
+                  URL.revokeObjectURL(blobUrl);
+                }, 1000);
+              } else {
+                triggerDataUrlDownload(canvas);
+              }
+            }, 'image/png', 1.0);
+          } else {
+            triggerDataUrlDownload(canvas);
+          }
+        } catch (downloadErr) {
+          console.error("Download execution error:", downloadErr);
+          triggerDataUrlDownload(canvas);
+        }
       }
     } catch (err) {
-      console.error('Poster export capture notice:', err);
+      console.error("Export Error:", err);
     }
   };
 
