@@ -1353,7 +1353,7 @@ export default function Step3UploadPreview({
 
           {/* Responsive CSS Scale Wrapper for Mobile Viewports */}
           <div className="w-full flex justify-center items-center py-2 overflow-hidden flex-1 relative my-auto">
-            <div className="origin-center scale-[0.75] xs:scale-[0.85] sm:scale-100 transition-transform duration-200 shrink-0">
+            <div className="origin-top scale-[0.8] sm:scale-100 transition-transform duration-200 shrink-0">
               {/* 1. POSTER CANVAS WRAPPER - EXCLUSIVELY WRAPPED IN id="poster-canvas-wrapper" */}
               <div
                 id="poster-canvas-wrapper"
@@ -1364,7 +1364,7 @@ export default function Step3UploadPreview({
               <img
                 src="/image_351993.png"
                 alt="HH GOA '26 Builder Pass Sticker"
-                className="absolute top-5 left-3 w-20 sm:w-28 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
+                className="absolute top-3 left-3 w-24 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
                 style={{ transform: "rotate(-8deg)", zIndex: 20 }}
               />
 
@@ -1372,8 +1372,8 @@ export default function Step3UploadPreview({
               <img
                 src="/image_351997.png"
                 alt="Verified Aug 2026 Stamp Sticker"
-                className="absolute w-16 sm:w-24 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
-                style={{ top: "16px", right: "40px", transform: "rotate(8deg)", zIndex: 20 }}
+                className="absolute top-3 right-3 w-20 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
+                style={{ transform: "rotate(8deg)", zIndex: 20 }}
               />
 
               {/* Bottom-Left Surfer Mascot Sticker */}
@@ -1381,15 +1381,15 @@ export default function Step3UploadPreview({
                 id="surfer-mascot"
                 src="/mascot-removebg-preview.png"
                 alt="Surfer Mascot Sticker"
-                className="surfer-mascot absolute bottom-[80px] left-[14px] h-28 sm:h-32 w-auto object-contain z-[30] pointer-events-none drop-shadow-lg"
+                className="surfer-mascot absolute bottom-10 left-2 h-32 w-auto object-contain z-[30] pointer-events-none drop-shadow-lg"
                 onError={(e) => {
                   e.currentTarget.style.display = "none";
                 }}
-                style={{ zIndex: 30, bottom: "80px", left: "14px" }}
+                style={{ zIndex: 30 }}
               />
 
-              {/* Poster Bottom-Right Footer */}
-              <div className="absolute bottom-3 right-4 text-right z-10 pointer-events-none">
+              {/* Poster Bottom-Right Footer Watermark */}
+              <div className="absolute bottom-3 right-4 text-right z-20 pointer-events-none">
                 <p className="font-extrabold text-sm sm:text-base text-yellow-400 tracking-wide drop-shadow">
                   #FrameInGoa
                 </p>
