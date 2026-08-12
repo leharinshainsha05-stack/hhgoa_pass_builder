@@ -18,10 +18,16 @@ import {
 
 // Preload sticker PNG assets for canvas rendering fallback
 const stickerTicketImg = typeof window !== "undefined" ? new Image() : null;
-if (stickerTicketImg) stickerTicketImg.src = "/image_351993.png";
+if (stickerTicketImg) {
+  stickerTicketImg.crossOrigin = "anonymous";
+  stickerTicketImg.src = "/image_351993.png";
+}
 
 const stickerVerifiedImg = typeof window !== "undefined" ? new Image() : null;
-if (stickerVerifiedImg) stickerVerifiedImg.src = "/image_351997.png";
+if (stickerVerifiedImg) {
+  stickerVerifiedImg.crossOrigin = "anonymous";
+  stickerVerifiedImg.src = "/image_351997.png";
+}
 
 export default function Step3UploadPreview({
   formData = {},
@@ -92,6 +98,7 @@ export default function Step3UploadPreview({
   // Preload HH Goa Logo, Watermark Matrix & Mascot Assets
   useEffect(() => {
     const logo = new Image();
+    logo.crossOrigin = "anonymous";
     logo.src = "/hh-goa-logo.png";
     logo.onload = () => {
       logoObjRef.current = logo;
@@ -101,6 +108,7 @@ export default function Step3UploadPreview({
     };
 
     const wm = new Image();
+    wm.crossOrigin = "anonymous";
     wm.src = "/image_48.png";
     wm.onload = () => {
       watermarkObjRef.current = wm;
@@ -110,6 +118,7 @@ export default function Step3UploadPreview({
     };
 
     const mascot = new Image();
+    mascot.crossOrigin = "anonymous";
     mascot.src = "/mascot-removebg-preview.png";
     mascot.onload = () => {
       mascotObjRef.current = mascot;
@@ -123,6 +132,7 @@ export default function Step3UploadPreview({
   useEffect(() => {
     if (imageSrc) {
       const img = new Image();
+      img.crossOrigin = "anonymous";
       img.src = imageSrc;
       img.onload = () => {
         imageObjRef.current = img;
@@ -1051,20 +1061,26 @@ export default function Step3UploadPreview({
 
   // --- TRIGGER 2: FULL POSTER DOWNLOAD & OPEN X COMPOSER (#FrameInGoa) ---
   const handleShareToX = async () => {
-    const node = document.getElementById('poster-canvas-wrapper');
     const shareText = encodeURIComponent(
       "Just claimed my Builder Pass for Hacker House Goa '26! 🚀🌴\n\nSee you guys in Goa! #FrameInGoa #HackerHouseGoa"
     );
     const xIntentUrl = `https://twitter.com/intent/tweet?text=${shareText}`;
 
+    // 1. Synchronously open Twitter/X intent window immediately at start of click handler to prevent popup blocking
+    try {
+      window.open(xIntentUrl, '_blank', 'noopener,noreferrer');
+    } catch (winErr) {
+      console.error('Failed to open Twitter/X share intent window:', winErr);
+    }
+
+    const node = document.getElementById('poster-canvas-wrapper');
     if (!node) {
       console.error("Poster element '#poster-canvas-wrapper' not found in DOM.");
-      window.open(xIntentUrl, '_blank', 'noopener,noreferrer');
       return;
     }
 
     try {
-      // 1. Preload image assets inside poster container, resolving gracefully on load or error
+      // 2. Preload image assets inside poster container, resolving gracefully on load or error
       const images = node.querySelectorAll('img');
       await Promise.all(
         Array.from(images).map((img) => {
@@ -1076,7 +1092,7 @@ export default function Step3UploadPreview({
         })
       );
 
-      // 2. Generate PNG Data URL with html2canvas (null-safe & locked to unscaled 420x560 layout)
+      // 3. Generate PNG Data URL with html2canvas (null-safe & locked to unscaled 420x560 layout)
       const canvas = await html2canvas(node, {
         width: 420,
         height: 560,
@@ -1101,7 +1117,7 @@ export default function Step3UploadPreview({
       if (canvas) {
         const dataUrl = canvas.toDataURL('image/png', 1.0);
 
-        // 3. Trigger File Download BEFORE opening Twitter/X intent window
+        // 4. Trigger File Download
         const link = document.createElement('a');
         link.setAttribute('download', 'HHGoa_2026_Share_Poster.png');
         link.setAttribute('href', dataUrl);
@@ -1112,13 +1128,6 @@ export default function Step3UploadPreview({
       }
     } catch (err) {
       console.error('Poster export capture notice:', err);
-    }
-
-    // 4. Launch Twitter / X Share Intent in a new tab AFTER download trigger
-    try {
-      window.open(xIntentUrl, '_blank', 'noopener,noreferrer');
-    } catch (winErr) {
-      console.error('Failed to open Twitter/X share intent window:', winErr);
     }
   };
 
