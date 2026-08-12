@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import heic2any from "heic2any";
 import { toPng } from "html-to-image";
-import html2canvas from "html2canvas";
+import { domToPng } from "modern-screenshot";
 import { saveAs } from "file-saver";
 import {
   Camera,
@@ -1028,9 +1028,8 @@ export default function Step3UploadPreview({
     const xIntentUrl = `https://twitter.com/intent/tweet?text=${shareText}`;
 
     // 1. Synchronously open Twitter/X intent window immediately at start of click handler to prevent popup blocking
-    let twitterWindow = null;
     try {
-      twitterWindow = window.open(xIntentUrl, '_blank', 'noopener,noreferrer');
+      window.open(xIntentUrl, '_blank', 'noopener,noreferrer');
     } catch (winErr) {
       console.error('Failed to open Twitter/X share intent window:', winErr);
     }
@@ -1040,20 +1039,6 @@ export default function Step3UploadPreview({
       console.error("Poster element '#poster-canvas-wrapper' not found in DOM.");
       return;
     }
-
-    const triggerDataUrlDownload = (cvs) => {
-      try {
-        const dataUrl = cvs.toDataURL('image/png', 1.0);
-        const link = document.createElement('a');
-        link.setAttribute('download', 'HHGoa_2026_Share_Poster.png');
-        link.setAttribute('href', dataUrl);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      } catch (e) {
-        console.error("DataURL download fallback error:", e);
-      }
-    };
 
     try {
       // 2. Preload image assets inside poster container, resolving gracefully on load or error
@@ -1068,108 +1053,41 @@ export default function Step3UploadPreview({
         })
       );
 
-      // 3. Generate PNG Canvas with html2canvas (sanitized options & locked 420x560 layout)
-      const canvas = await html2canvas(node, {
-        width: 420,
-        height: 560,
-        scale: 2,
-        useCORS: true,
-        allowTaint: true,
-        foreignObjectRendering: false,
-        logging: false,
-        backgroundColor: '#0b6839',
-        onclone: (clonedDoc) => {
-          if (!clonedDoc) return;
+      // 3. Generate PNG using modern-screenshot (domToPng) or html-to-image (toPng) - natively supporting oklab/oklch
+      let dataUrl;
+      try {
+        dataUrl = await domToPng(node, {
+          scale: 2,
+          quality: 1.0,
+          backgroundColor: '#0b6839',
+          style: {
+            transform: 'none',
+          },
+        });
+      } catch (modernErr) {
+        console.warn("domToPng fallback to html-to-image toPng:", modernErr);
+        dataUrl = await toPng(node, {
+          quality: 0.95,
+          pixelRatio: 2,
+          cacheBust: true,
+          backgroundColor: '#0b6839',
+          style: {
+            transform: 'none',
+          },
+        });
+      }
 
-          // 1. Sanitize all <style> tags in cloned document by replacing oklch with hex
-          try {
-            const styles = clonedDoc.querySelectorAll('style');
-            styles.forEach((styleTag) => {
-              if (styleTag.textContent && styleTag.textContent.includes('oklch')) {
-                styleTag.textContent = styleTag.textContent.replace(/oklch\([^)]+\)/gi, '#0b6839');
-              }
-            });
-          } catch (e) {
-            console.warn('Style tag oklch sanitization warning:', e);
-          }
-
-          // 2. Sanitize all styleSheet rules if available
-          try {
-            Array.from(clonedDoc.styleSheets || []).forEach((sheet) => {
-              try {
-                Array.from(sheet.cssRules || []).forEach((rule) => {
-                  if (rule.cssText && rule.cssText.includes('oklch')) {
-                    rule.style.cssText = rule.style.cssText.replace(/oklch\([^)]+\)/gi, '#0b6839');
-                  }
-                });
-              } catch (ruleErr) {
-                // Ignore cross-origin stylesheet access errors
-              }
-            });
-          } catch (sheetErr) {
-            console.warn('StyleSheet oklch sanitization warning:', sheetErr);
-          }
-
-          // 3. Target cloned poster element and enforce explicit inline dimensions and hex colors
-          const clonedPoster = clonedDoc.getElementById('poster-canvas-wrapper');
-          if (clonedPoster) {
-            clonedPoster.style.width = '420px';
-            clonedPoster.style.height = '560px';
-            clonedPoster.style.transform = 'none';
-            clonedPoster.style.backgroundColor = '#0b6839';
-            clonedPoster.style.boxShadow = 'none';
-            if (clonedPoster.parentElement) {
-              clonedPoster.parentElement.style.transform = 'none';
-              clonedPoster.parentElement.style.backgroundColor = 'transparent';
-            }
-
-            // 4. Clean all child elements inside cloned poster container
-            const allNodes = clonedPoster.querySelectorAll('*');
-            allNodes.forEach((el) => {
-              if (el.style) {
-                if (el.style.cssText && el.style.cssText.includes('oklch')) {
-                  el.style.cssText = el.style.cssText.replace(/oklch\([^)]+\)/gi, '#0b6839');
-                }
-                el.style.filter = 'none';
-                el.style.boxShadow = 'none';
-              }
-            });
-          }
-        }
-      });
-
-      if (canvas) {
-        // 4. Robust Blob / DataURL Download Execution
-        try {
-          if (canvas.toBlob) {
-            canvas.toBlob((blob) => {
-              if (blob) {
-                const blobUrl = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.setAttribute('download', 'HHGoa_2026_Share_Poster.png');
-                link.setAttribute('href', blobUrl);
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-
-                setTimeout(() => {
-                  URL.revokeObjectURL(blobUrl);
-                }, 1000);
-              } else {
-                triggerDataUrlDownload(canvas);
-              }
-            }, 'image/png', 1.0);
-          } else {
-            triggerDataUrlDownload(canvas);
-          }
-        } catch (downloadErr) {
-          console.error("Download execution error:", downloadErr);
-          triggerDataUrlDownload(canvas);
-        }
+      if (dataUrl) {
+        // 4. Trigger programmatic PNG file download
+        const link = document.createElement('a');
+        link.download = 'HHGoa_2026_Share_Poster.png';
+        link.href = dataUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
       }
     } catch (err) {
       console.error("Export Error:", err);
-      // Ensure twitterWindow remains open so user's share action is uninterrupted
     }
   };
 
