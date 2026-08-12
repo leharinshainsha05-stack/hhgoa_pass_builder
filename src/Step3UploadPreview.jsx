@@ -1070,17 +1070,27 @@ export default function Step3UploadPreview({
         })
       );
 
-      // 2. Generate PNG Data URL with html-to-image
-      const dataUrl = await toPng(node, {
-        quality: 0.95,
-        pixelRatio: 2,
-        cacheBust: true,
-        backgroundColor: '#0b6839', // Fallback background color matching poster
-        style: {
-          transform: 'none',
-          margin: '0 auto',
-        },
+      // 2. Generate PNG Data URL with html2canvas forced to unscaled 420x560 layout
+      const canvas = await html2canvas(node, {
+        width: 420,
+        height: 560,
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#0b6839',
+        onclone: (clonedDoc) => {
+          const clonedPoster = clonedDoc.getElementById('poster-canvas-wrapper');
+          if (clonedPoster) {
+            clonedPoster.style.width = '420px';
+            clonedPoster.style.height = '560px';
+            clonedPoster.style.transform = 'none';
+            if (clonedPoster.parentElement) {
+              clonedPoster.parentElement.style.transform = 'none';
+            }
+          }
+        }
       });
+      const dataUrl = canvas.toDataURL('image/png', 1.0);
 
       // 3. Trigger File Download
       const link = document.createElement('a');
@@ -1283,13 +1293,15 @@ export default function Step3UploadPreview({
             className="hidden"
           />
 
-          {/* Poster Preview Scaling Container Constrained to Viewport Height */}
-          <div className="flex-1 w-full max-h-[58vh] sm:max-h-[62vh] lg:max-h-[68vh] flex items-center justify-center relative my-auto overflow-hidden">
-            {/* 1. POSTER CANVAS WRAPPER - EXCLUSIVELY WRAPPED IN id="poster-canvas-wrapper" */}
-            <div
-              id="poster-canvas-wrapper"
-              className="h-full aspect-[4/5] mx-auto overflow-hidden rounded-2xl relative shadow-2xl bg-[#0b6839] flex flex-col items-center justify-center p-0 shrink-0"
-            >
+          {/* Responsive CSS Scale Wrapper for Mobile Viewports */}
+          <div className="w-full flex justify-center items-center py-2 overflow-hidden flex-1 relative my-auto">
+            <div className="origin-center scale-[0.75] xs:scale-[0.85] sm:scale-100 transition-transform duration-200 shrink-0">
+              {/* 1. POSTER CANVAS WRAPPER - EXCLUSIVELY WRAPPED IN id="poster-canvas-wrapper" */}
+              <div
+                id="poster-canvas-wrapper"
+                className="w-[420px] h-[560px] mx-auto overflow-hidden rounded-2xl relative shadow-2xl bg-[#0b6839] flex flex-col items-center justify-center p-0 shrink-0"
+                style={{ width: '420px', height: '560px' }}
+              >
               {/* Top-Left Ticket Sticker */}
               <img
                 src="/image_351993.png"
@@ -1432,6 +1444,7 @@ export default function Step3UploadPreview({
               )}
             </div>
           </div>
+        </div>
 
           {/* 2. UI BUTTONS & CONTROLS CONTAINER */}
           {imageSrc && (
