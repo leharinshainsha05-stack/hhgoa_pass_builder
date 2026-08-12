@@ -1101,20 +1101,24 @@ export default function Step3UploadPreview({
       if (canvas) {
         const dataUrl = canvas.toDataURL('image/png', 1.0);
 
-        // 3. Trigger File Download
+        // 3. Trigger File Download BEFORE opening Twitter/X intent window
         const link = document.createElement('a');
-        link.download = 'HHGoa_2026_Share_Poster.png';
-        link.href = dataUrl;
+        link.setAttribute('download', 'HHGoa_2026_Share_Poster.png');
+        link.setAttribute('href', dataUrl);
+        link.setAttribute('target', '_blank');
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
       }
-
     } catch (err) {
       console.error('Poster export capture notice:', err);
-    } finally {
-      // 4. Always launch Twitter / X Share Intent in a new tab without throwing runtime alerts
+    }
+
+    // 4. Launch Twitter / X Share Intent in a new tab AFTER download trigger
+    try {
       window.open(xIntentUrl, '_blank', 'noopener,noreferrer');
+    } catch (winErr) {
+      console.error('Failed to open Twitter/X share intent window:', winErr);
     }
   };
 
