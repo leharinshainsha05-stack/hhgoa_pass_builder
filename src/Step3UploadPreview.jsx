@@ -1098,10 +1098,10 @@ export default function Step3UploadPreview({
         })
       );
 
-      // 3. Generate PNG Canvas with html2canvas (sanitized options & locked 420x560 layout)
+      // 3. Generate PNG Canvas with html2canvas (sanitized options & locked 420x525 layout)
       const canvas = await html2canvas(node, {
         width: 420,
-        height: 560,
+        height: 525,
         scale: 2,
         useCORS: true,
         allowTaint: true,
@@ -1113,7 +1113,7 @@ export default function Step3UploadPreview({
           const clonedPoster = clonedDoc.getElementById('poster-canvas-wrapper');
           if (clonedPoster) {
             clonedPoster.style.width = '420px';
-            clonedPoster.style.height = '560px';
+            clonedPoster.style.height = '525px';
             clonedPoster.style.transform = 'none';
             clonedPoster.style.backgroundColor = '#0b6839';
             if (clonedPoster.parentElement) {
@@ -1357,14 +1357,14 @@ export default function Step3UploadPreview({
               {/* 1. POSTER CANVAS WRAPPER - EXCLUSIVELY WRAPPED IN id="poster-canvas-wrapper" */}
               <div
                 id="poster-canvas-wrapper"
-                className="w-[420px] h-[560px] mx-auto overflow-hidden rounded-2xl relative shadow-2xl bg-[#0b6839] flex flex-col items-center justify-center p-0 shrink-0"
-                style={{ width: '420px', height: '560px' }}
+                className="w-[420px] h-[525px] mx-auto overflow-hidden rounded-2xl relative shadow-2xl bg-[#0b6839] flex flex-col items-center justify-center p-0 shrink-0"
+                style={{ width: '420px', height: '525px' }}
               >
               {/* Top-Left Ticket Sticker */}
               <img
                 src="/image_351993.png"
                 alt="HH GOA '26 Builder Pass Sticker"
-                className="absolute top-3 left-3 w-24 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
+                className="absolute top-3 left-3 w-28 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
                 style={{ transform: "rotate(-8deg)", zIndex: 20 }}
               />
 
@@ -1372,7 +1372,7 @@ export default function Step3UploadPreview({
               <img
                 src="/image_351997.png"
                 alt="Verified Aug 2026 Stamp Sticker"
-                className="absolute top-3 right-3 w-20 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
+                className="absolute top-3 right-3 w-24 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
                 style={{ transform: "rotate(8deg)", zIndex: 20 }}
               />
 
@@ -1381,7 +1381,7 @@ export default function Step3UploadPreview({
                 id="surfer-mascot"
                 src="/mascot-removebg-preview.png"
                 alt="Surfer Mascot Sticker"
-                className="surfer-mascot absolute bottom-10 left-2 h-32 w-auto object-contain z-[30] pointer-events-none drop-shadow-lg"
+                className="surfer-mascot absolute bottom-10 left-2 h-36 w-auto object-contain z-[30] pointer-events-none drop-shadow-lg"
                 onError={(e) => {
                   e.currentTarget.style.display = "none";
                 }}
@@ -1390,7 +1390,7 @@ export default function Step3UploadPreview({
 
               {/* Poster Bottom-Right Footer Watermark */}
               <div className="absolute bottom-3 right-4 text-right z-20 pointer-events-none">
-                <p className="font-extrabold text-sm sm:text-base text-yellow-400 tracking-wide drop-shadow">
+                <p className="font-extrabold text-base text-[#f5dc18] tracking-wide drop-shadow-md">
                   #FrameInGoa
                 </p>
               </div>
