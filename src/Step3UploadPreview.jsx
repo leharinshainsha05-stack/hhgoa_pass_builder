@@ -1080,18 +1080,8 @@ export default function Step3UploadPreview({
         backgroundColor: '#0b6839',
         onclone: (clonedDoc) => {
           if (!clonedDoc) return;
-          const clonedPoster = clonedDoc.getElementById('poster-canvas-wrapper');
-          if (clonedPoster) {
-            clonedPoster.style.width = '420px';
-            clonedPoster.style.height = '560px';
-            clonedPoster.style.transform = 'none';
-            clonedPoster.style.backgroundColor = '#0b6839';
-            if (clonedPoster.parentElement) {
-              clonedPoster.parentElement.style.transform = 'none';
-            }
-          }
 
-          // Sanitize inline style tags containing oklch colors for html2canvas CSS parser compatibility
+          // 1. Sanitize all <style> tags in cloned document by replacing oklch with hex
           try {
             const styles = clonedDoc.querySelectorAll('style');
             styles.forEach((styleTag) => {
@@ -1101,6 +1091,49 @@ export default function Step3UploadPreview({
             });
           } catch (e) {
             console.warn('Style tag oklch sanitization warning:', e);
+          }
+
+          // 2. Sanitize all styleSheet rules if available
+          try {
+            Array.from(clonedDoc.styleSheets || []).forEach((sheet) => {
+              try {
+                Array.from(sheet.cssRules || []).forEach((rule) => {
+                  if (rule.cssText && rule.cssText.includes('oklch')) {
+                    rule.style.cssText = rule.style.cssText.replace(/oklch\([^)]+\)/gi, '#0b6839');
+                  }
+                });
+              } catch (ruleErr) {
+                // Ignore cross-origin stylesheet access errors
+              }
+            });
+          } catch (sheetErr) {
+            console.warn('StyleSheet oklch sanitization warning:', sheetErr);
+          }
+
+          // 3. Target cloned poster element and enforce explicit inline dimensions and hex colors
+          const clonedPoster = clonedDoc.getElementById('poster-canvas-wrapper');
+          if (clonedPoster) {
+            clonedPoster.style.width = '420px';
+            clonedPoster.style.height = '560px';
+            clonedPoster.style.transform = 'none';
+            clonedPoster.style.backgroundColor = '#0b6839';
+            clonedPoster.style.boxShadow = 'none';
+            if (clonedPoster.parentElement) {
+              clonedPoster.parentElement.style.transform = 'none';
+              clonedPoster.parentElement.style.backgroundColor = 'transparent';
+            }
+
+            // 4. Clean all child elements inside cloned poster container
+            const allNodes = clonedPoster.querySelectorAll('*');
+            allNodes.forEach((el) => {
+              if (el.style) {
+                if (el.style.cssText && el.style.cssText.includes('oklch')) {
+                  el.style.cssText = el.style.cssText.replace(/oklch\([^)]+\)/gi, '#0b6839');
+                }
+                el.style.filter = 'none';
+                el.style.boxShadow = 'none';
+              }
+            });
           }
         }
       });
@@ -1364,7 +1397,7 @@ export default function Step3UploadPreview({
               />
 
               {/* Poster Bottom-Right Footer Watermark */}
-              <div className="absolute bottom-3 right-4 z-20 font-extrabold text-yellow-400 text-xl pointer-events-none drop-shadow-md">
+              <div className="absolute bottom-3 right-4 z-20 font-extrabold text-[#f5dc18] text-xl pointer-events-none">
                 #FrameInGoa
               </div>
 
