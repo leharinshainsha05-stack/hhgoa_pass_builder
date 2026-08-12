@@ -1052,25 +1052,31 @@ export default function Step3UploadPreview({
   // --- TRIGGER 2: FULL POSTER DOWNLOAD & OPEN X COMPOSER (#FrameInGoa) ---
   const handleShareToX = async () => {
     const node = document.getElementById('poster-canvas-wrapper');
+    const shareText = encodeURIComponent(
+      "Just claimed my Builder Pass for Hacker House Goa '26! 🚀🌴\n\nSee you guys in Goa! #FrameInGoa #HackerHouseGoa"
+    );
+    const xIntentUrl = `https://twitter.com/intent/tweet?text=${shareText}`;
+
     if (!node) {
       console.error("Poster element '#poster-canvas-wrapper' not found in DOM.");
+      window.open(xIntentUrl, '_blank', 'noopener,noreferrer');
       return;
     }
 
     try {
-      // 1. Force convert images to data URLs before capture to avoid blank CORS canvas
+      // 1. Preload image assets inside poster container, resolving gracefully on load or error
       const images = node.querySelectorAll('img');
       await Promise.all(
         Array.from(images).map((img) => {
           if (img.complete) return Promise.resolve();
           return new Promise((resolve) => {
-            img.onload = resolve;
-            img.onerror = resolve;
+            img.onload = () => resolve();
+            img.onerror = () => resolve();
           });
         })
       );
 
-      // 2. Generate PNG Data URL with html2canvas forced to unscaled 420x560 layout
+      // 2. Generate PNG Data URL with html2canvas (null-safe & locked to unscaled 420x560 layout)
       const canvas = await html2canvas(node, {
         width: 420,
         height: 560,
@@ -1079,6 +1085,7 @@ export default function Step3UploadPreview({
         allowTaint: true,
         backgroundColor: '#0b6839',
         onclone: (clonedDoc) => {
+          if (!clonedDoc) return;
           const clonedPoster = clonedDoc.getElementById('poster-canvas-wrapper');
           if (clonedPoster) {
             clonedPoster.style.width = '420px';
@@ -1090,25 +1097,24 @@ export default function Step3UploadPreview({
           }
         }
       });
-      const dataUrl = canvas.toDataURL('image/png', 1.0);
 
-      // 3. Trigger File Download
-      const link = document.createElement('a');
-      link.download = 'HHGoa_2026_Share_Poster.png';
-      link.href = dataUrl;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      if (canvas) {
+        const dataUrl = canvas.toDataURL('image/png', 1.0);
 
-      // 4. Open Twitter / X Share Intent (placed outside download promise chain)
-      const text = encodeURIComponent(
-        "Just claimed my Builder Pass for Hacker House Goa '26! 🚀🌴\n\nSee you guys in Goa! #FrameInGoa #HackerHouseGoa"
-      );
-      window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank', 'noopener,noreferrer');
+        // 3. Trigger File Download
+        const link = document.createElement('a');
+        link.download = 'HHGoa_2026_Share_Poster.png';
+        link.href = dataUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
 
     } catch (err) {
-      console.error('Error in handleShareToX:', err);
-      alert('Could not export poster. Check console for error details.');
+      console.error('Poster export capture notice:', err);
+    } finally {
+      // 4. Always launch Twitter / X Share Intent in a new tab without throwing runtime alerts
+      window.open(xIntentUrl, '_blank', 'noopener,noreferrer');
     }
   };
 
