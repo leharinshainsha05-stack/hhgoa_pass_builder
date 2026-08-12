@@ -935,6 +935,7 @@ export default function Step3UploadPreview({
     );
 
     // Coconut Surfer Mascot Layer (Z-Index: 30 - Overlapping Left Border & Footer Banner)
+    const mascotImg = typeof mascotObjRef !== "undefined" && mascotObjRef ? mascotObjRef.current : null;
     if (mascotImg && mascotImg.complete && mascotImg.naturalWidth > 0) {
       ctx.save();
       const mascotH = 180;
@@ -1114,9 +1115,22 @@ export default function Step3UploadPreview({
             clonedPoster.style.width = '420px';
             clonedPoster.style.height = '560px';
             clonedPoster.style.transform = 'none';
+            clonedPoster.style.backgroundColor = '#0b6839';
             if (clonedPoster.parentElement) {
               clonedPoster.parentElement.style.transform = 'none';
             }
+          }
+
+          // Sanitize inline style tags containing oklch colors for html2canvas CSS parser compatibility
+          try {
+            const styles = clonedDoc.querySelectorAll('style');
+            styles.forEach((styleTag) => {
+              if (styleTag.textContent && styleTag.textContent.includes('oklch')) {
+                styleTag.textContent = styleTag.textContent.replace(/oklch\([^)]+\)/gi, '#0b6839');
+              }
+            });
+          } catch (e) {
+            console.warn('Style tag oklch sanitization warning:', e);
           }
         }
       });
