@@ -1321,15 +1321,20 @@ export default function Step3UploadPreview({
             className="hidden"
           />
 
-          {/* Responsive CSS Scale Wrapper for Mobile Viewports */}
-          <div className="w-full flex justify-center items-center py-2 overflow-hidden flex-1 relative my-auto">
-            <div className="scale-[0.85] sm:scale-100 origin-center transition-transform duration-200 shrink-0">
-              {/* 1. POSTER CANVAS WRAPPER - EXCLUSIVELY WRAPPED IN id="poster-canvas-wrapper" */}
-              <div
-                id="poster-canvas-wrapper"
-                className="w-[420px] h-[560px] relative overflow-hidden rounded-2xl bg-[#0b6839] p-4 flex flex-col justify-between items-center shrink-0 shadow-2xl"
-                style={{ width: '420px', height: '560px' }}
-              >
+          {/* Clean Display Wrapper for Screen Preview */}
+          <div className="w-full flex justify-center items-center py-6 overflow-hidden">
+            <div
+              id="poster-canvas-wrapper"
+              className="relative w-[420px] h-[560px] aspect-[3/4] bg-[#0b6839] rounded-2xl overflow-hidden p-4 flex flex-col justify-between items-center shadow-2xl"
+              style={{ width: '420px', height: '560px', minWidth: '420px', minHeight: '560px' }}
+            >
+              {/* Background Texture Grid/Overlay */}
+              <img
+                src="/image_48.png"
+                alt="Poster Matrix Background Texture"
+                className="absolute inset-0 w-full h-full object-cover opacity-60 pointer-events-none z-0"
+              />
+
               {/* Top-Left Ticket Sticker */}
               <img
                 src="/image_351993.png"
@@ -1351,7 +1356,7 @@ export default function Step3UploadPreview({
                 id="surfer-mascot"
                 src="/mascot-removebg-preview.png"
                 alt="Surfer Mascot Sticker"
-                className="surfer-mascot absolute bottom-6 left-2 z-30 h-32 w-auto object-contain pointer-events-none drop-shadow-lg"
+                className="surfer-mascot absolute bottom-6 left-2 z-30 h-36 w-auto object-contain pointer-events-none drop-shadow-lg"
                 onError={(e) => {
                   e.currentTarget.style.display = "none";
                 }}
@@ -1359,7 +1364,7 @@ export default function Step3UploadPreview({
               />
 
               {/* Poster Bottom-Right Footer Watermark */}
-              <div className="absolute bottom-3 right-4 z-20 font-bold text-yellow-400 text-lg pointer-events-none drop-shadow-md">
+              <div className="absolute bottom-3 right-4 z-20 font-extrabold text-yellow-400 text-2xl pointer-events-none drop-shadow-md">
                 #FrameInGoa
               </div>
 
@@ -1467,7 +1472,6 @@ export default function Step3UploadPreview({
               )}
             </div>
           </div>
-        </div>
 
           {/* 2. UI BUTTONS & CONTROLS CONTAINER */}
           {imageSrc && (
