@@ -1322,10 +1322,10 @@ export default function Step3UploadPreview({
           />
 
           {/* Clean Display Wrapper for Screen Preview */}
-          <div className="w-full flex justify-center items-center py-6 overflow-hidden">
+          <div className="w-full flex justify-center items-center py-4 bg-transparent">
             <div
               id="poster-canvas-wrapper"
-              className="relative w-[420px] h-[560px] aspect-[3/4] bg-[#0b6839] rounded-2xl overflow-hidden p-4 flex flex-col justify-between items-center shadow-2xl"
+              className="relative w-[420px] h-[560px] bg-[#0b6839] rounded-2xl overflow-hidden shadow-2xl"
               style={{ width: '420px', height: '560px', minWidth: '420px', minHeight: '560px' }}
             >
               {/* Background Texture Grid/Overlay */}
@@ -1356,7 +1356,7 @@ export default function Step3UploadPreview({
                 id="surfer-mascot"
                 src="/mascot-removebg-preview.png"
                 alt="Surfer Mascot Sticker"
-                className="surfer-mascot absolute bottom-6 left-2 z-30 h-36 w-auto object-contain pointer-events-none drop-shadow-lg"
+                className="surfer-mascot absolute bottom-4 left-2 z-30 h-36 w-auto object-contain pointer-events-none drop-shadow-lg"
                 onError={(e) => {
                   e.currentTarget.style.display = "none";
                 }}
@@ -1364,7 +1364,7 @@ export default function Step3UploadPreview({
               />
 
               {/* Poster Bottom-Right Footer Watermark */}
-              <div className="absolute bottom-3 right-4 z-20 font-extrabold text-yellow-400 text-2xl pointer-events-none drop-shadow-md">
+              <div className="absolute bottom-3 right-4 z-20 font-extrabold text-yellow-400 text-xl pointer-events-none drop-shadow-md">
                 #FrameInGoa
               </div>
 
