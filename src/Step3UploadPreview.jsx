@@ -18,16 +18,10 @@ import {
 
 // Preload sticker PNG assets for canvas rendering fallback
 const stickerTicketImg = typeof window !== "undefined" ? new Image() : null;
-if (stickerTicketImg) {
-  stickerTicketImg.crossOrigin = "anonymous";
-  stickerTicketImg.src = "/image_351993.png";
-}
+if (stickerTicketImg) stickerTicketImg.src = "/image_351993.png";
 
 const stickerVerifiedImg = typeof window !== "undefined" ? new Image() : null;
-if (stickerVerifiedImg) {
-  stickerVerifiedImg.crossOrigin = "anonymous";
-  stickerVerifiedImg.src = "/image_351997.png";
-}
+if (stickerVerifiedImg) stickerVerifiedImg.src = "/image_351997.png";
 
 export default function Step3UploadPreview({
   formData = {},
@@ -98,7 +92,6 @@ export default function Step3UploadPreview({
   // Preload HH Goa Logo, Watermark Matrix & Mascot Assets
   useEffect(() => {
     const logo = new Image();
-    logo.crossOrigin = "anonymous";
     logo.src = "/hh-goa-logo.png";
     logo.onload = () => {
       logoObjRef.current = logo;
@@ -108,7 +101,6 @@ export default function Step3UploadPreview({
     };
 
     const wm = new Image();
-    wm.crossOrigin = "anonymous";
     wm.src = "/image_48.png";
     wm.onload = () => {
       watermarkObjRef.current = wm;
@@ -118,7 +110,6 @@ export default function Step3UploadPreview({
     };
 
     const mascot = new Image();
-    mascot.crossOrigin = "anonymous";
     mascot.src = "/mascot-removebg-preview.png";
     mascot.onload = () => {
       mascotObjRef.current = mascot;
@@ -132,7 +123,6 @@ export default function Step3UploadPreview({
   useEffect(() => {
     if (imageSrc) {
       const img = new Image();
-      img.crossOrigin = "anonymous";
       img.src = imageSrc;
       img.onload = () => {
         imageObjRef.current = img;
@@ -1092,12 +1082,12 @@ export default function Step3UploadPreview({
         })
       );
 
-      // 3. Generate PNG Data URL with html2canvas (null-safe & locked to unscaled 420x560 layout)
+      // 3. Generate PNG Blob with html2canvas (allowTaint: true, useCORS: false, locked to unscaled 420x560 layout)
       const canvas = await html2canvas(node, {
         width: 420,
         height: 560,
         scale: 2,
-        useCORS: true,
+        useCORS: false,
         allowTaint: true,
         backgroundColor: '#0b6839',
         onclone: (clonedDoc) => {
@@ -1115,16 +1105,25 @@ export default function Step3UploadPreview({
       });
 
       if (canvas) {
-        const dataUrl = canvas.toDataURL('image/png', 1.0);
+        // 4. Safe Blob Download Execution
+        canvas.toBlob((blob) => {
+          if (!blob) {
+            console.error('Failed to generate PNG blob from canvas.');
+            return;
+          }
+          const blobUrl = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.setAttribute('download', 'HHGoa_2026_Share_Poster.png');
+          link.setAttribute('href', blobUrl);
+          link.setAttribute('target', '_blank');
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
 
-        // 4. Trigger File Download
-        const link = document.createElement('a');
-        link.setAttribute('download', 'HHGoa_2026_Share_Poster.png');
-        link.setAttribute('href', dataUrl);
-        link.setAttribute('target', '_blank');
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+          setTimeout(() => {
+            URL.revokeObjectURL(blobUrl);
+          }, 1000);
+        }, 'image/png', 1.0);
       }
     } catch (err) {
       console.error('Poster export capture notice:', err);
@@ -1325,7 +1324,6 @@ export default function Step3UploadPreview({
               <img
                 src="/image_351993.png"
                 alt="HH GOA '26 Builder Pass Sticker"
-                crossOrigin="anonymous"
                 className="absolute top-5 left-3 w-20 sm:w-28 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
                 style={{ transform: "rotate(-8deg)", zIndex: 20 }}
               />
@@ -1334,7 +1332,6 @@ export default function Step3UploadPreview({
               <img
                 src="/image_351997.png"
                 alt="Verified Aug 2026 Stamp Sticker"
-                crossOrigin="anonymous"
                 className="absolute w-16 sm:w-24 h-auto object-contain z-20 pointer-events-none drop-shadow-md"
                 style={{ top: "16px", right: "40px", transform: "rotate(8deg)", zIndex: 20 }}
               />
@@ -1344,7 +1341,6 @@ export default function Step3UploadPreview({
                 id="surfer-mascot"
                 src="/mascot-removebg-preview.png"
                 alt="Surfer Mascot Sticker"
-                crossOrigin="anonymous"
                 className="surfer-mascot absolute bottom-[80px] left-[14px] h-28 sm:h-32 w-auto object-contain z-[30] pointer-events-none drop-shadow-lg"
                 onError={(e) => {
                   e.currentTarget.style.display = "none";
