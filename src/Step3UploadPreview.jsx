@@ -1028,8 +1028,9 @@ export default function Step3UploadPreview({
     const xIntentUrl = `https://twitter.com/intent/tweet?text=${shareText}`;
 
     // 1. Synchronously open Twitter/X intent window immediately at start of click handler to prevent popup blocking
+    let twitterWindow = null;
     try {
-      window.open(xIntentUrl, '_blank', 'noopener,noreferrer');
+      twitterWindow = window.open(xIntentUrl, '_blank', 'noopener,noreferrer');
     } catch (winErr) {
       console.error('Failed to open Twitter/X share intent window:', winErr);
     }
@@ -1046,7 +1047,6 @@ export default function Step3UploadPreview({
         const link = document.createElement('a');
         link.setAttribute('download', 'HHGoa_2026_Share_Poster.png');
         link.setAttribute('href', dataUrl);
-        link.setAttribute('target', '_blank');
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -1076,7 +1076,7 @@ export default function Step3UploadPreview({
         useCORS: true,
         allowTaint: true,
         foreignObjectRendering: false,
-        logging: true,
+        logging: false,
         backgroundColor: '#0b6839',
         onclone: (clonedDoc) => {
           if (!clonedDoc) return;
@@ -1115,7 +1115,6 @@ export default function Step3UploadPreview({
                 const link = document.createElement('a');
                 link.setAttribute('download', 'HHGoa_2026_Share_Poster.png');
                 link.setAttribute('href', blobUrl);
-                link.setAttribute('target', '_blank');
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
@@ -1137,6 +1136,7 @@ export default function Step3UploadPreview({
       }
     } catch (err) {
       console.error("Export Error:", err);
+      // Ensure twitterWindow remains open so user's share action is uninterrupted
     }
   };
 
